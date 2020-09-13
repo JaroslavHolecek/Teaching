@@ -1,0 +1,386 @@
+\section{Objektově orientované programování - OOP}
+
+\subsection{Odkazy}
+\url{https://naucse.python.cz/lessons/beginners/class/}\\
+\url{https://www.w3schools.com/python/python_classes.asp}\\
+
+\subsection{Třída a objekt}
+Třídu si můžeme představit jako \uv{šablonu} nebo \uv{výrobní plán}, podle kterého se vytváří jednotlivé objekty - říkame jim objekty dané třídy. Ve chvíli, kdy v programu zavoláme příkaz pro vytvoření objektu nějaké třídy, vytvoří se objekt, který má vlastnosti a dovednosti (správně řečeno atributy a metody), které jsme mu předepsali ve třídě.\\
+Objektů můžeme od stejné třídy vytvořit libovolné množství. Každý z nich pak \uv{žije vlastním životem} - hodnoty jeho vlastností jsou nezávislé na ostatních objektech. Všechny objekty stejné třídy ale mají stejné vlastnosti (hodnoty těchto vlastností stejné být nemusí) a dovednosti.\\
+\vspace{1cm}
+
+\textit{Máme třídu Auto. Každé auto má: pozici na mapě (x,y), rychlost a barvu. Vytvoříme tři auta trabant, skoda a ferrari. Každé z nich má v průběhu hry různou pozici, rychlost i barvu (např. je jedno modré, druhé červené a třetí zelené) - každé auto má různé hodnoty vlastností (např. "modra", "cervena", "zelena"), ale vlastnosti mají všechna auta stejné (např. všechny mají barvu)}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+class Auto:
+	x = 0
+	y = 0
+	barva = "cerna"
+	rychlost = 5
+	
+	def jed(self):
+		self.x = self.x + 1
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.x, " y: ", self.y)
+		
+trabant = Auto()
+skoda = Auto()
+ferrari = Auto()
+\end{minted}
+
+\captionof{listing}{První ukázka třídy}
+\label{code:trida-prvni_nesikovna}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+Tato ukázka je značně nešikovná, protože všechna vyrobená auta (trabant, skoda, ferrari) maji ze začátku (od jejich \uv{výroby}) stejnou barvu, rychlost i pozici.\\Situace je dokonce ještě horší - takto zapsané, mají všechny objekty atributy společné (i hodnoty). Je to pouze ilustrativní příklad - opravíme ho o kousek níže.\\
+\vspace{2cm}
+
+ř. 1:	Definice (vytvoření) třídy\\
+ř. 2-5:	Předepsání 4 vlastností (atributů)\\
+ř. 7-11:	Předepsání 2 dovedností (metod)\\
+ř. 13-15:	Vytvoření 3 objektů Auto
+\end{minipage}
+
+\subsection{Přístup k vlastnostem (čtení, změna)}
+U každého objektu můžeme měnit hodnotu jeho vlastností. Tato změna ovlivní pouze jeden objekt - na žádný jiný nemá vliv a tak hodnoty u všech ostatních objektů zůstanou stejné.\\
+K vlastnostem a dovednostem (metodám) objektu přistupujeme pomocí tečky.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+class Auto:
+	x = 0
+	y = 0
+	barva = "cerna"
+	rychlost = 5
+	
+	def jed(self):
+		self.x = self.x + 1
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.x, " y: ", self.y)
+		
+trabant = Auto()
+skoda = Auto()
+ferrari = Auto()
+
+trabant.barva = "cervena"
+skoda.barva = "modra"
+ferrari.barva = "zelena"
+
+trabant.jed()
+trabant.vypis_se()
+skoda.vypis_se()
+\end{minted}
+\captionof{listing}{Přístup k vlastnostem}
+\label{code:trida-pristup_k_vlastnostem}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 17-19:	Změna hodnoty vlastnosti barva u všech objektů\\
+ř. 21:		Zavolání metody jed() na objekt trabant\\
+ř. 22-23:	Zavolání metody vypis\_se() na objekty trabant a skoda
+\end{minipage}
+
+
+\subsection{Self}
+Ve zdrojových kódech \ref{code:trida-prvni_nesikovna}, \ref{code:trida-pristup_k_vlastnostem} a \ref{code:trida-self} si můžeme všimnout slova \uv{self} v metodách (dovednostnech) třídy.\\
+Toto slovo (mimochodem, nemusí to být přímo \uv{self}, může to být jakékoliv slovo), které je \textbf{první} mezi argumenty metody (první v kulatých závorkách) označuje, že pracujeme právě s jedním daným objektem - v metodě označeným právě \uv{self}.\\
+Nepřehlédneme také, že \uv{self} je mezi argumenty pouze při vytváření metody. Ve chvíli, kdy metodu (dovednost) voláme na nějakém objektu (pomocí tečky), žádné \uv{self} již do kulatých závorek nepíšeme. \uv{Self} totiž označuje (je v něm uložen) právě ten objekt, na kterém jsme metodu (dovednost) zavolali - ten, který je před tečkou.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+class Auto:
+	x = 0
+	y = 0
+	barva = "cerna"
+	rychlost = 5
+	
+	def jed(self):
+		self.x = self.x + 1
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.x, " y: ", self.y)
+		
+trabant = Auto()
+skoda = Auto()
+ferrari = Auto()
+
+trabant.barva = "cervena"
+skoda.barva = "modra"
+ferrari.barva = "zelena"
+
+trabant.jed()
+trabant.vypis_se()
+skoda.vypis_se()
+\end{minted}
+\captionof{listing}{Self}
+\label{code:trida-self}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 21:		Při vykonávání tohoto příkazu (metody jed() - tedy řádků 7-8) bude v \uv{self} uložen objekt \textbf{trabant}\\
+ř. 22:		Při vykonávání tohoto příkazu (metody vypis\_se() - tedy řádků 10-11) bude v \uv{self} uložen objekt \textbf{trabant}\\
+ř. 23:		Při vykonávání tohoto příkazu (metody vypis\_se() - tedy řádků 10-11) bude v \uv{self} uložen objekt \textbf{skoda}
+\end{minipage}
+
+\subsection{Metoda \_\_init\_\_()}
+V ukázkách kódu \ref{code:trida-prvni_nesikovna}, \ref{code:trida-pristup_k_vlastnostem} a \ref{code:trida-self} je třída vytvořena značně nešikovně. Všechny objekty Auto mají při svém vytvoření určené hodnoty vlastností (x: 0, y: 0, barva: "cerna", rychlost: 5). To ale není to, co chceme - chceme, aby auta byla různá (např. měla různou barvu). Trochu tento stav vylepšuje kód \ref{code:trida-pristup_k_vlastnostem} a \ref{code:trida-self}, kde změníme hodnotu barvy tak, aby ji mělo každé auto jinou. Stále ale máme pevně dané hodnoty vlastností při vytváření objektů - pro jejich změnu musíme psát řádky navíc - a to není pohodlné, ani bezpečné. Situace je dokonce ještě horší (pro úvod se tím nebudeme zabývat, ale takto vytvořené atributy jsou nejprve pro všechny objekty stejné (i hodnoty))\\
+\vspace{.5cm}\\
+Tento problém řeší metoda \_\_init\_\_() - \textbf{Pozor: Před i za slovem \uv{init} jsou 2 podržítka}\\
+Metoda \textbf{\_\_init\_\_()} je speciální metoda (speciální metody jsou označny právě těmi podtržítky), která se zavolá ve chvíli, kdy \textbf{vytváříme objekt}.\\ Při vytváření objektu se vykonají všechny příkazy v této metodě \_\_init\_\_() - a stejně jako každá jiná metoda umí pracovat i s \textbf{argumenty} a to je přesně to, co využijeme.\\ 
+\begin{minipage}[c]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+class Auto:
+	def __init__(self, zadane_x, zadane_y, zadana_barva, zadana_rychlost):
+		self.x = zadane_x
+		self.y = zadane_y
+		self.barva = zadana_barva
+		self.rychlost = zadana_rychlost
+	
+	def jed(self):
+		self.x = self.x + 1
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.x, " y: ", self.y)
+		
+trabant = Auto(1, 2, "cervena", 5)
+skoda = Auto(13, 14, "modra", 5)
+ferrari = Auto(25, 26, "zelena", 5)
+
+trabant.jed()
+trabant.vypis_se()
+skoda.vypis_se()
+\end{minted}
+\captionof{listing}{Metoda \_\_init\_\_()}
+\label{code:trida-init}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{.5cm}
+ř. 2-6:		Tyto řádky se vykonají při vytváření objektu. Do vlastností objektu se uloží ty hodnoty, které jsou zadané jako argumenty.
+ř. 14-16:	Vytváříme 3 objekty a rovnou každému z nich přiřazujeme jeho správné hodnoty - každé auto má jinou pozici na mapě, jinou barvu a všechny mají stejnou rychlost
+\end{minipage}
+
+\subsection{Zapouzdření}
+Velmi často chceme, aby atributy (vlastnosti) měly jen některé hodnoty.\\
+Python jako takový nezná význam našeho programu - a nemá tedy šanci poznat, zda se nám někde neobjevil nesmyslný výsledek, nebo hodnota. Nesmyslný je totiž pouze pro nás (v naší hře). Pro Python je to prostě jen nějaké číslo.\\
+Ještě doplním, že v Pythonu nemá \uv{zapouzdření} zcela stejný význam jako např, v Javě nebo C++. Přistupujte prosím k této kapitole s rezervou - jde nám hlavně o princip.\\
+
+\vspace{1cm}
+\textit{V případě aut chceme, aby v atributu \uv{barva} byly jen názvy barev a v souřadnicích (atributech) \uv{x} a \uv{y} nebyly záporná čísla - byly bychom totiž mimo mapu (obrazovku)). Samozřejmě si můžete vymyslet i další omezení.\\Tomu, aby auto nevyjelo mimo obrazovku na druhou stranu (vpravo a dolů) se zde zatím věnovat nebudeme. Situace je stejná, jako v případě záporných čísel (vlevo a nahoru), jen musíme znát velikost mapy. Zatím zde žádnou mapu nemáme a tedy ani nevíme její velikost... }\\
+
+\vspace{1cm}
+Bohužel, není možné někam přímo zapsat, jaké hodnoty chceme v jakém atributu. Musíme zapsat do kódu příkazy, které pohlídají, zda je hodnota taková, jakou chceme.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+class Auto:
+	def __init__(self, zadane_x, zadane_y, zadana_barva, zadana_rychlost):
+		# self.__x = zadane_x !\label{scl:privatex}!
+		self.setX(zadane_x) !\label{scl:call_setx_init}!
+		
+		self.y = zadane_y
+		self.barva = zadana_barva
+		self.rychlost = zadana_rychlost
+	
+	def setX(self, hodnota): !\label{scl:setX}!
+		if hodnota < 0: !\label{scl:setX_start}!
+			self.__x = 0
+		else:
+			self.__x = hodnota !\label{scl:setX_end}!
+			
+	def getX(self):
+		return self.__x
+	
+	def jed(self):
+		# self.__x = self.__x + 1
+		self.setX(self.__x + 1) !\label{scl:call_setx_jed}!
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.__x, " y: ", self.y)
+		
+trabant = Auto(-4, 2, "cervena", 5) !\label{scl:use_setx_init}!
+skoda = Auto(13, 14, "modra", 5)
+ferrari = Auto(25, 26, "zelena", 5)
+
+trabant.jed()
+trabant.vypis_se()
+skoda.setX(-78) !\label{scl:call_setx}!
+skoda.vypis_se()
+x_of_skoda = skoda.getX() !\label{scl:call_getx}!
+\end{minted}
+
+\captionof{listing}{Zapouzdření}
+\label{code:zapouzdreni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{10cm}
+\begin{enumerate}
+\item[ř. \ref{scl:privatex}:] Atribut \uv{schováme} tak, že začíná na dvě podtržítka - říkáme, že je \uv{private}.
+\item[ř. \ref{scl:setX}:] Vytvoříme metodu \uv{setX} a zavoláme ji pokaždé, když budeme měnit hodnotu \uv{x}.\\Tedy se při každé změně spustí příkazy \ref{scl:setX_start}-\ref{scl:setX_end}, které hlídají, správnou hodnotu \uv{x}.
+\item[ř. \ref{scl:call_setx_init}, \ref{scl:call_setx_jed}, \ref{scl:call_setx}:] Metodu \uv{setX} používáme všude, kde měníme hodnotu \uv{x}
+\item[\ref{scl:call_getx}:] Kdykoliv potřebujeme přečíst hodnotu \uv{x} mimo třídu, použijeme metodu \uv{getX, která nám ji vrátí (pošle do místa, kde jsme metodu zavolali)}
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Private - skrytí atributu}
+Aby nebylo možné zapsat do atributu jakoukoliv hodnotu, je potřeba tento atribut schovat. Náš kód může používat i někdo jiný než my - a ten nemusí nic vědět o významu jednotlivých proměnných (atributů) a mohl by do něj napsat nějaký nesmysl. Také se při složitějších operacích může stát, že prostě neuhlídáme hodnotu, kterou do atributu zapisujeme.\\
+Takovému \textbf{schování} říkáme, že je atribut \textbf{private}. Není dostupný \uv{zvnějšu} - tedy se k němu nedostaneme mimo kód třídy, ke které atribut patří.\\
+Abychom z atributu veřejného udělali atribut \uv{private}, připíšeme před jeho název dvě podtržítka (např. $ x \rightarrow \_\_x $).s
+
+\subsubsection{Setter}
+Hodnotu atributů potřebujeme měnit na spoustě míst v programu - když objekt vytváříme, ve chvíli, kdy se ve hře něco děje (např. má auto popojet). Je proto výhodné zapsat jeden kousek kódu, který umí pohlídat hodnotu atributu a tento kousek kódu použít na všech místech, kde hodnotu měníme. Takovému \uv{kousku kódu}, který lze použít vícekrát, se říká funkce (nebo metoda).\\ Tato funkce má za úkol \textbf{nastavit} hodnotu atributu (a pohlídat ji).  Proto jí říkáme \textbf{setter}. Obvyklé je, že se funkce jmenuje \uv{setNazevAtributu} - může se samozřejmě jmenovat jakkoliv, ale je lepší dodržet tuto \uv{normu}.\\
+
+\subsubsection{Getter}
+Protože jsme z atributu udělali atribut \uv{private} - tedy není dostupný mimo třídu, nemohli bychom se ani podívat, co je v něm uloženo (přečíst ho).\\My však potřebujeme znát hodnotu atributů i mimo třídu (abychom mohli auto nakreslit, musíme vědět, kde je).\\
+K \textbf{přečtení} hodnoty \uv{private} atributů slouží metoda, které se říká \textbf{getter}. Nedělá nic jiného, než že se podívá na hodnotu atributu a vrátí ho - pošle do místa, kde jsme getter zavolali. Stejně jako u setterů se metoda obvykle nazývá \uv{getNazevAtributu} - tento název není nutný, ale je nanejvýš vhodné ho dodržet. 
+
+\subsubsection{Opravdu Pythonovský zápis}
+Ukázkový kód v úvodu sekce \ref{code:zapouzdreni} je pouze zjednodušený. Nebylo by totiž příliš pohodlné psát všude \uv{setX} a \uv{getX} a navíc má takový kód i další nepěkné vlastnosti. Pro naše použití ve škole postačí, ale pro ty, kteří by chtěli mít kód opravdu Pythonosvky správný přikládám ukázku, jak to udělat doopravdy.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+class Auto:
+	def __init__(self, zadane_x, zadane_y, zadana_barva, zadana_rychlost):
+		self.x = zadane_x !\label{scl:setx_init}!
+		
+		self.y = zadane_y
+		self.barva = zadana_barva
+		self.rychlost = zadana_rychlost
+
+	@property		
+	def x(self): !\label{scl:getterx}!
+		return self.__x	
+	
+	@x.setter
+	def x(self, hodnota): !\label{scl:setterx}!
+		if hodnota < 0: !\label{scl:setterx_start}!
+			self.__x = 0
+		else:
+			self.__x = hodnota !\label{scl:setterx_end}!
+	
+	def jed(self):
+		self.x = self.x + 1 !\label{scl:setx_jed}!
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.x, " y: ", self.y)
+		
+trabant = Auto(-4, 2, "cervena", 5) !\label{scl:use_setterx}!
+skoda = Auto(13, 14, "modra", 5)
+ferrari = Auto(25, 26, "zelena", 5)
+
+trabant.jed()
+trabant.vypis_se()
+skoda.x = -78 !\label{scl:setx}!
+skoda.vypis_se()
+x_of_skoda = skoda.x !\label{scl:getx}!
+\end{minted}
+
+\captionof{listing}{Zapouzdření - Pythonovsky}
+\label{code:zapouzdreni_pythonovsky}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{10cm}
+\begin{enumerate}
+\item[ř. \ref{scl:setterx}:] Setter vytvoříme tak, že na řádek před něj zapíšeme \uv{@NazevAtributu.setter} a můžeme tuto metodu pojmenovat stejně jako atribut.\\
+Tím, se tato metoda spustí pokaždé, když budeme zapisovat do atributu.
+\item[ř. \ref{scl:getterx}:] Getter vytvoříme tak, že před tuto metody zapíšeme \uv{@property} a můžeme tuto metodu pojmenovat stejně jako atribut.\\Pozor - můsíme ho vytvořit před vytvořením setteru.
+\item[ř. \ref{scl:setx_init}, \ref{scl:setx_jed}, \ref{scl:setx}:] Setter voláme jednoduše tak, tako by byl atribut veřejný. Setter se ale spustí.
+\item[\ref{scl:getx}:] Getter voláme také tak, jako by atribut byl veřejný.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Dědičnost - inheritance}
+V běžném životě dělíme objekty okolo nás do kategorii (např. ryby, ptáci, savci jsou zvířata; kočka, člověk, pes jsou savci; muž, žena jsou lidé)\\Děláme to proto, že pak můžeme snadněji popsat, jaké vlastnosti a dovednosti má nějaký objekt. Z příkladu o dvě věty zpět je například okamžitě jasné, že muž je savec - a tedy se na něj vztahují všechny vlastnosti savců (např. po narození píjí mateřské mléko).\\Pokud rozdělíme objekty do kategorií, nemusíme potom u každého zvlášť vypisovat všechny jeho vlastnosti - stačí, když např. o muži řekneme, že je savec - a hned víme spoustu jeho vlastností (které si přečteme v knížce o savcích).\\
+
+\vspace{1cm}
+Obdobným způsobem můžeme vytvořit třídy (a od těchto tříd objekty) v našem programu. Pokud řekneme, že jedna třída \textbf{je potomkem (dědí, je podtřídou)} nějaké jiné třídy, říkáme tím, že všechny vlastnosti (atributy) a dovednosti (metody) \textbf{rodiče (nadtřídy)} umí i tato podtřída.\\
+Pokud bychom nechali dědit jednu třídu od jiné jedné třídy, žádnou výhodu bychom tím nezískali. Výhodné je ale to, že můžeme nechat od jedné třídy dědit (tedy převzít její vlastnosti) spoustu jiných tříd a naopak, můžeme nechat jednu třídu přejmout vlastnosti od několika jiných.\\
+
+\vspace{.5cm}
+\subsubsection{super()}
+Často se stane, že chceme využít metodu, kterou umí nadtřída a ještě k ní přidat něco navíc - trochu metodu upravit pro podtřídu - a protože dělá vlastně to samé (např. vypisuje všechny vlastnosti) bylo by fajn, kdyby se jmenovala stejně (např. vypis\_se()). Zavolat metodu nadtřídy (metodu, která má stejně pojmenovaného \uv{kamaráda} v podtřídě) můžeme pomocí metody \uv{super()}.\\
+super() je v podstatě odkaz (ukazatel) na nadtřídu.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+class Vozidlo: !\label{scl:nadtrida}!
+	def __init__(self, zadane_x, zadane_y, zadana_barva, zadana_rychlost):
+		self.setX(zadane_x) 		
+		self.y = zadane_y
+		self.barva = zadana_barva
+		self.rychlost = zadana_rychlost
+	
+	def setX(self, hodnota): 
+		if hodnota < 0: 
+			self.__x = 0
+		else:
+			self.__x = hodnota
+			
+	def getX(self):
+		return self.__x
+	
+	def jed(self):
+		self.setX(self.__x + 1)
+		
+	def vypis_se(self):
+		print(self.barva , " - x: ", self.__x, " y: ", self.y)
+
+
+class Auto(Vozidlo): !\label{scl:dedeni_auto}!
+	def __init__(self, zadane_x, zadane_y,
+	 		zadana_barva, zadana_rychlost, zadany_pocet_dveri):
+		super().__init__(zadane_x, zadane_y, zadana_barva, zadana_rychlost) !\label{scl:super_init_auto}!
+		self.pocet_dveri = zadany_pocet_dveri !\label{scl:atribut_navic_auto}!
+		
+	def vypis_se(self):
+		super().vypis_se() !\label{scl:super_vypis_auto}!
+		print("Pocet dveri:", self.pocet_dveri) !\label{scl:vypis_navic_auto}!
+		
+		
+class Motorka(Vozidlo): !\label{scl:dedeni_motorka}!
+	def __init__(self,   zadane_x, zadane_y,
+			 zadana_barva, zadana_rychlost, zadany_tlumic):
+		super().__init__(zadane_x, zadane_y, zadana_barva, zadana_rychlost) !\label{scl:super_init_motorka}!
+		self.tlumic_riditek = zadany_tlumic !\label{scl:atribut_navic_motorka}!
+		
+	def vypis_se(self):
+		super().vypis_se() !\label{scl:super_vypis_motorka}!
+		print("Tlumic riditek:", self.tlumic_riditek) !\label{scl:vypis_navic_motorka}!
+ 	
+	
+		
+trabant = Auto(4, 2, "cervena", 5, 5) !\label{scl:objekt_auto}!
+trabant.jed()
+trabant.vypis_se()
+
+suzuki = Motorka(10, 50, "modra", 10, True) !\label{scl:objekt_motorka}!
+suzuki.jed()
+suzuki.vypis_se()
+
+\end{minted}
+
+\captionof{listing}{Dědičnost}
+\label{code:dedicnost}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{18cm}
+\begin{enumerate}
+\item[ř. \ref{scl:nadtrida}:] Vytvoríme nadtřídu - do ní zapíšeme vše společné pro podtřídy (zde vše, co bylo v předchozích ukázkách).
+\item[ř. \ref{scl:dedeni_auto}, \ref{scl:dedeni_motorka}:] To, že je Auto Vozidlo (a tedy má převzít všechny vlastnosti Vozidla) řekneme tím, že zapíšeme Vozidlo do kulátých závorek za název podtřídy.
+\item[ř. \ref{scl:super_init_auto}, \ref{scl:super_init_motorka}, \ref{scl:super_vypis_auto}, \ref{scl:super_vypis_motorka}:] Pomocí metody \uv{super()} můžeme zavolat metodu z nadtřídy (která se jmenuje stejně, jako metoda v podtřídě).\\ Zde např. při výrobě (\_\_init\_\_()) nejprve vyrobíme Vozidlo a poté přidáme vlastnosti navíc.\\
+Obdobně při výpisu (vypis\_se()) - nejprve použijeme metody z nadtřídy a poté vypíšeme informaci navíc. 
+\end{enumerate}
+\end{minipage}

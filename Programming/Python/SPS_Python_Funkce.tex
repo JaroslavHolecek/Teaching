@@ -1,0 +1,178 @@
+\section{Funkce}
+Funkce (někdy také nazývané metody) slouží k významnému zjednodušení a zpřehlednění kódu.\\
+Funkci si můžete představit jako \uv{krabičku}, která umí děalt něco užitečného a kterou mám uloženou v paměti. Tuto \uv{krabičku} můžu v programu použít kolikrát chci.\\
+Často chceme stejný proces (několik příkazů) spustit na několika místech v programu. Funkce nám umožní tento proces (několik příkazů) zapsat pouze jednou - pojmenovat ho - a poté ho spustit jen zadáním jeho jména. Nemusíme tak stále dokola psát stejný kód na všech místech, kde ho chceme spustit.\\
+Pokud někde v programu píšete \textbf{podruhé} stejnou část kódu, již je to chvíle, kdy je čas na \textbf{použití funkce}.\\
+
+\vspace{1cm}
+\textit{Pro ukázku použití funkcí vytvoříme funkce, které budou zdravit naše kamarády a učitele}
+
+\subsection{Vytvoření funkce}
+Předtím, než můžeme funkci používat, ji musíme samozřejmě vytvořit - definovat. Definicí funkce ji pouze uložíme do paměti. V paměti funkce čeká do té doby, dokud ji nezavoláme (nespustíme).\\ 
+Funkci vytvoříme zapsáním klíčového slova \uv{\textbf{def}}. Za ním následuje \textbf{název funkce} - jak chceme funkci volat. Dále jsou \textbf{kulaté závorky} - později do závorek zapíšeme takzvané argumenty, ale i když žádné argumenty psát nechceme, kulaté závorky zde být musí. Na konec řádku zapíšeme \textbf{dvojtečku}. Tomuto prvnímu řádku se říká \textbf{hlavička funkce}. A nyní již na další řádky píšeme příkazy, které chceme uvnitř funkce - tedy ty, které se provedou, až funkci zavoláme (spustíme). Těmto řádkům říkáme \uv{tělo funkce}.\\
+
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+def pozdrav():	!\label{scl:funkce_def}!
+	print("Nazdar") !\label{scl:funkce_start}!
+	print("Nazdar")
+	print("Nazdar") !\label{scl:funkce_end}!
+	
+print("Franta") !\label{scl:funkce_dalsi_kod}!
+pozdrav() !\label{scl:funkce_pouziti_1}!
+
+print("Lojza")
+pozdrav() !\label{scl:funkce_pouziti_2}!
+
+print("Marenka")
+pozdrav() !\label{scl:funkce_pouziti_3}!
+\end{minted}
+
+\captionof{listing}{Definice funkce}
+\label{code:funkce_definice}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:funkce_def}:] Definice (vytvoření, připravení) funkce: Klíčové slovo \uv{def}, název funkce, kulaté závorky a dvojtečka.
+\item[ř. \ref{scl:funkce_start}-\ref{scl:funkce_end}:] Tyto řádky (příkazy) se provedou po zavolání funkce - jsou uvnitř funkce - jsou odsazené. Říkáme jim \uv{tělo funkce}
+\item[ř. \ref{scl:funkce_dalsi_kod}:] Program pokračuje na prvním neodsazeném řádku - již nepatří do funkce.
+\item[ř. \ref{scl:funkce_pouziti_1}, \ref{scl:funkce_pouziti_2}, \ref{scl:funkce_pouziti_3}:] Voláme funkci. Na všech těchto řádcích skočí program do volané funkce (tedy na řádek \ref{scl:funkce_def}) a provede všechny příkazy uvnitř funkce.
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Prázdná funkce}
+Někdy si chceme jen připravit hlavičku funkce, ale zatím do ní nenapsat žádné příkazy. Například víme, že funkci budeme později potřebovat a nechceme na ní zapomenout, nebo chceme, aby se nám zobrazovala v našeptávání při psaní dalšího kódu.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+def pozdrav_zdvorily(): !\label{scl:funkce_def_2}!
+	pass !\label{scl:funkce_pass}!
+	
+def pozdrav():	
+	print("Nazdar") 
+	print("Nazdar")
+	print("Nazdar") 
+
+\end{minted}
+
+\captionof{listing}{Prázdná funkce}
+\label{code:funkce_prazdna}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:funkce_def_2}:] Hlavička funkce je zcela stejná, jako u neprázdné funkce.
+\item[ř. \ref{scl:funkce_pass}:] Dovnitř (do těla) funkce zapíšeme klíčové slovo \uv{pass}.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Argumenty}
+U funkce sice chceme, aby prováděla stále stejné příkazy, ale byly bychom rádi, aby uměla tyto stejné příkazy provést na různých datech (vstupech). Například pozdravit společně se jménem - a toto jméno bude pokaždé jiné (podle toho, koho zrovna zadravíme).\\
+Abychom mohli dostat nějakou informaci (třeba jméno) dovnitř do funkce, použijeme argumenty funkce.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+def pozdrav(jmeno):	!\label{scl:funkce_def_arg}!
+	print("Nazdar", jmeno) 
+	print("Nazdar", jmeno)
+	print("Nazdar", jmeno)
+	
+	
+pozdrav("Franta") !\label{scl:funkce_pouziti_arg_1}!
+
+pozdrav("Lojza") !\label{scl:funkce_pouziti_arg_2}!
+
+pozdrav("Marenka") !\label{scl:funkce_pouziti_arg_3}!
+\end{minted}
+
+\captionof{listing}{Funkce s argumentem}
+\label{code:funkce_arg}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:funkce_def_arg}:] Definice funkce s tím, že jí při volání předáme jeden argument - jméno, které má pozdravit: Argumenty (zde je pouze jeden, ale může jich být více) píšeme do kulatých závorek.
+\item[ř. \ref{scl:funkce_pouziti_arg_1}, \ref{scl:funkce_pouziti_arg_2}, \ref{scl:funkce_pouziti_arg_3}:] Protože jsem vytvořili funkci s argumentem - musíme jí nějakou hodnotu tohoto argumentu předat.
+\end{enumerate}
+\end{minipage}
+
+Argumentů můžeme funkci předat více, mohou být jakýchkoliv datových typů a mohou se ve funkci použít libovolně - tedy může být jeden argument string, druhý integer, atd. Více argumentů píšeme do kulatých závorek a \textbf{odělujeme je čárkou}.
+
+\vspace{1cm}
+\textit{Upravíme funkci tak, abychom jí mohli říct (předat argument), kolikrát má daného člověka pozdravit}\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+def pozdrav(jmeno, pocet):	!\label{scl:funkce_def_2arg}!
+	for i in range(1,pocet+1):
+		print("Po ", i, ".: Nazdar ", jmeno)
+	
+	
+pozdrav("Franta", 1) !\label{scl:funkce_pouziti_2arg_1}!
+pozdrav("Lojza", 3) !\label{scl:funkce_pouziti_2arg_2}!
+pozdrav("Marenka", 10) !\label{scl:funkce_pouziti_2arg_3}!
+\end{minted}
+
+\captionof{listing}{Funkce s dvěma argumenty}
+\label{code:funkce_2arg}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{1.5cm}
+\item[ř. \ref{scl:funkce_def}:] Definice funkce s dvěma argumenty.
+\item[ř. \ref{scl:funkce_pouziti_2arg_1}, \ref{scl:funkce_pouziti_2arg_2}, \ref{scl:funkce_pouziti_2arg_3}:] Protože jsme vytvořili funkci s dvěma argumenty - musíme jí při volání předat dvě hodnoty.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Návratová hodnota - return}
+Funkce mohou také spočítat výsledek (tak, jak znáte z matematiky - např. funkce 2x+1 spočítá pro vstup 1 výsledek 3, pro vstup 4 výsledek 9, pro vstup 7 výsledek 15 atd.).\\
+Často u funkce chceme, aby nám výsledek, který spočítá, takzvaně \uv{vrátila} na místo (řádek) programu, odkud jsme funkci zavolali. V tomto místě (kde jsme funkci zavolali) typicky výsledek použijeme k dalším výpočtům, ale můžem s ním dělat cokoli chceme (nic, uložit ho, dále s ním počítat).\\
+Že je již výpočet u konce (došli jsme k výsledku, který chceme vrátit) a chceme tedy funkci ukončit a vrátit výsledek, zepíšeme ve funkci pomocí klíčového slova \uv{return}. Po tomto klíčovém slově se již ve funkci neprovedou žádné příkazy. Pokud za slovo \uv{return} zapíšeme co má funkce vrátit, přenese se tato hodnota do místa, odkud jsme funkci zavolali.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+def pozdrav_zdvorile(jmeno, pocet):
+	for i in range(1,pocet+1):
+		print("Po ", i, ".: Dobry den ", jmeno)
+	
+	return len(jmeno) !\label{scl:funkce_ret}!
+	print("Toto se jiz nevypise :-( ")
+	
+	
+delka_jmena_1 = pozdrav("Jan", 1) !\label{scl:funkce_ret_uloz}!
+print(delka_jmena_1)
+
+print(pozdrav("Vladislav", 3)) !\label{scl:funkce_ret_vypis}!
+
+delka_jmena_2 = pozdrav("Cecilie",10) 
+
+soucet_delky_jmen = delka_jmena_1 + delka_jmena_2 !\label{scl:funkce_ret_pouzij}!
+print("Pocet znaku na pozvance: ", soucet_delky_jmen)
+\end{minted}
+
+\captionof{listing}{Funkce s return}
+\label{code:funkce_return}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{2.5cm}
+\item[ř. \ref{scl:funkce_ret}:] Klíčové slovo \uv{return} a za ním hodnota, která se má vrátit - zde např. délka jména, které jsme funkci předali jako argument (např. u "Jan"  je vráceno 3, u "Cecilie" je vráceno 7).\\ Žádný další řádek už se neprovede.
+\item[ř. \ref{scl:funkce_ret_uloz}:] Vrácenou hodnotu si můžeme uložit do proměnné (zde \uv{delka\_jmena\_1}).
+\vspace{1cm}
+\item[ř. \ref{scl:funkce_ret_vypis}:] Vrácenou hodnotu můžeme také přímo použít (zde vytisknout do konzole).
+\item[ř. \ref{scl:funkce_ret_pouzij}:] Uložené hodnoty můžeme samozřejmě kdykoliv použít.
+\end{enumerate}
+\end{minipage}
+
+
+
+

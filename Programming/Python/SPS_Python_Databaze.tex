@@ -1,0 +1,191 @@
+\section{Databáze}
+Zdrojové kódy převzaty z \url{https://www.w3schools.com/python/python_mysql_getstarted.asp}, kde najdete i další ukázky.\\
+Pokud chceme, aby náš program zpracovával \textbf{velké množství informací} a tyto informace \textbf{zůstaly uloženy} i po vypnutí programu (např. více uživatelů hry, skóre) je vhodné tyto informace uložit do souboru nebo v databázi. Výhoda databáze je hlavně ve chvíli, kdy potřebujeme v uložených datech \textbf{rychle vyhledávat}, hledat různé \textbf{podskupiny} a podobně - přesně k tomu jsou totiž databáze vytvořené a jistě se budou takové operace provádět rychleji, než v našem programu (např. prohledáváním souboru).\\
+Navíc se lze k databázi připojit i pomocí jiných programovacích jazyků a tak půjde naše databáze snadno zobrazit např. v prohlížeči. Nebudeme muset vytvářet speciální kód, který čte náš vlastní soubor.\\
+Zde ve škole můžeme využít školní databázi na serveru \url{dbs.spskladno.cz} (MySQL)- pro přístup přes prohlížeč použijte \url{http://dbs.spskladno.cz/myadmin/} . Přístupové údaje získáte od svých vyučujících.\\
+Způsob jakým se přistupuje k databázi závisí na použité knihovně - zde si ukážeme práci s \textbf{knihovnou mysql-connector}
+
+\subsection{Přístupové údaje}
+Pro připojení k databázi (přesněji k databázovému serveru) je potřeba zadat údaje:
+\begin{enumerate}
+\item[\textbf{adresa serveru}] ip, nebo url adresa - dbs.spskladno.cz
+\item[\textbf{jméno}] získáte od vyučujících
+\item[\textbf{heslo}] získáte od vyučujících
+\end{enumerate}
+pro připojení ke konkrétní databázi navíc zadáme název databáze:
+\begin{enumerate} \setcounter{enumi}{4}
+\item[\textbf{název databáze}] zde na školním databázovém serveru závisí na účtu, pod kterým se k serveru přihlásíme
+\end{enumerate}
+
+Pomocí výše uvedených údajů vytvoříme spojení našeho php skriptu s databází. Přes toto spojení můžeme zasílat do databáze požadavky pomocí jazyku SQL.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import mysql.connector !\label{scl:python_dbs_import}!
+
+mydb = mysql.connector.connect( !\label{scl:python_dbs_conection}!
+  host="dbs.spskladno.cz",
+  user="dotaz_na_vyucujiciho",
+  passwd="dotaz_na_vyucujiciho",
+  database="vyuka__"
+)
+mycursor = mydb.cursor() !\label{scl:python_dbs_cursor}!
+
+mycursor.close() !\label{scl:python_dbs_close}!
+mydb.close()
+\end{minted}
+
+\captionof{listing}{Připojení k databázi}
+\label{code:python_dbs_spojeni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_dbs_import}:] Import knihovny mysql-connecor
+\item[ř. \ref{scl:python_dbs_conection}:] Vytvoření spojení pomocí adresy serveru, přístupových údajů, případně i konkrétní databáze 
+\item[ř. \ref{scl:python_dbs_cursor}:] Vytvoření kurzoru. Kurzor je \uv{ukazatel} do databáze, pomocí kterého v ní budeme spouště dotazy a získávat výsledky.
+\item[ř. \ref{scl:python_dbs_close}:] Uzavření kurzoru a odpojení spojení s databází.
+\end{enumerate}
+\end{minipage} 
+
+\subsection{Dotazy, které mění data v databázi}
+U některých dotazů do databáze nezískáváme žádný výsledek, ale \textbf{měníme} samotnou \textbf{databázi} (např. vytvoření tabulky, vložení dat do tabulky).\\
+Takové dotazy se neprovedou přímo, ale pouze se \uv{připraví} a \textbf{databáze čeká na potvrzení}, že se mají data skutečně změnit. Tomuto potvrzení říkáme \uv{\textbf{commit}}.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import mysql.connector 
+
+mydb = mysql.connector.connect( 
+  host="dbs.spskladno.cz",
+  user="dotaz_na_vyucujiciho",
+  passwd="dotaz_na_vyucujiciho",
+  database="vyuka__"
+)
+mycursor = mydb.cursor() 
+
+sql_create = 'CREATE TABLE Uzivatel (jmeno TEXT, prijemni TEXT)' !\label{scl:python_dbs_dotazy_priprava}!
+sql_insert = 'INSERT INTO Uzivatel (jmeno, prijmeni)
+			  VALUES ("Jarda", "Vomáčka"), ("Tonda", "Kobliha")'
+    
+mycursor.execute(sql_create) !\label{scl:python_dbs_dotazy_spusteni}!
+mycursor.execute(sql_insert) 
+mydb.commit() !\label{scl:python_dbs_dotazy_potvrzeni}!
+
+mycursor.close() 
+mydb.close()
+\end{minted}
+
+\captionof{listing}{Tvorba tabulky a vložení dat}
+\label{code:python_dbs_create_insert}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_dbs_dotazy_priprava}:] Příprava dotazů pro vytvoření tabulky a vložení dvou uživatelů.
+\item[ř. \ref{scl:python_dbs_dotazy_spusteni}:] Spuštění dotazů. Dotazy se pouze \uv{připraví}, protože mění data v databázi.
+\item[ř. \ref{scl:python_dbs_dotazy_potvrzeni}:] Potvrzení spuštěných dotazů. Teprve v tuto cvhíli se dotazy projeví v databázi - ve stejném pořadí, v jakém jsme je spustili.
+\end{enumerate}
+\end{minipage}
+
+
+\subsection{Dotazy s výsledkem}
+U některých dotazů získáváme z databáze informaci (proto databázi máme \dots).\\
+Výsledkem dotazu může být velmi mnoho řádků (např. máme mnoho uživatelů) a bylo by značně náročné, přenášet celý výsledek najednou.\\
+V následující ukázce si můžeme představit, že po odeslání dotazu se v databázi \textbf{dočasně vytvoří} náš \textbf{výsledek} v našem programu se v kurzoru uloží \textbf{ukazatel} na tyto data (nepřenáší se tedy data samotná, ale pouze informace, kde v databázi jsou). \textbf{Část dat} (tolik, kolik i v programu vyžádáme) \textbf{se přenese} až \textbf{po zavolání funkce}:
+\begin{itemize}
+\item[fetchone()] přenese jeden řádek výsledku\\do datového typu \textbf{tuple}
+\item[fetchmany(kolik)] přenese tolik řádků, kolik zapíšeme do argumentu\\do datového typu \textbf{list} (pole). Každý prvek pole je poté jeden řádek výsledku (datový typ tuple).
+\item[fetchall()] přenese všechny řádky výsledku\\do datového typu \textbf{list} (pole). Každý prvek pole je poté jeden řádek výsledku (datový typ tuple).
+\end{itemize}
+Po stažení části výsledku se kurzor posune, takže pokud zavoláme funkci pro stažení výsledku znovu - dostaneme následující část (řádky).
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import mysql.connector 
+
+mydb = mysql.connector.connect( 
+  host="dbs.spskladno.cz",
+  user="dotaz_na_vyucujiciho",
+  passwd="dotaz_na_vyucujiciho",
+  database="vyuka__"
+)
+mycursor = mydb.cursor() 
+
+sql_select = 'SELECT jmeno, prijmeni FROM Uzivatel'
+
+mycursor.execute(sql_select) 
+
+ziskano = mycursor.fetchone() !\label{scl:python_dbs_fetchone}!
+krestni, prijmeni = ziskano !\label{scl:python_dbs_rozdeleni_tuple_1}!
+print(krestni, "se jmenuje ", prijmeni)
+
+ziskano = mycursor.fetchmany(2) !\label{scl:python_dbs_fetchmany}!
+
+for radek in ziskano: !\label{scl:python_dbs_prochazeni_vysledku}!
+	krestni, prijmeni = radek !\label{scl:python_dbs_rozdeleni_tuple_2}!
+	print(krestni, "se jmenuje ", prijmeni)
+
+mycursor.close() 
+mydb.close()
+\end{minted}
+
+\captionof{listing}{Select - dotaz s výsledkem}
+\label{code:python_dbs_select}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_dbs_fetchone}:] Stáhneme si požadovanou část výsledku. Zde např. 1 řádek přímo do tuple.
+\item[ř. \ref{scl:python_dbs_fetchmany}:] Stáhneme si požadovanou část výsledku. Zde např. 2 řádky do pole (prvky pole jsou jednotlivé řádky - tuple).
+\item[ř. \ref{scl:python_dbs_rozdeleni_tuple_1}, \ref{scl:python_dbs_rozdeleni_tuple_2}:] Rozdělení tuple do jednotlivých dat (sloupců).
+\vspace{0.5cm}
+\item[ř. \ref{scl:python_dbs_prochazeni_vysledku}:] Pokud máme výsledek v poli, můžeme postupně projít všechny prvky pomocí for-cyklu.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Zpracování chyb}
+Při přístupu k databázi může vzniknout spoustu chyb - odpojený přístup k internetu, špatně zadaný dotaz, nemáme práva k požadované operaci v databázi, \dots 
+Takové chyby zpracováváme stejně, jako jakékoliv jiné \uv{chyby za běhu - RunTimeError} v Pythonu.\\ 
+\textbf{Kritickou část kódu} (tu, kde tušíme možný problém) \textbf{uzavřeme do bloku \uv{try: \dots except:}} a takzvaně \textbf{ošetříme} možnou \textbf{chybu}. etření znamená, že zapíšeme, co se má provést ve chvíli, kdy chyba nastane.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import mysql.connector 
+
+try: !\label{scl:python_dbs_try}!
+  mydb = mysql.connector.connect( 
+    host="dbs.spskladno.cz",
+  	user="dotaz_na_vyucujiciho",
+  	passwd="dotaz_na_vyucujiciho",
+  	database="vyuka__"
+  )
+except mysql.connector.Error as chyba: !\label{scl:python_dbs_except}!
+  print(chyba) !\label{scl:python_dbs_chyba}!
+  print("Error Code:", chyba.errno)
+  print("SQLSTATE:", chyba.sqlstate)
+  print("Message:", chyba.msg)
+
+mycursor = mydb.cursor() 
+
+mycursor.close() 
+mydb.close()
+\end{minted}
+
+\captionof{listing}{Zachytávání chyb - try-except}
+\label{code:python_dbs_try-except}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_dbs_try}:] Začátek bloku příkazu, ve kterých tušíme možou chybu\\zde připojení k databázi.
+\item[ř. \ref{scl:python_dbs_except}:] zapíšeme kterou chybu chceme zachytit\\zde všechny chyby \uv{Error}, které jsou připraveny v knihovně \uv{mysql.connector}\\Pro další příkazy si chybu pojmenujeme - zde \uv{chyba}
+\item[ř. \ref{scl:python_dbs_chyba}:] Do bloku \uv{except} zapíšeme, co se má stát ve chvíli, kdy daná chyba nastane.\\
+Těchto bloků (pro různé typy chyb) může být kolik chceme.
+\end{enumerate}
+\end{minipage}
+

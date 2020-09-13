@@ -1,0 +1,192 @@
+\section{Práce se souborem}
+Často chceme, aby si náš program uchoval informaci i po svém ukončení (např. dosažený výsledek ve hře, uživatelské nastavení). Pokud těchto informací není mnoho, můžeme je uložit do souboru. Do souboru je můžeme uložit i když jich mnoho je, ale v takovém případě je lepší využít databázi, která bude s uloženými daty pracovat rychleji. Někdy také přímo chceme, aby náš program vytvořil soubor - například seznam uiživatelů či výsledkovou listinu.\\
+
+\subsection{Typy souborů}
+Pokud pomineme specializované typy souborů, jako jsou obrázky (jpg, png, \dots) či dokumenty (pfd, xml, xlsx, doc, \dots) umí samotný Python pracovat především s dvěma typy souborů:
+\begin{enumerate}
+\item \textbf{Textový}, ve kterém je uložen text - tedy znaky ASCII, UTF8, cp1250, případně dalších kódování.\\ Tento typ souboru je defaultní, tedy pokud neurčíme jinak, použije se právě textový soubor. 
+\item \textbf{Binární}, ve kterém jsou uložená \uv{surová} data - tedy 1 a 0. Napřiklad obrázky, videa, zvukové soubory.
+\end{enumerate}
+Samozřejmě i v textovém soubou jsou uloženy jen 1 a 0 (stejně jako všude v počítači). Zde jsou seřazeny v přesně daném uspořádání (určeném kodováním) a tedy je takový soubor čitelný pro jakýkoliv jiný program, který umí text s daným kódováním číst - např. SublimeText, Poznámkový blok, Gedit apd.
+
+\subsection{Textový soubor}
+Pokud chceme pracovat se souborem, musíme tento \textbf{soubor} nejprve \textbf{otevřít}. To provedeme funkcí \uv{\textbf{open()}}. Soubor můžeme otevřít v různých režimech - pro čtení, pro zápis, pro obojí. Podle zvoleného režimu můžeme ze souboru načítat data (funkce \textbf{read()}, \textbf{readline()}), zapisovat data (funkce \textbf{write()}), nebo obojí.\\
+
+\subsubsection{Otevření souboru - open()}
+Před začátkem práce se souborem jej musíme nejprve otevřít. Při otevírání souboru může nastat chyba (viz. níže, nebo nemáme práva pro přístup do složky apd.). Takovou chybu je vhodné v programu ošetřit (viz. kód \ref{code:python_try}).\\
+K otevření souboru využijeme funkci \textbf{open()}, které musíme předat argumenty:
+\begin{itemize}
+\item[\textbf{název souboru}] , kterým určíme s jakým souborem chceme pracovat.\\Pokud zadáme celou cestu k souboru ($C:\backslash\backslash muj\backslash adresar\backslash se\backslash soubory\backslash muj_prvni_soubor.txt$), můžeme otevřít soubor kdekoliv. Pokud zadáme pouze název souboru ($muj_prvni_soubor.txt$), otevře se tento soubor ve stejné složce, ve které máme náš program (skript).
+\item[\textbf{režim (mód)}] , kterým určime, zda chceme ze souboru číst, chceme do něj zapisovat, nebo obojí. Defaultní režim (tedy takový, který se použije, pokud žádný nezadáme je: čtení textového souboru). Režim změníme pomocí následujících hodnot:
+	\begin{itemize}
+	\item[Režim]
+		\begin{itemize}
+		\item[r] čtení\\pokud soubor neeexistuje, nastane chyba
+		\item[a] přidání na konec - ponechá současný obsah souboru a nově zapsaný připíše na konec\\pokud soubor neexistuje, vytvoří se
+		\item[w] přepsání souboru - smaže současný obsah souboru a začne psát od začátku\\pokud soubor neexistuje, vytvoří se
+		\item[x] vytvoření souboru\\pokud soubor existuje, nastane chyba
+		\item[+] doplnění druhé možnosti ("r+" je čtení a zápis, "w+" je zápis a čtení)
+		\end{itemize}
+	\item[Typ]
+		\begin{itemize}
+		\item[t] textový
+		\item[b] binární
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+Funkce \uv{open()} ovetře soubor, ale také nám \textbf{vrátí objekt}, ve kterém je \textbf{uloženo spoustu užitečných informací} - zda se soubor podařilo otevřít, v jakém režimu je soubor otevřený, v jakém místě v souboru právě čteme (případně do jakého místa právě zapisujeme). Tento objekt použijeme vždy, když budeme chtít se souborem něco provést.\\
+
+Po ukončení práce se souborem je vhodné jej \textbf{zavřít} funkcí \uv{\textbf{close()}}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+soubor = open("muj_prvni_soubor.txt", "r") !\label{scl:python_file_open}!
+# zde muzeme cist ze souboru soubor
+soubor.close() !\label{scl:python_file_close}!
+
+with open("muj_prvni_soubor.txt", "r") as soubor: !\label{scl:python_file_with}!
+	# zde muzeme cist ze souboru soubor
+	# POZOR! Prikazy jsou odsazene - jsme uvnitr bloku with
+\end{minted}
+
+\captionof{listing}{Otevření souboru}
+\label{code:python_soubor_open}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_file_open}:] Otevření souboru pro čtení a vytvoření objektu \uv{soubor}.
+\item[ř. \ref{scl:python_file_close}:] Uzavření souboru 
+\vspace{2cm}
+\item[ř. \ref{scl:python_file_with}:] Můžeme také využít blok \uv{with}, který za nás zavře soubor automaticky
+\end{enumerate}
+\end{minipage} 
+
+\subsubsection{Čtení ze souboru}
+Při čtení ze souboru se nám obsah souboru (nebo jeho část) načte do string proměnné v kódu. S tímto načteným obsahem poté pracujeme jako s jakýmkoliv jiným řetězcem (stringem).\\
+Při čtení se v souboru posouvá ukazatel, který ukazuje na místo, kde jsme se čtením skončili (tento ukazatel je uložený v objektu, který nám vrátí funkce open() ). Pokud tedy přečteme 7 znaků a dále v programu ve čtení pokračujeme, budou se znaky načítat od místa, kde jsme se čtením skončili (tedy od 8. znaku).
+Při čtení souboru máme několik možností:
+\paragraph{Přečtení celého souboru}
+Pomocí funkce \uv{read()} přečteme celý soubor najednou.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+with open("muj_prvni_soubor.txt", "r") as soubor: 
+	obsah_souboru = soubor.read() !\label{scl:python_file_read}!
+	print(obsah_souboru) !\label{scl:python_file_read_print}!
+\end{minted}
+
+\captionof{listing}{Přečtení celého souboru}
+\label{code:python_file_read}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{0.5cm}
+\item[ř. \ref{scl:python_file_read}:] Uložení celého obsahu souboru do proměnné \uv{obsah\_souboru}
+\item[ř. \ref{scl:python_file_read_print}:] Vypsání do konzole 
+\end{enumerate}
+\end{minipage}
+
+\paragraph{Přečtení daného počtu znaků}
+Pomocí funkce \uv{read()} můžeme také přečíst pouze zadaný počet znaků.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+with open("muj_prvni_soubor.txt", "r") as soubor: 
+	sedm_znaku = soubor.read(7) !\label{scl:python_file_read_arg}!
+	print(sedm_znaku)
+\end{minted}
+
+\captionof{listing}{Přečtení zadaného počtu znaků}
+\label{code:python_file_read_arg}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{0.5cm}
+\item[ř. \ref{scl:python_file_read_arg}:] Načtení pouze 7 znaků
+\end{enumerate}
+\end{minipage}
+
+\paragraph{Přečtení daného počtu znaků}
+Pomocí funkce \uv{readline()} přečteme jeden řádek v souboru.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+with open("muj_prvni_soubor.txt", "r") as soubor: 
+	radek = soubor.readline() !\label{scl:python_file_readline}!
+	print(radek)
+\end{minted}
+
+\captionof{listing}{Přečtení jednoho řádku}
+\label{code:python_file_readline}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{0.5cm}
+\item[ř. \ref{scl:python_file_readline}:] Načtení jednoho řádku
+\end{enumerate}
+\end{minipage}
+
+\paragraph{Přečtení celého souboru po řádcích}
+Velmi často chceme přečíst celý soubor po jednotlivých řádcích. V Pythonu k tomu můžeme využít jednoduchou konstrukci za použití \uv{for}. For-cyklus slouží k procházení libovolného seznamu prvek po prvku - a v Pythonu je soubor také seznam - seznam řádků.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+with open("muj_prvni_soubor.txt", "r") as soubor: 
+
+	for radek in soubor:  !\label{scl:python_file_for}!
+		print(radek)
+\end{minted}
+
+\captionof{listing}{Přečtení celého souboru po řádcích}
+\label{code:python_file_for}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{0.5cm}
+\item[ř. \ref{scl:python_file_for}:] Tato konstrukce projde postupně celý soubor - do proměnné \uv{radek} bude v káždém průchodu cyklem uložen jeden řádek souboru
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Zápis do souboru}
+Zápis do souboru je velmi přímočarý. Po otevření souboru ve správném režimu, použijeme funkci \uv{write()}, která umí zapsat string do souboru.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+with open("muj_prvni_soubor.txt", "w") as soubor:  !\label{scl:python_file_write_open}!
+	soubor.write("Toto je můj první zápis do souboru.") !\label{scl:python_file_write}!
+	soubor.write(str(5)) !\label{scl:python_file_write_str}!
+\end{minted}
+
+\captionof{listing}{Zápis do souboru}
+\label{code:python_file_write}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{1cm}
+\item[ř. \ref{scl:python_file_write_open}:] Při otevírání souboru zvolíme správný režim.
+\item[ř. \ref{scl:python_file_write}:] Zápis textu do souboru.
+\item[ř. \ref{scl:python_file_write_str}:] Pokud chceme zapsat číslo, musíme ho nejprve převést na string.
+\end{enumerate}
+\end{minipage}
+
+\paragraph{Speciální znaky}
+Obzvláště při práci se souborem využijeme speciální znaky:
+\begin{itemize}
+\item[\textbf{"$ \backslash t $"}] Tabulátor
+\item[\textbf{"$ \backslash n $"}] Konec řádku
+\end{itemize}
+
+

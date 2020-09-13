@@ -1,0 +1,48 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{a4wide} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+% tikz for bracket and expalanation of code
+
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Zdrojový kód}
+
+
+\author{Jaroslav Holeček\\ \href{mailto:holecek@spskladno.cz}{holecek@spskladno.cz}}
+\title{Python pro SPŠ a VOŠ Kladno}
+\date{Poslední úprava: \today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\include{SPS_Python_Vyvojovy_diagram}
+\include{SPS_Python_Datove_typy}
+\include{SPS_Python_Ridici_struktury}
+\include{SPS_Python_Funkce}
+\include{SPS_Python_Zpracovani_chyb}
+\include{SPS_Python_Soubor}
+\include{SPS_Python_OOP}
+\include{SPS_Python_Databaze}
+\include{SPS_Python_Grafika}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,265 @@
+\section{Řídící struktury}
+Každý program běží postupně po řádcích od 1. řádku dále a vykonává příkazy přesně v tom pořadí, jak jdou za sebou.\\
+Někdy (velmi často) ale chceme, aby se některé řádky (přikazy) přeskočily - neprovedly se. Někdy také chceme, aby se některé přikazy provedly opakovaně - vícekrát.\\
+K tomuto slouží takzvané řídící struktury - speciální příkazy, které řídí, který řádek (příkaz) se provede jako další. Říkáme, že řídí běh programu.\\
+To, že je nějaký řádek uvnitř řídící struktury (např. je to řádek, který chceme přeskočit) se v Pythonu pozná podle \textbf{odsazení}. Odsazení může být jakékoliv (mezera, tři mezery, ...) ale doporučuji tabulátor. Všechny řádky, které jsou ve stejné \uv{skupince} musí být odsazené stejně (např. všechny o jeden tabulátor;). 
+
+\subsection{Odkazy}
+Operátory\\ \url{https://www.w3schools.com/python/python_operators.asp} \\ \url{https://naucse.python.cz/course/pyladies/beginners/comparisons/}\\
+Podmínka - Větvení\\ \url{https://www.w3schools.com/python/python_conditions.asp} \\ \url{https://naucse.python.cz/course/pyladies/beginners/comparisons/}\\
+Cykly \\ \url{https://www.w3schools.com/python/python_while_loops.asp}\\ \url{https://www.w3schools.com/python/python_for_loops.asp} \\ \url{https://naucse.python.cz/course/pyladies/beginners/while/}
+
+\subsection{Podmínka - Větvení}
+Můžeme si představit, že program běží po jednotlivých větvých - proto tomu říkáme větvení.\\ 
+Stejně jako u větví na stromě, se v nějakém místě programu můžeme vydat dvěma směry (po dvou různých větvích). Na rozdíl od větví na stromě se ale jednotlivé větve v programu mohou opět spojit do jedné. 
+
+\subsubsection{if}
+Nejjednodušší podmínka \uv{if} nám poslouží v případě, že chceme některé příkazy provést jen někdy - jen pokud je splněna daná podmínka. Pokud podmínka splněna není, přikazy se přeskočí.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+trabant.jed()
+
+if trabant.je_v_domecku():
+	trabant.dopln_palivo()
+	
+trabant.jed()
+\end{minted}
+
+\captionof{listing}{if}
+\label{code:if}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 1:	Provede se vždy\\
+ř. 3:	Zjišťuje se, zda je trabant v domečku\\
+ř. 4:	Provede se jen v připadě, že je trabant v domečku\\
+Pokud v domečku není, řádek se přeskočí\\
+ř. 6:	Provede se vždy
+\end{minipage}\\
+
+Za klíčové slovo \uv{if} píšeme podmínku - cokoliv, o čem umí Python rozhodnout, zda je to splněné, nebo ne - zda je to \textit{True}, nebo \textit{False}.\\
+Můžeme zde přímo zapsat \textit{True}, nebo \textit{False}, často zde píšeme porovnání: < , > , == , != , <= , >= .\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+trabant.jed()
+
+if trabant.get_rychlost() > 50:
+	policista.dej_pokutu(trabant)
+	
+trabant.jed()
+\end{minted}
+
+\captionof{listing}{if porovnání}
+\label{code:if_porovnani}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 1:	Provede se vždy
+ř. 3:	Zjišťuje se rychlost trabantu a porovná se s hodnotou 50\\
+ř. 4:	Provede se jen v připadě, že trabant jede rychleji, než 50\\
+Pokud jede 50 a méně, řádek se přeskočí\\
+ř. 6:	Provede se vždy
+\end{minipage}\\
+
+\subsubsection{if-else}
+Často chceme aby se při splnění podmínky vykonaly některé příkazy a při nesplnění podmínky se vykonaly jiné. Chceme tedy pomocí podmínky vybrat jednu ze dvou skupin příkazů (řádků).\\
+K tomu slouží konstrukce \uv{if-else}. Při splnění podmínky (True) se (stejně jako v obyčejném \uv{if}) provedou příkazy v části po \uv{if}. Při nesplnění podmínky (False) se provedou příkazy v části po \uv{else}. Jedna z těchto dvou skupin příkazů se tedy provede vždy.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+if trabant.get_body() > ferrari.get_body():
+	hra.set_vitez(trabant)
+else:
+	hra.set_vitez(ferrari)
+\end{minted}
+
+\captionof{listing}{if-else}
+\label{code:if_else}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{.5cm}
+ř. 1:	Porovnání počtu bodů trabantu a ferrari\\
+ř. 2:	Pokud je podmínka splněna == True, je vítěz trabant\\
+ř. 4:	Pokud není podmínka splněna == False, je vítěz ferrari\\
+Kontrolní otázka... Kdo je vítěz, pokud mají stejný počet bodů?\\
+\end{minipage}\\
+
+\subsubsection{elif}
+Opravíme kód \ref{code:if_else}. Někdy potřebujeme vybrat ne mezi dvěma příkazy, ale mezi více. K tomu slouží konstrukce \uv{elif} - dovolí nám vložit další \uv{větev}. Takových větví může býl libovolné množství a \textbf{program se vydá} vždy jen tou z nich, u které je \textbf{podmínka splněna jako první} (kontrolováno od \textbf{shora dolů}). Pokud není splněna žádná z podmínek, vydá se program větví \uv{else}.
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+if trabant.get_body() > ferrari.get_body():
+	hra.set_vitez(trabant)
+elif ferrari.get_body() > trabant.get_body():
+	hra.set_vitez(ferrari)
+else:
+	hra.set_vitez("remíza")
+\end{minted}
+
+\captionof{listing}{if-elif-else}
+\label{code:if_elif_else}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.5cm}
+ř. 2,4,6:	Provede se jen jeden z těchto příkazů - poté, co jedna z podmínek projde (je splněna), se ostatní ani nekontrolují\\
+\end{minipage}\\
+
+\subsubsection{Vnoření}
+Podmínky (stejně jako jiné řídící struktury) můžeme takzvaně \textbf{vnořovat} - tedy \textbf{vkládat jednu do druhé}.
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+if trabant.je_ve_meste():
+	if trabant.get_rychlost() > 50:
+		policista.dej_pokutu(trabant)
+else:
+	if trabant.get_rychlost() > 90:
+		policista.dej_pokutu(trabant)
+\end{minted}
+
+\captionof{listing}{if-else vnoření}
+\label{code:if_else_vnoreni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.5cm}
+ř. 1:	Zjištění zda je trabant ve městě, nebo mimo město\\
+ř. 2-3:	Pokud je ve měste porovnává se rychlost s 50\\
+ř. 4:	Není ve městě\\
+ř. 5-6:	Pokud není ve měste porovnává se rychlost s 90
+\end{minipage}\\
+
+\subsection{Cykly}
+Velmi často chceme, aby program provedl nějaký výpočet vícekrát. Buď proto, že tímto opakováním získáme požadovaný výsledek, nebo chceme stejnou operaci provést s více \uv{objekty} (např. poslat zprávu všem kamarádům ze seznamu).\\
+K tomuto opakování slouží takzvané cykly.
+
+\subsubsection{While}
+Cyklus \uv{while} opakuje příkazy, \textbf{dokud je splněna} zadaná \textbf{podmínka}. Nejprve zkontroluje, zda je podmínka splněna - pokud ano, \textbf{vykoná všechny zadané příkazy} a poté zkontroluje podmínku znovu - a tak stále dokola, dokud při kontrole podmínky nezjistí, že podmínka již splněna není. Ve chvíli, kdy podmínka splněná není (ať už hned napoprvé, nebo kdykoliv později), přeskočí všechny zadané příkazy a program pokračuje dále za tímto \uv{while} cyklem.
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+trabant.jed()
+
+while trabant.chci_palivo():
+	benzinka.vyber_korunky(trabant)
+	benzinka.dopln_trochu_paliva(trabant)
+	
+trabant.jed()	
+\end{minted}
+
+\captionof{listing}{While}
+\label{code:while}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.3cm}
+ř. 1:	Provede se jednou\\
+ř. 3:	Kontrola, zda trabant chce palivo\\
+ř. 4-5:	Pokud je podmínka splněna (chce palivo (True)) vykonají se všechny příkazy uvnitř while\\Poté se znovu zkontroluje podmínka\\
+ř. 7:	Ve chvíli, kdy podmínka splněna není (nechce palivo (False)) pokračuje program dále za celým cyklem (za všemi řádky uvnitř cyklu)
+\end{minipage}\\
+
+\subsubsection{For}
+Cyklus \uv{for} používáme v Pythonu k procházení libovolného seznamu (resp. čehokoliv, co se skládá z více prvků). Takovým seznamem může být mimo jiné:
+\begin{enumerate}
+\item Pole (v Pythonu List) - seznam libovolných prvků
+\item Řetězec (String) - seznam znaků (písmeno, číslice, tečka, mezera, atd.)
+\item Range - seznam čísel
+\item Textový soubor - seznam řádků
+\end{enumerate}
+Při procházení seznamu pomocí \uv{for} máme uložen \textbf{jeden} prvek ze seznamu při každém průchodu (procházíme příkazy uvnitř \uv{for}). Při prvním průchodu máme uložen první prvek, při druhém průchodu druhý prvek atd.\\
+Můžeme tak nějakou operaci (jeden nebo více příkazů) provést s každým prvkem seznamu zvlášť - a provést ji postupně se všemi prvky.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+hra.zmen_rocni_obdobi(zima)
+
+for auticko in hra.get_vsechna_auta():
+	auticko.prezuj_pneu(zima)
+	auticko.dej_do_kufru_retezy()	
+
+trabant.jed()
+\end{minted}
+
+\captionof{listing}{For}
+\label{code:for}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.5cm}
+ř. 1:	Provede se jednou\\
+ř. 3:	Procházíme seznam všech aut (za \uv{in})\\
+Všechna auta jsou postupně po jednom uložena do proměnné \uv{auticko}\\
+ř. 4-5:	S autem, které je zrovna na řadě se provedou zadané příkazy - postupně se provedou se všemi auty ze seznamu\\
+ř. 7:	Po zpracování celého seznamu pokračuje program dále
+\end{minipage}\\
+
+\subsubsection{Break}
+Jakýkoliv cyklus můžeme také ukončit kdykoliv v jeho těle (mezi příkazy, které jsou v něm napsané). Slouží k tomu příkaz \textbf{\uv{break}}. Ve chvíli kdy \textbf{program} dorazí na řádek s tímto příkazem, \textbf{okamžitě skočí za cyklus}, ve kterém je tento příkaz zapsaný.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+trabant.jed()
+
+while trabant.chci_palivo():
+	benzinka.vyber_korunky(trabant)
+	if not benzinka.vyber_penez_v_poradku():
+		break
+	benzinka.dopln_trochu_paliva(trabant)
+	
+trabant.jed()	
+\end{minted}
+
+\captionof{listing}{Break}
+\label{code:break}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{3cm}
+ř. 1:	Provede se jednou\\
+ř. 3:	Kontrola, zda trabant chce palivo\\
+ř. 5:	Kontrola, zda trabant zaplatil\\
+ř. 6:	Pokud trabant nezaplatil, provede se příkaz \uv{break} - program skočí \textbf{za} cyklus, tedy na řádek 9\\
+ř. 9:	Ve chvíli, kdy podmínka splněna není (nechce palivo (False)) pokračuje program dále za celým cyklem (za všemi řádky uvnitř cyklu)
+\end{minipage}\\
+
+\subsubsection{Continue}
+Pomocí předchozího \uv{break} se ukončil celý průběh cyklu. Můžeme také ukončit průběh cyklu jen v jednom \uv{kolečku} (pro aktuální průchod). Cyklus pak bude pokračovat v dalším kolečku - od jeho prvního řádku.\\
+
+\vspace{1cm}
+\textit{Na příkladu níže budou přezuty a budou mít řetězy všechna auta, kromě trabantu.}\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+hra.zmen_rocni_obdobi(zima)
+
+for auticko in hra.get_vsechna_auta():
+	if auticko is trabant:
+		continue
+	auticko.prezuj_pneu(zima)
+	auticko.dej_do_kufru_retezy()	
+
+trabant.jed()
+\end{minted}
+
+\captionof{listing}{Continue}
+\label{code:continue}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.5cm}
+ř. 1:	Provede se jednou\\
+ř. 3:	Procházíme seznam všech aut (za \uv{in})\\
+ř. 4-7:	S autem, které je zrovna na řadě se provedou zadané příkazy - postupně se provedou se všemi auty ze seznamu\\
+ř. 4:	Kontrola, zda je auticko trabant\\
+ř. 5:	Pokud auticko je trabant provede se \uv{continue} a cyklus skočí do dalšího kolečka - k dalšímu autu.\\
+ř. 9:	Po zpracování celého seznamu pokračuje program dále
+\end{minipage}\\
+ 
+ 
+

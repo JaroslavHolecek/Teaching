@@ -1,0 +1,343 @@
+\section{Datové typy}
+V hardwaru počítače neexistují zvláštní místa pro ukládání čísel, nápisů, obrázků, písniček apd.. Vše je uloženo ve stejné mechanické součástce - paměti (operační, cash, pevný disk).\\
+Z pohledu programu a programátora si můžeme představit, že je vše uloženo ve formě 0 a 1 - např. v ASCII znamená 1000001: "A", 1110111: "w", 0111000: "8".\\
+Zda jsou v počítači uloženy znaky ("Aw8"), čísla (420), nebo třeba písnička či obrázek pozná program podle datového typu.\\
+\textbf{Datový typ} je tedy označení, \textbf{co znamenají} uložená data (\textbf{jedničky a nuly}) - zda je to číslo, znak, obrázek, \dots \\;
+
+\subsection{Odkazy}
+\url{https://www.w3schools.com/python/python_datatypes.asp}
+
+\subsection{Datové typy v Pythonu}
+V Pythonu nemusíme (ale můžeme) zapisovat, jaký datový typ má být v proměnné uložený - dokonce se může v průběhu programu datový typ proměnné měnit.\\
+Python přiřadí datový typ automaticky - podle toho, co uložíme do proměnné.\\
+Zjistit, jakého datového typu je nějaká proměnná můžeme pomocí funkce \uv{type()}.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+x = 8
+typ_x = type(x)
+print(typ_x)
+
+x = "Ahoj"
+print(type(x))
+\end{minted}
+
+\captionof{listing}{Type}
+\label{code:typy_type}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 1:	Uloží do proměnné \uv{x} hodnotu 8. Automaticky se k \uv{x} přiřadí datový typ \uv{Celé číslo} (\uv{Integer - int})\\
+ř. 2:	Zjistíme datový typ proměnné \uv{x} a uložíme ho do proměnné \uv{typ\_x}\\
+ř. 3:	Vytiskneme datový typ do konzole\\
+ř. 5:	Uloží do proměnné \uv{x} hodnotu "Ahoj". Automaticky se u \uv{x} změní datový typ na \uv{Nápis - Řetězec} (\uv{String - str})\\
+ř. 6:	Datový typ si nemusíme ukládat, můžeme ho pouze vytisknout do konzole
+\end{minipage}\\ 
+
+\subsubsection{Integer - int}
+Integer označuje \textbf{celé číslo}.\\Jeho zkratka je \uv{int}.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+pocet_mesicu = 12
+penez_v_penezence = 0
+prumerne_iq_tridy = -23
+
+print(type(pocet_mesicu))
+print(type(penez_v_penezence))
+print(type(prumerne_iq_tridy))
+\end{minted}
+
+\captionof{listing}{Integer}
+\label{code:typy_int}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+ř. 1-3:	Celé číslo (Integer) může být kladné, nula, nebo záporné.\\
+ř. 5-7:	Vytiskneme do konzole datový typ proměnných
+\end{minipage}\\ 
+
+\paragraph{Operace s int}
+S celými čísly můžeme provádět:
+\begin{enumerate}
+\item[+] Sčítání
+\item[-] Odčítání
+\item[*] Násobení
+\item[/] Dělení - výsledek je \textbf{float - desetinné číslo}
+\item[//]Celočíselné dělení - výsledek je celé číslo - znáte ze 3. třídy ZŠ
+\item[\%]Zbytek po celočíselném dělení - znáte ze 3. třídy ZŠ
+\end{enumerate}
+
+\subsubsection{Float - float}
+Float označuje \textbf{desetinné číslo}, číslo s desetinnou čárkou (plovoucí desetinnou čárkou - odtud slovo \uv{float}).\\
+Takové číslo můžeme do proměnné uložit přímo (\uv{pozor - s desetinnou tečkou}). Také ho můžeme získat jako výsledek dělení.\\
+Jeho zkratka je \uv{float}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+pocet_odpracovanych_hodin = 14.5
+print(type(pocet_odpracovanych_hodin))
+
+pocet_mesicu = 12
+rocni_plat = 1200
+mesicni_plat = rocni_plat / pocet_mesicu
+
+print(type(pocet_mesicu))
+print(type(rocni_plat))
+print(type(mesicni_plat))
+\end{minted}
+
+\captionof{listing}{Float}
+\label{code:typy_float}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.5cm}
+ř. 1-3:	Desetinné číslo (Float) zapisujeme s \textbf{desetinnou tečkou}.\\
+ř. 6:	Pokud vydělíme dvě celá čísla, získáme desetinné číslo - i když jdou vydělit beze zbytku.
+\end{minipage}\\ 
+
+\paragraph{Operace s float}
+S desetinnými čísly můžeme provádět:
+\begin{enumerate}
+\item[+] Sčítání
+\item[-] Odčítání
+\item[*] Násobení
+\item[/] Dělení
+\end{enumerate}
+
+\subsubsection{Boolean - bool}
+Boolean označuje \textbf{logickou hodnotu - Pravda, Nepravda (True, False)}.\\
+V proměnné tohoto datového typu je tedy uloženo buď \uv{True} (Pravda, Platí), nebo \uv{False} (Nepravda, Neplatí).\\
+Výsledek s tímto datovým typem vrací např. operátory porovnání: <, >, =<, =>, ==, != .\\
+Boolean se využije mimo jiné všude, kde se pracuje s podmínkami - if \ref{code:if}, while \ref{code:while}.\\
+Jeho zkratka je \uv{bool}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+mam_brigadu = True
+print(type(mam_brigadu))
+
+moje_vyska = 175
+muzu_byt_letuska = moje_vyska > 160
+print(muzu_byt_letuska)
+print(type(muzu_byt_letuska))
+\end{minted}
+
+\captionof{listing}{Boolean}
+\label{code:typy_bool}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.5cm}
+ř. 1:	Uložení \uv{True} přímo.\\
+ř. 5:	Uložení Boolean jako výsledek porovnání dvou čísel.
+\end{minipage}\\ 
+
+\paragraph{Operace s bool}
+S boolean hodnotami můžeme provádět:
+\begin{enumerate}
+\item[or] Logické sčítání - aby byl výsledek True, stačí aby byla jedna z hodnot True
+\item[and] Logické násobení - aby byl výsledek True, všechny hodnoty musí být True
+\item[not] Logická inverze - převrací hodnotu
+\end{enumerate}
+
+\subsubsection{String - str}
+String označuje \textbf{Řetězec znaků - nápis}. Zapisujeme je do uvozovek - jednoduchých, nebo dvojitých - výběr mezi jednoduchými a dvojitými nám umožní zapsat uvozovku i jako součást řetězce.\\
+\textbf{Pozor} při práci s čísly - je rozdíl mezi 15 (číslo - int) a "15" (řetězec - str). Číslo označuje počet - dá se sčitat, dělit, násobit s ostatními čísly tak , jak jste zvyklí z normálního počítání. Oproti tomu Řetězec je \uv{obrázek} (jak vypadá písmenko, číslo atp.) a tedy operace, které znáte (+,*) nebudou dělat to, co znáte z počítání (co to znamená sečíst dva obrázky?).
+Jeho zkratka je \uv{str}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{python}
+jmeno = "Jarda"
+print(type(jmeno))
+
+vek_int = 16
+vek_str = "16"
+print(type(vek_int))
+print(type(vek_str))
+
+novy_vek = vek_int + 1
+print(novy_vek)
+novy_vek = vek_str + 1
+print(novy_vek)
+\end{minted}
+
+\captionof{listing}{String}
+\label{code:typy_str}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{0cm}
+ř. 1:	Vytvoření proměnné \uv{jmeno} datového typu String.\\
+ř. 4-5:	\uv{vek\_int} je celé číslo, \uv{vek\_str} je String.\\
+ř. 9.:	Toto projde - čisla můžeme sčítat\\
+ř. 11.:	Toto \uv{neprojde} - co to znamená sečíst \uv{obrázek} s číslem?
+\end{minipage}\\ 
+
+Do proměnné typu string můžeme také zapisovat speciální znaky - zapisujeme je jako normální součást textu. Nejčastěji využijeme:
+\begin{itemize}
+\item[\textbf{"$ \backslash t $"}] Tabulátor
+\item[\textbf{"$ \backslash n $"}] Konec řádku
+\end{itemize}
+
+\paragraph{Operace se str}
+S řetězcem lze provádět nepřeberné množství operací: \url{https://www.w3schools.com/python/python_strings.asp}\\
+Jistě musíte znát:
+\begin{enumerate}
+\item[+] Zřetězení - spojí dva nápisy za sebe.
+\item[.split(odelovac)] Rozdělení - roztrhá nápis na části v místech daných odelovac-em.
+\item[.isdecimal()] Kontrola, zda jsou všechny znaky číslovky.
+\item[len(napis)] Zjistí délku napis-u.
+\end{enumerate}
+Pokud budete chtít s řetězcem cokoliv udělat - vždy se nejprve podívejte, zda již taková funkce neexistuje - téměř jistě ano a vy si ušetříte spoustu práce.
+
+\subsection{Výčtové datové typy}
+Velmi často potřebujeme v programech pracovat s více hodnotami stejným způsobem. Např. ke všem číslům přičíst 1, všechny nápisy převést na velká písmena apd.\\
+Proto existují datové typy, které umožňují pod jedním názvem uložit více hodnot. Máme tedy jednu proměnnou, ve které je uloženo např. 10 různých čísel. Tyto jednotlivá čísla je samozřejmě potřeba nějak rozlišit, abychom mohli pracovat i s každým z nich zvlášť.
+
+\subsubsection{List - pole} \label{sec:list}
+List, někdy také označovaný jako pole (array) je jednoduše seznam prvků.\\
+V těchto jednotlivých prvcích může být uloženo cokoliv a klidně může být v jednom poli více prvků rúzných typů. Můžeme tedy mít jeden List, ve kterém bude číslo, nápis a klidně i další pole.\\
+Prvky jsou seřazené (mají pevně dané pořadí), mohou se opakovat a můžeme je měnit (přepisovat, mazat, přidávat).
+
+\paragraph{Vytvoření pole}
+Nejednodušeji vytvoříme pole pomocí hranatých závorek, ve kterých jsou jednotlivé prvky pole oddělené čárkami \uv{[prvek0, prvek1, prvek2, \dots]}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+moje_pole = ["Emanuel", 17, 184.5] !\label{scl:python_list_create}!
+\end{minted}
+
+\captionof{listing}{List - pole}
+\label{code:typy_list}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_list_create}:] Vytvoření pole se třemi prvky - každý z nich může (ale nemusí) být jiného datového typu.
+\end{enumerate}
+\end{minipage}\\ 
+
+
+\paragraph{Přístup k prvkům}
+K prvkům pole můžeme přistupovat:
+\begin{enumerate}
+\item \uv{Roztrháme} pole na různé proměnné - do každé proměnné se uloží jeden prvek pole
+\item Přistupujeme k průvků podle jejich pořadí. Tomuto pořadí říkáme \textbf{index} a \textbf{začíná od 0}
+\end{enumerate}
+  
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+moje_pole = ["Emanuel", 17, 184.5]
+
+jmeno, vek, vyska = moje_pole !\label{scl:python_list_prirazeni}!
+print("Jmeno:", jmeno)
+print("Vek:", vek)
+print("Vyska:", vyska)
+
+print("Jmeno:", moje_pole[0]) !\label{scl:python_list_indexy}!
+print("Vek:", moje_pole[1])
+print("Vyska:", moje_pole[2])
+
+moje_pole[0] = "Tonda" !\label{scl:python_list_indexy_zmena}!
+print("Jmeno:", moje_pole[0])
+\end{minted}
+
+\captionof{listing}{List - prvky}
+\label{code:typy_list_elements}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_list_prirazeni}:] Rozdělení pole na tři různé proměnné
+\item[ř. \ref{scl:python_list_indexy}:] Přístup k prvkům pole pomocí indexů
+\item[ř. \ref{scl:python_list_indexy_zmena}:] Pomocí indexu můžeme měnit hodnoty v poli
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace s List}
+S polem můžeme provádět nepřeberné množství operací, proto se vždy nejprve pokuste najít v dokumentaci to, co chcete provést.\\
+Jistě se budou hodit operace:
+\begin{enumerate}
+\item[+] Spojení dvou Listů za sebe
+\item[.append()] Přidání prvku na konec Listu
+\item[.pop(index)] Odebrání prvku na zadaném indexu. Pokud index nezadáme, odebere se poslední prvek.
+\end{enumerate}
+
+\subsubsection{Tuple}
+Tuple je velmi podobná Listu \ref{sec:list}.\\
+Hlavní rozdíl spočívá v tom, že \textbf{prvky} Tuple se \textbf{nedají měnit}.
+Uvadíme ho zde proto, že datový typ Tuple je návratový typ některých funkcí. Abychom nebyli překvapeni. 
+
+\paragraph{Vytvoření tuple}
+Nejednodušeji vytvoříme pole pomocí kulatých závorek, ve kterých jsou jednotlivé prvky pole oddělené čárkami \uv{(prvek0, prvek1, prvek2, \dots)}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, , escapeinside=!!]{python}
+moje_typle = ("Emanuel", 17, 184.5) !\label{scl:python_tuple_create}!
+\end{minted}
+
+\captionof{listing}{Tuple}
+\label{code:typy_tuple}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_tuple_create}:] Vytvoření Tuple se třemi prvky - každý z nich může (ale nemusí) být jiného datového typu.
+\end{enumerate}
+\end{minipage}\\ 
+
+
+\paragraph{Přístup k prvkům}
+K prvkům Tuple můžeme přistupovat:
+\begin{enumerate}
+\item \uv{Roztrháme} Tuple na různé proměnné - do každé proměnné se uloží jeden prvek
+\item Přistupujeme k prvkům podle jejich pořadí. Tomuto pořadí říkáme \textbf{index} a \textbf{začíná od 0}
+\end{enumerate}
+  
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+moje_tuple = ("Emanuel", 17, 184.5)
+
+jmeno, vek, vyska = moje_tuple !\label{scl:python_tuple_prirazeni}!
+print("Jmeno:", jmeno)
+print("Vek:", vek)
+print("Vyska:", vyska)
+
+print("Jmeno:", moje_tuple[0]) !\label{scl:python_tuple_indexy}!
+print("Vek:", moje_tuple[1])
+print("Vyska:", moje_tuple[2])
+
+# Tento řádek skončí chybou
+moje_tuple[0] = "Tonda" !\label{scl:python_tuple_indexy_zmena}!
+\end{minted}
+
+\captionof{listing}{List - prvky}
+\label{code:typy_list_elements}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:python_tuple_prirazeni}:] Rozdělení tuple na tři různé proměnné
+\item[ř. \ref{scl:python_tuple_indexy}:] Přístup k prvkům tuple pomocí indexů
+\item[ř. \ref{scl:python_tuple_indexy_zmena}:] Tuple je neměnný datový typ - tento příkaz tedy \textbf{nemůžeme} provést
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace s List}
+Tuple můžeme pouze číst, případně vytvořit nové:
+\begin{enumerate}
+\item[+] Spojení dvou Tuple za sebe
+\end{enumerate}
+
+
+
+
