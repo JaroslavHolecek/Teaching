@@ -1,0 +1,32 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{a4wide} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+
+% tikz for bracket and expalanation of code
+
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Zdrojový kód}
+
+
+\author{Jaroslav Holeček\\ \href{mailto:holecek@spskladno.cz}{holecek@spskladno.cz}}
+\title{SQL pro SPŠ a VOŠ Kladno}
+\date{Poslední úprava: \today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\include{SPS_Databaze_obecne}
+\include{SPS_SQL}
+
+\end{document}

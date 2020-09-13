@@ -1,0 +1,464 @@
+\section{SQL}
+\subsection{Odkazy}
+Vyzkoušejte si různé dotazy v příkladech na:\\
+\url{https://www.w3schools.com/sql/default.asp}
+\subsection{SQL}
+Jazyk SQL je \textbf{dotazovací} jazyk, pomocí kterého si můžeme \uv{povídat} s chytřejšími databázemi.\\
+V dotazech napsaných v SQL \textbf{neříkáme}, \textbf{jak} se má požadovaný výsledek získat, ale pouze \textbf{zapíšeme co chceme za výsledek}.
+\subsection{CREATE TABLE - vytvoření tabulky}
+Tabulku v databázi vytvoříme pomocí klíčových slov CREATE TABLE.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE nazev_tabulky(sloupec1 DATOVY_TYP_1, sloupec2 DATOVY_TYP_2, ...);
+
+CREATE TABLE Auto( !\label{scl:create}!
+id INTEGER,
+spz TEXT,
+pocet_sedadel INTEGER,
+max_rychlost INTEGER,
+nosnost INTEGER,
+nutna_kvalifikace TEXT,
+datum_vyroby DATE
+);
+\end{minted}
+\captionof{listing}{CREATE TABLE}
+\label{code:create_table}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:create}:]	Dotaz si můžeme pro lepší čitelnost rozepsat na více řádků
+\end{enumerate} 
+\end{minipage}
+
+\vspace{1cm}
+Při vytváření tabulky \textbf{musíme zadat}:
+\begin{itemize}
+\item Název tabulky
+\item Názvy jednotlivých sloupečků (atributy)
+\item Datový typ jednotlivých sloupečků
+\end{itemize}
+Dále \textbf{můžeme ke sloupečkům přidat}:
+\begin{itemize}
+\item Vlastní klíč (Primary key - PK)
+\item Cizí klíč (Foreign key - FK)
+\item NOT NULL - hodnota nesmí být prázdná (nevyplněná)
+\item UNIQUE - hodnota se v tabulce (v tomto sloupečku) nesmí opakovat
+\item AUTOINCREMENT - SŘBD (\uv{databáze}) sama přiřadí hodnotu - o jedna vyšší, než je doposud nejvyšší
+\item DEFAULT - pokud není hodnota zadaná, uloží se tato nastavená 
+\end{itemize}
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Auto( 
+id INTEGER PRIMARY KEY AUTOINCREMENT, !\label{scl:create_pk}!
+spz TEXT NOT NULL UNIQUE, !\label{scl:create_unique}!
+pocet_sedadel INTEGER NOT NULL, !\label{scl:create_notnull}!
+max_rychlost INTEGER,
+nosnost INTEGER,
+nutna_kvalifikace TEXT NOT NULL DEFAULT 'B', !\label{scl:create_default}!
+datum_vyroby DATE
+);
+\end{minted}
+\captionof{listing}{CREATE TABLE}
+\label{code:create_table_set_properties}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:create_pk}:]	Vlastní klíč - může být jen jeden v tabulce\\AUTOINCREMENT - automaticky přiřazuje hodnotu (vždy nejvyšší+1)
+\item[ř. \ref{scl:create_unique}:] UNIQUE - v tabulce se nemůže opakovat spz (nemohou být dvě stejné)\\NOT NULL - spz musí být vyplněná
+\item[ř. \ref{scl:create_notnull}:] NOT NULL - počet sedadel musí být vyplněný 
+\item[ř. \ref{scl:create_default}:] NOT NULL - nutná kvalifikace musí být vyplněná\\DEFAULT - pokud nezadáme hodnotu doplní se \uv{B}\\pozn.: Protože je sloupec nastavený na NOT NULL, nedovolí nám databáze vložit NULL manuálně 
+\end{enumerate} 
+\end{minipage}
+
+\subsection{ALTER TABLE}
+ALTER TABLE slouží k úpravě tabulky poté, co jsme ji již vytvořili - a nechceme ji mazat a vytvářet znovu (to bychom přišli o všechna uložená data...).\\
+Pomocí ATLER TABLE můžeme s tabulkou provádět libovolné úpravy - přidávat a mazat sloupečky, měnit datové typy, přidávat cizí klíče, \dots \\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Auto( 
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+spz TEXT NOT NULL UNIQUE,
+pocet_sedadel INTEGER NOT NULL,
+max_rychlost INTEGER,
+nosnost INTEGER,
+nutna_kvalifikace TEXT NOT NULL DEFAULT 'B'
+);
+
+ALTER TABLE Auto ADD datum_vyroby DATE; !\label{scl:alter_add}!
+\end{minted}
+\captionof{listing}{ALTER TABLE}
+\label{code:alter_table}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:alter_add}:]	Přidáme zapomenutý sloupeček.
+\end{enumerate} 
+\end{minipage}
+
+
+\subsection{Datové typy}
+V databázích existuje mnoho datových typů. Na naší úrovni se jimi nebudeme příliš zabývat.\\Použití vhodného datového typu zefektivňuje chod databáze - získáme rychleji výsledek, data zaberou méně paměti.\\Přehled datových typů např.: zde \url{https://www.w3schools.com/sql/sql_datatypes.asp}\\
+Je dobré vědět že v databázích existují i datové typy \textbf{DATE}, \textbf{TIME}, \textbf{TIMESTAMP}, apd.
+
+\subsection{Další vlastnosti sloupečků}
+Následující vlastnosti nejsou \uv{nutné} (databáze bude fungovat i bez nich), ale je nanejvýš vhodné je používat. Vyhneme se tak spoustě chyb a nepříjemností, které bychom museli řešit jinak.
+
+\subsubsection{Vlastní klíč, Primary key}
+Vlastní klíč slouží k \textbf{jednoznačné identifikaci řádku} v tabulce. Ve sloupečku, který označíme jako \uv{Primary key}, se nesmí žádná hodnota opakovat - to za nás pohlídá sama databáze (SŘBD). A pokud řekneme, že chceme řádek s konkrétní hodnotou v tomto sloupečku - dostaneme buď právě jeden řádek, nebo žádný (pokud takový řádek neexistuje). Nikdy při použití hodnoty Vlastního klíče nemůžeme dostat jako výsledek více než jeden řádek.\\
+Jako \uv{Vlastní klíč} můžeme označit i více sloupečků dohromady. V tabulce se potom nebude opakovat řádek, který má hodnoty ve všech těchto sloupečcích stejné.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Clovek( 
+id INTEGER PRIMARY KEY AUTOINCREMENT, !\label{scl:pk_id}!
+jmeno TEXT NOT NULL,
+prijmeni TEXT NOT NULL,
+datum_narozeni DATE,
+kvalifikace TEXT
+);
+\end{minted}
+\captionof{listing}{Primary key - id}
+\label{code:primary_key_id}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:pk_id}:]	id jako Vlastní klíč - téměř vždy budeme mít v tabulce sloupeček id a nastavíme ho jako Vlastní klíč
+\end{enumerate} 
+\end{minipage}
+
+Ukázka, jak nastavit PK přes více sloupečků. Použijeme tak zvanou CONSTRAINT (omezení, podmínku). Toto omezení pojmenujeme a nastavíme, co má omezovat - zde PRIMARY KEY na sloupečky \uv{jmeno, prijmeni}
+
+\vspace{1cm}
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Clovek( 
+jmeno TEXT NOT NULL,
+prijmeni TEXT NOT NULL,
+datum_narozeni DATE,
+kvalifikace TEXT,
+CONSTRAINT PK_Clovek PRIMARY KEY (jmeno,prijmeni) !\label{scl:pk_jmeno_prijmeni}!
+);
+\end{minted}
+\captionof{listing}{Primary key - jméno a příjmení}
+\label{code:primary_key_jmeno_prijmeni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-1cm}
+\item[ř. \ref{scl:pk_jmeno_prijmeni}:]	Dva sloupečky \uv{jmeno} a \uv{prijmeni} jako Vlastní klíč - v tabulce tak nemůžou být dvě osoby se stejným jménem a příjmením.\\Uvažme, zda je to dobrý nápad...\\
+CONSTRAINT se jmenuje \uv{PK\_Clovek}
+\end{enumerate} 
+\end{minipage}
+
+\subsubsection{Cizí klíč, Foreign key}
+Pomocí \uv{Cizího klíče} řekneme databázi, že \textbf{hodnoty} uložené \textbf{v tomto sloupečku} jsou \textbf{převzaté} z jiného sloupečku v jiné tabulce.\\
+Databáze (SŘBD) se nám za to odmění tím, že bude hlídat, zda v něm nemáme hodnotu, která v druhé tabulce neexistuje. Také můžeme nastavit, co se má stát, když některou hodnotu chceme smazat a máme na ní navázanou hodnotu (Cizí klíč) v jiné tabulce - možností je několik (nepůjde smazat, smaže se řádek v obou tabulkách).
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Kvalifikace(
+id INTEGER PRIMARY KEY AUTOINCREMENT, !\label{scl:fk_id}!
+oznaceni TEXT NOT NULL,
+popis TEXT
+);
+
+
+CREATE TABLE Clovek( 
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+jmeno TEXT NOT NULL,
+prijmeni TEXT NOT NULL,
+datum_narozeni DATE,
+kvalifikace INTEGER FOREIGN KEY REFERENCES Kvalifikace(id) !\label{scl:fk_kval}!
+);
+\end{minted}
+\captionof{listing}{Foreign key}
+\label{code:foreign_key}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:fk_kval}:] sloupec \uv{kvalifikace} nastavíme jako \uv{Cizí klíč}, ve kterém jsou hodnoty ze sloupce \uv{id} z tabulky Kvalifikace.\\Vlastní klíč \uv{id} v tabulce Kvalifikace volíme záměrně - zapsat do sloupečku \uv{kvalifikace} můžeme jen jednu hodnotu a proto musíme zajistit, aby byla jen jedna možná hodnota v \uv{id}.
+\end{enumerate} 
+\end{minipage}
+
+\subsubsection{NOT NULL - neprázdný}
+Označuje sloupeček, ve kterém nemůže být uložena hodnota NULL - tedy \uv{prázdno}. Viz. \ref{code:create_table_set_properties}.
+
+\subsubsection{AUTOINCREMENT - automatická hodnota}
+V tomto sloupečku se automaticky přiřadí hodnota. Databáze zjistí nejvyšší hodnotu v tomto sloupečku, přičte jedna a výsledek vloží na nové místo. Viz. \ref{code:create_table_set_properties}.
+
+\subsubsection{UNIQUE}
+V takto označeném sloupečku se nesmí žádná hodnota opakovat - tedy musí být v tablce nejvýše jednou. Viz. \ref{code:create_table_set_properties}.\\
+Lze nastavit i na více sloupečků. Potom nemůže být v tabulce stejná tato dvojice, ale hodnota v každém sloupečku zvlášť se opakovat může. Takovou vlastnost zapíšeme pomocí CONSTRAINT - Viz. \ref{code:primary_key_jmeno_prijmeni}.
+
+\subsubsection{DEFAULT}
+Pokud nastavíme sloupečku DEFAULT hodnotu a poté při vkládání záznamu nezapíšeme, jaká hodnota se má do tohoto sloupečku vložit; vloží se do sloupečku tato nastavená hodnota. Viz. \ref{code:create_table_set_properties}.
+
+\subsection{CONSTRAINT - omezení, podmínky}
+CONSTRAINT využejeme ve chvíli:
+\begin{enumerate}
+\item Do tabulky chceme vložit nějaké omezení (např. NOT NULL, UNIQUE) až poté, co jsme ji již vytvořili (např. jsme na něj zapomněli) a nechceme celou tabulku mazat a vytvářet znovu (protože v ní už máme spoustu dat).
+\item Chceme nastavit omezení přes více sloupečků (např. UNIQUE - unikátní kombinace dvou sloupečků (třeba jméno a příjmení)).
+\item Chceme nějaké takové omezení pojmenovat.
+\end{enumerate}
+
+Můžeme ho zapsat přímo při vytváření tabulky:\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Clovek( 
+jmeno TEXT NOT NULL,
+prijmeni TEXT NOT NULL,
+datum_narozeni DATE,
+kvalifikace TEXT,
+CONSTRAINT PK_Clovek PRIMARY KEY (jmeno,prijmeni), !\label{scl:constraint_jmeno_prijmeni}!
+CONSTRAINT nechceme_dvojcata UNIQUE (datum_narozeni) !\label{scl:constraint_datum}!
+);
+\end{minted}
+\captionof{listing}{CONSTRAINT - přímo}
+\label{code:constraint_primo}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{-1cm}
+\begin{enumerate}
+\item[ř. \ref{scl:constraint_jmeno_prijmeni}:] Dva sloupečky \uv{jmeno} a \uv{prijmeni} jako Vlastní klíč - v tabulce tak nemůžou být dvě osoby se stejným jménem a příjmením.\\Uvažme, zda je to dobrý nápad...\\
+CONSTRAINT se jmenuje \uv{PK\_Clovek}
+\vspace{1cm}
+\item[ř. \ref{scl:constraint_datum}] datum narození bude v tabulce unikátní - těžko říct, k čemu by to bylo ve skutečnosti dobré... 
+\end{enumerate} 
+\end{minipage}
+
+\vspace{0.5cm}
+Nebo až později:\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+CREATE TABLE Clovek( 
+jmeno TEXT NOT NULL,
+prijmeni TEXT NOT NULL,
+datum_narozeni DATE,
+kvalifikace TEXT
+);
+
+ALTER TABLE Clovek ADD CONSTRAINT PK_Clovek PRIMARY KEY (jmeno,prijmeni); !\label{scl:constraint_a_jmeno_prijmeni}!
+ALTER TABLE Clovek ADD CONSTRAINT nechceme_dvojcata UNIQUE (datum_narozeni); !\label{scl:constraint_a_datum}!
+\end{minted}
+\captionof{listing}{CONSTRAINT - ALTER}
+\label{code:constraint_alter}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:constraint_a_jmeno_prijmeni}:] Dva sloupečky \uv{jmeno} a \uv{prijmeni} jako Vlastní klíč - v tabulce tak nemůžou být dvě osoby se stejným jménem a příjmením.\\Uvažme, zda je to dobrý nápad...\\
+CONSTRAINT se jmenuje \uv{PK\_Clovek}
+\vspace{1cm}
+\item[ř. \ref{scl:constraint_a_datum}:] datum narození bude v tabulce unikátní - těžko říct, k čemu by to bylo ve skutečnosti dobré... 
+\end{enumerate} 
+\end{minipage}
+
+
+
+
+
+\subsection{SELECT - získání dat z databáze}
+\url{https://www.w3schools.com/sql/sql_select.asp}\\
+\vspace{.5cm}
+
+Klíčové slovo SELECT je hlavním slovem pro získávání dat z databáze.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{SQL}
+SELECT sloupec1, sloupec2, ... FROM nazev_tabulky;
+SELECT * FROM nazev_tabulky;
+
+SELECT spz, pocet_sedadel, znacka FROM Auto;
+SELECT * FROM Auto;
+\end{minted}
+\captionof{listing}{SELECT}
+\label{code:select}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.7cm}
+ř. 1,4:	Z tabulky zobrazíme jen některé sloupce\\
+ř. 2,5:	Pomocí * Zobrazíme všechny sloupce v tabulce 
+\end{minipage}
+
+\subsection{SELECT DISTINCT - unikátní řádky}
+
+Pomocí SELECT DISTINCT zobrazíme pouze unikátní řádky - tedy se nám ve výsledky nebude opakovat žádný řádek.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{SQL}
+SELECT DISTINCT sloupec1, sloupec2, ... FROM nazev_tabulky;
+
+SELECT DISTINCT znacka FROM Auto;
+\end{minted}
+\captionof{listing}{SELECT DISTINCT}
+\label{code:select_distinct}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{.5cm}
+ř. 3: Zobrazí všechny značky aut v tabulce (každou značku jen jednou - i když je v tabulce více aut se stejnou značkou)
+\end{minipage}
+
+\subsection{WHERE - podmínka na řádky}
+
+Pomocí SELECT jsme z tabulky vybírali některé sloupce pomocí WHERE pak můžeme zobrazit jen některé řádky - za slovo WHERE napíšeme podmínku, kterou musí řádek splňovat, aby se zobrazil ve výsledku.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{SQL}
+SELECT * FROM nazev_tabulky WHERE podmínka;
+
+SELECT * FROM Auto WHERE maxRychlost > 200;
+\end{minted}
+\captionof{listing}{WHERE}
+\label{code:where}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.7cm}
+ř. 3:	Zobrazí jen auta s maximální rychlostí větší než 200
+\end{minipage}
+
+\subsubsection{AND, OR, NOT}
+\url{https://www.w3schools.com/sql/sql_and_or.asp}\\
+Za slovem WHERE můžeme podmínky, podle kterých řádek zobrazíme nebo ne, spojovat známými logickými funkcemi AND, OR, NOT
+
+\subsection{ORDER BY - seřazení výsledku}
+
+Často chceme, aby se nám výsledek zobrazil seřazený (např. podle abecedy, nebo velikosti čísel). Toho dosáneme pomocí ORDER BY a zadánim, podle kterého sloupce v tabulce se má výsledek seřadit.
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{SQL}
+SELECT * FROM nazev_tabulky ORDER BY sloupec;
+
+SELECT * FROM Auto ORDER BY maxRychlost;
+SELECT * FROM Auto ORDER BY maxRychlost ASC;
+SELECT * FROM Auto ORDER BY maxRychlost DESC;
+\end{minted}
+\captionof{listing}{ORDER BY}
+\label{code:order_by}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2cm}
+ř. 3,4: Zobrazí všechna auta seřazená podle maximální rychlosti \textbf{vzestupně} (od nejpomalejšího)\\
+ř. 5:	Zobrazí všechna auta seřazená podle maximální rychlosti \textbf{sestupně} (od nejrychlejšího)
+\end{minipage}
+
+\subsection{SUM, MIN, MAX, AVG - agregační funkce}
+
+Databáze umí s daty provádět i jednoduché (resp. často používané) početní operace. Takovými operacemi jsou např. sečtení všech hodnot, minimum, maximum, průměr.\\
+Tyto oprerace jsou vždy prováděny na jednom sloupci a pouze z výsledku, který by se zobrazil, pokud bychom tyto funkce nepoužili - tedy pokud omezíme počet řádků ve výsledku pomocí WHERE, bude se např. součet počítat pouze z těchto vybraných řádku.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos]{SQL}
+SELECT SUM(sloupec1), MIN(sloupec2), MAX(sloupec1), AVG(sloupec2) FROM nazev_tabulky;
+
+SELECT SUM(povinne_pojisteni), MIN(spotreba), MAX(rychlost), AVG(nosnost) FROM Auta;
+SELECT MIN(spotreba) FROM Auta WHERE nosnost > 5000;
+\end{minted}
+\captionof{listing}{SUM, MIN, MAX, AVG}
+\label{code:sum_min_max_avg}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.7cm}
+ř. 3:	Zobrazí 4 čísla - součet povinných ručení všech aut,\\ spotřebu auta s nejmenší spotřebou\\ rychlost auta s nejvyšší rychlostí a \\ průměrnou nosnost všech aut\\
+ř. 4:	Zobrazí spotřebu auta s nejmenší spotřebou, ale jen mezi těmi, která mají nosnost větší než 5000.
+\end{minipage}
+
+\subsection{Vnoření dotazů}
+
+Často potřebujeme využít v jednom dotazu výsledek nějakého jiného dotazu. V SQL můžeme dotazy vnořovat. To znamená, že místo některé části dotazu (např. čísla, se kterým porovnáváme) můžeme zapsat celý nový dotaz.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+SELECT sps, spotreba FROM Auta
+WHERE nosnost > (SELECT AVG(nosnost) FROM Auta); !\label{scl:vnoreni}!
+\end{minted}
+\captionof{listing}{Vnořené dotazy}
+\label{code:vnoreni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1.7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:vnoreni}:] Porovnáváme nosnost jednotlivých aut s průměrnou (AVG) nosností, která se spočítá ze všech aut.\\\uv{Vnitřní} SELECT, který počítá průměrnou nosnost, můžeme spustit i samostatně - je to zcela plnohodnotný dotaz - jen použitý uvnitř jiného dotazu.
+\end{enumerate}
+\end{minipage}
+
+\subsection{JOIN - spojování tabulek při zobrazení}
+
+Obvykle jsou v databázi informace uloženy ve více tabulkách. Často potřebujeme získat informaci, která je rozložena do více tabulek (jedna část informace je v jedné tabulce a druhá část v druhé.)
+
+\vspace{1cm}
+\textit{V jedné tabulce máme jméno a kvalifikaci řidiče. Ve druhé tabulce máme spz auta a kvalifikaci nutnou pro jeho řízení. Chtěli bychom, seznam spz aut a jmen lidí, kteří je můžou řídit}
+\vspace{1cm}
+
+Takový výsledek získáme tak, že dvě tabulky \textbf{spojíme} pomocí JOIN.\\
+Při spojování tabulek musíme zadat názvy dvou tabulek a sloupec v jedné i druhé tabulce. Na těchto zadaných sloupcích, se tabulky \uv{překryjí}. Řádky z jedné tabulky a druhé tabulky, ve kterých námi zadané sloupece splňují náš požadavek (obykle aby se hodnoty rovnaly), se spojí do jednoho dlouhého řádku se sloupečky z obou dvou tabulek.\\
+Získáme tak jednu velkou tabulku, která zahrnuje sloupečky i z první i z druhé tabulky\\
+Tato výsledná tabulka není uložena nikde v databázi - \uv{existuje} pouze v našem dotazu - ale můžeme s ní v dotazu zacházet tak, jako by to byla normální tabulka z naší databáze (a nevznikla spojením dvou skutečných tabulek). Můžeme z ní tedy vybrat jen sloupce, které nás zajímají \ref{code:select}, můžeme vybrat jen některé řádky \ref{code:where}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{SQL}
+SELECT jmeno, spz FROM
+Auta INNER JOIN Lide ON Auta.potrebna_kvalifikace = Lide.kvalifikace; !\label{scl:join_kvalifikace}!
+\end{minted}
+\captionof{listing}{Jednoduchý JOIN}
+\label{code:join_prvni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{1cm}
+\begin{enumerate}
+\item[ř. \ref{scl:vnoreni}:] Tento řádek vytváří novou (velkou) tabulku (spojení dvou tabulek). Je na stejném místě v dotazu, jako obyčejná tabulka. Také se s touto speciální, spojenou, velkou tabulkou pracuje úplně stejně, jako bychom jí měli v databázi uloženou (a nevznikla spojením dvou skutečných tabulek).
+\end{enumerate}
+\end{minipage}
+
+\vspace{.5cm}
+Pokud máme dvě tabulky, máme více možností, jak zkombinovat jejich řádky. Sloupce budou ve výsledku vždy všechny z obou tabulek. Lišit se může, které řádky budeme mít ve výsledku a které ne.\\
+Tyto možnosti vychází z toho, že v každé tabulce mohou být řádky, které:
+\begin{enumerate}
+\item \uv{pasují} jen na \textbf{jeden} řádek druhé tabulky
+\item  \uv{pasují} na \textbf{více} řádků z druhé tabulky
+\item \uv{nepasují} na \textbf{žádný} řádek z druhé tabulky
+\end{enumerate}
+
+Pokud řádek z jedné tabulky \uv{pasuje} na více řádků z druhé tabulky, ve výsledku bude zobrazeno řádků více - pro každou tuto dvojici jeden. Ve výsledku se tedy bude opakovat první záznam vícekrát, ale bude k němu připojen vždy jiný záznam z druhé tabulky.
+
+\subsubsection{INNER JOIN}
+Ve výsledku se zobrazí pouze řádky, které k sobě \uv{pasují} - tedy mají odpovídající záznam v obou spojovaných tabulkách.
+
+\subsubsection{LEFT JOIN}
+Ve výsledku se zobrazí veškeré řádky z první (levé) tabulky. K těmto řádkům se připojí odpovídající řádky z druhé tabulky.\\
+Pokud nějaký řádek z \textbf{levé} tabulky nemá žádného \uv{parťáka} v pravé tabulce - \textbf{bude ve výsledku} přesto zobrazen.\\
+Pokud máme v \textbf{pravé} tabulce řádek, který nemá \uv{parťáka} v levé tabulce, \textbf{ve výsledku nebude}.\\
+Samozřejmě, pokud má některý řádek více \uv{partáků}, bude ve výsledku vícekrát - jednou s každým odpovídajícím řádkem z druhé tabulky.
+
+\subsubsection{RIGHT JOIN}
+Je stejný jako LEFT JOIN, jen pro druhou tabulku.
+
+\subsubsection{FULL JOIN, FULL OUTER JOIN}
+Je kombinací LEFT JOIN a RIGHT JOIN. Ve výsledku se tedy zobrazí veškeré řádky z levé tabulky i veškeré řádky z pravé tabulky. Ty, které k sobě \uv{pasují} se samozřejmě spojí. Zobrazí se ale i ty, které k sobě žádného \uv{parťáka} nemají - ať už z levé tabulky, nebo z pravé tabulky. 
