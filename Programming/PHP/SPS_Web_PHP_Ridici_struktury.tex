@@ -1,0 +1,339 @@
+\section{Řídící struktury}
+Každý program běží postupně po řádcích od 1. řádku dále a vykonává příkazy přesně v tom pořadí, jak jdou za sebou.\\
+Někdy (velmi často) ale chceme, aby se některé řádky (přikazy) přeskočily - neprovedly se. Někdy také chceme, aby se některé přikazy provedly opakovaně - vícekrát.\\
+K tomuto slouží takzvané řídící struktury - speciální příkazy, které řídí, který řádek (příkaz) se provede jako další. Říkáme, že řídí běh programu.\\
+To, že je nějaký řádek uvnitř řídící struktury, takzvaně v těle (např. je to řádek, který chceme přeskočit) určujeme pomocí složených závorek.
+
+\subsection{Odkazy}
+Operátory\\ \url{https://www.w3schools.com/pHP/php_operators.asp} \\
+Podmínka - Větvení\\ \url{https://www.w3schools.com/pHP/php_if_else.asp} \\ 
+Cykly \\ \url{https://www.w3schools.com/pHP/php_looping.asp} \\ 
+
+\subsection{Podmínka - Větvení}
+Můžeme si představit, že program běží po jednotlivých větvých - proto tomu říkáme větvení.\\ 
+Stejně jako u větví na stromě, se v nějakém místě programu můžeme vydat dvěma směry (po dvou různých větvích). Na rozdíl od větví na stromě se ale jednotlivé větve v programu po ukončení této struktury opět spojí do jedné. 
+
+\subsubsection{if}
+Nejjednodušší podmínka \uv{if} nám poslouží v případě, že chceme některé příkazy provést jen někdy - jen pokud je splněna daná podmínka. Pokud podmínka splněna není, přikazy se přeskočí.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+if($uzivatel === "Antonín"){ !\label{scl:php_if}!
+	echo "Nazdar, Tondo,";
+}
+?>
+\end{minted}
+
+\captionof{listing}{if}
+\label{code:php_if}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_if}:] Řádek uvnitř těla (mezi složenými závorkami) se porvede jen pokud je podmínka splněna (true).
+\end{enumerate}
+\end{minipage}\\
+
+Za klíčové slovo \uv{if} píšeme podmínku - cokoliv, o čem umí php rozhodnout, zda je to splněné, nebo ne - zda je to \textit{true}, nebo \textit{false}.\\
+Můžeme zde přímo zapsat \textit{true}, nebo \textit{false}, často zde píšeme porovnání: < , > , === , !== , <= , >= .\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+if($kredit <== 0){ !\label{scl:php_if_porovnani}!
+	echo "Nemáš dost kreditu";
+}
+?>
+\end{minted}
+
+\captionof{listing}{if - porovnání}
+\label{code:php_if_porovnání}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_if_porovnani}:] Porovnání (operátor \uv{<==}) vrací true nebo false.
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{if-else}
+Často chceme aby se při splnění podmínky vykonaly některé příkazy a při nesplnění podmínky se vykonaly jiné. Chceme tedy pomocí podmínky vybrat jednu ze dvou skupin příkazů (řádků).\\
+K tomu slouží konstrukce \uv{if-else}. Při splnění podmínky (true) se (stejně jako v obyčejném \uv{if}) provedou příkazy v části po \uv{if}. Při nesplnění podmínky (false) se provedou příkazy v části po \uv{else}. Jedna z těchto dvou skupin příkazů se tedy provede vždy.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+if($skore_1 < $skore_2){
+	echo "Vyhrál hráč 2"; !\label{scl:php_if_else_if}!
+}else{
+	echo "Vyhrál hráč 1"; !\label{scl:php_if_else_else}!
+}
+?>
+\end{minted}
+
+\captionof{listing}{if - else}
+\label{code:php_if_else}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_if_else_if}:] Pokud je splněna podmínka, provede se tento blok
+\item[ř. \ref{scl:php_if_else_else}:] Pokud podmínka není splěna, provede se tento blok
+\item[] Kontrolní otázka: Kdo vyhrál, pokud mají stejné skóre?
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{elseif}
+Opravíme kód \ref{code:php_if_else}. Někdy potřebujeme vybrat ne mezi dvěma příkazy, ale mezi více. K tomu slouží konstrukce \uv{elseif} - dovolí nám vložit další \uv{větev}. Takových větví může býl libovolné množství a \textbf{program se vydá} vždy jen tou z nich, u které je \textbf{podmínka splněna jako první} (kontrolováno od \textbf{shora dolů}). Pokud není splněna žádná z podmínek, vydá se program větví \uv{else}.
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+if($skore_1 < $skore_2){
+	echo "Vyhrál hráč 2"; !\label{scl:php_if_elseif_if}!
+}elseif ($skore_1 > $skore_2){
+	echo "Vyhrál hráč 1"; !\label{scl:php_if_elseif_elseif}!
+}else{
+	echo "Remíza"; !\label{scl:php_if_elseif_else}!
+}
+?>
+\end{minted}
+
+\captionof{listing}{if - else}
+\label{code:php_if_else}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_if_elseif_if}, \ref{scl:php_if_elseif_elseif}, \ref{scl:php_if_elseif_else}:] Provede se jen jeden z těchto bloků.
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{Switch}
+Pokud chceme program rozvětvit do více větví. Můžeme také použít \uv{switch}.\\
+Můžeme ho použít, pokud se chceme konkrétní větví vydat ve chvíli, kdy se zadaná proměnná přesně rovná určené hodnotě (nelze tedy použít pro větší, menší).\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+ <?php
+$color = "red";
+
+switch ($color) { !\label{scl:php_switch}!
+    case "red": !\label{scl:php_switch_case}!
+        echo "Your favorite color is red!";
+        break; !\label{scl:php_switch_break}!
+    case "blue":
+        echo "Your favorite color is blue!";
+        break;
+    case "green":
+        echo "Your favorite color is green!";
+        break;
+    default: !\label{scl:php_switch_default}!
+        echo "Your favorite color is neither red, blue, nor green!";
+}
+?> 
+\end{minted}
+
+\captionof{listing}{Switch}
+\label{code:php_switch}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_switch}:] Určíme, podle hodnoty které proměnné se má program větvit.
+\item[ř. \ref{scl:php_switch_case}:] Jednotlivé hodnoty, pro které chceme vytvořit speciální větev zapíšeme do \uv{case}
+\item[ř. \ref{scl:php_switch_break}:] Pozor! Každou větem musíme ukončit příkazem \uv{break;}
+\vspace{3cm}
+\item[ř. \ref{scl:php_switch_default}:] Můžeme vytvořit i deafaultní vetěv - pokud hodnota nebude odpovídat ani jedné z těch, které jsme připravili
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{Vnoření}
+Podmínky (stejně jako jiné řídící struktury) můžeme takzvaně \textbf{vnořovat} - tedy \textbf{vkládat jednu do druhé}.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+if($jazyk === "en"){
+	if($uzivatel = "Antonín"){ !\label{scl:php_vnoreni_if}!
+		echo "Hello, Tonda";	
+	}
+}else{
+	if($uzivatel === "Antonín"){
+		echo "Ahoj, Tondo"; !\label{scl:php_vnoreni_else}!
+	}
+}
+?>
+\end{minted}
+
+\captionof{listing}{Vnoření}
+\label{code:php_vnoření}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_vnoreni_if}:] Tento blok se vyhodnotí jen v případě, že je jazyk nastaven na \uv{en}. 
+\item[ř. \ref{scl:php_vnoreni_else}:] Pokud jazyk není nastaven na \uv{en} a také je uzivatel \uv{Antonín}, provede se tento řádek.
+\end{enumerate}
+\end{minipage}\\
+
+\subsection{Cykly}
+Velmi často chceme, aby program provedl výpočet vícekrát. Buď proto, že tímto opakováním získáme požadovaný výsledek, nebo chceme stejnou operaci provést s více \uv{objekty} (např. zobrazit všechny produkty z obchodu).\\
+K tomuto opakování slouží takzvané cykly.
+
+\subsubsection{While}
+Cyklus \uv{while} opakuje příkazy, \textbf{dokud je splněna} zadaná \textbf{podmínka}. Nejprve zkontroluje, zda je podmínka splněna - pokud ano, \textbf{vykoná všechny zadané příkazy} a poté zkontroluje podmínku znovu - a tak stále dokola, dokud při kontrole podmínky nezjistí, že podmínka již splněna není. Ve chvíli, kdy podmínka splněná není (ať už hned napoprvé, nebo kdykoliv později), přeskočí všechny zadané příkazy a program pokračuje dále za tímto \uv{while} cyklem.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+ <?php
+$x = 0;
+ 
+while($x <= 100) { !\label{scl:php_while}!
+    echo "Už jsme napočítali do: $x <br>";
+    $x+=10; !\label{scl:php_while_plus}!
+}
+?> 
+\end{minted}
+
+\captionof{listing}{While}
+\label{code:php_while}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_while}:] Tělo while-cyklu (příkazy ve složených závorkách) se bude provádět stále dokola, dokud pude tato podmínka splěna\\
+Podmínka se kontroluje hned na začátku a poté pokaždé po prvedení všech příkazů v těle.
+\item[ř. \ref{scl:php_while_plus}:] U cyklů je velmi důležité zajistit, aby někdy skončili. Tedy, aby někdy podmínka slněna nebyla.
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{For}
+For cyklus je v zásadě stejný jako předchozí while. Pouze má přehlednější zápis (a proto se také v takových chvílích používá), pokud máme danný počet průběhů, které má for-cyklus vykonat.\\
+Hlavička (první řádek) for-cyklu se skládá ze tří \uv{přihrádek} oddělených středníkem.
+\begin{enumerate}
+\item přihrádka se provede pouze jednou a nejčastěji zde zadáváme počáteční hodnotu počítadla kol
+\item přihrádka je stejná, jako ve while-cyklu - je zde zapsaná podmínka, která určuje, kdy se cyklus zastaví - zastaví se poté, co podmínka není splněna\\
+Podmínka se kontroluje na začátku (tedy hned po provedení první přihrádky) a poté pokaždé po provedení všech příkazů v těla a ve třetí přihrádce
+\item přihrádke se provede vždy po vykonání všech příkazů v těle for-cyklu
+\end{enumerate}
+Ukázkový kód z příkladu \ref{code:php_while} můžeme přepsat pomocí for následovně:\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+ <?php
+for($x = 0; $x <= 100; $x++) { !\label{scl:php_for}!
+    echo "Už jsme napočítali do: $x <br>";
+}
+?> 
+\end{minted}
+
+\captionof{listing}{For}
+\label{code:php_for}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_for}:] První přihrádka \$x=0 se provede pouze jednou, hned při doběhnutí programu na tento řádek.\\
+Druhá přihrádka \$x<=100 se kontroluje vžyd před vstupem do těla cyklu (a do těla cyklu progrma vstoupí pouze pokud je podmínka splněna)\\
+Třetí přihrádka \$x++ se provede vždy po dokončení všech příkazů v těle cyklu. 
+\end{enumerate}
+\end{minipage}\\
+
+
+\subsubsection{Foreach}
+Cyklus \uv{foreach} používáme v php k procházení pole.
+Při procházení pole pomocí \uv{foreach} máme uložen \textbf{jeden} (u asociativního pole klíč a hodnotu, u indexovaného pole jen hodnotu) prvek z pole při každém průchodu.\\
+Při prvním průchodu tělem cyklu (příkazy vesložených závorkách) máme uložen první prvek, při druhém průchodu druhý prvek atd.\\
+Můžeme tak nějakou operaci (jeden nebo více příkazů) provést s každým prvkem pole zvlášť - a provést ji postupně se všemi prvky.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+ <?php
+$barvy = array("red", "green", "blue", "yellow");
+
+foreach ($barvy as $jedna_barva) { !\label{scl:php_foreach_index}!
+  echo "Moje oblíbená barva je: $jedna_barva <br>";
+}
+
+$barvy = array("red"=>80, "green"=>60, "blue"=>90, "yellow"=>70);
+
+foreach ($barvy as $jedna_barva=>$procent) { !\label{scl:php_foreach_asoc}!
+  echo "Moje oblíbená barva je: $jedna_barva a mám ji rád na $procent procent<br>";
+}
+?> 
+\end{minted}
+
+\captionof{listing}{Foreach}
+\label{code:php_foreach}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{4.5cm}
+\item[ř. \ref{scl:php_foreach_index}:] V proměnné \uv{\$jedna\_barva} jsou postupně (po jedné) uloženy všechny barvy z pole  \uv{\$barvy}
+\item[ř. \ref{scl:php_foreach_asoc}:] U asociatvního pole si můžeme uložit zvlášť klíč a zvlášť hodnotu.
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{Break}
+Jakýkoliv cyklus (případně switch) můžeme také ukončit kdykoliv v jeho těle (mezi příkazy, které jsou v něm napsané). Slouží k tomu příkaz \textbf{\uv{break}}. Ve chvíli kdy \textbf{program} dorazí na řádek s tímto příkazem, \textbf{okamžitě skočí za cyklus}, ve kterém je tento příkaz zapsaný.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+$barvy = array("red", "green", "blue", "yellow");
+
+foreach ($barvy as $jedna_barva) {
+  if($jedna_barva === "blue"){
+    break;  !\label{scl:php_break}!
+  }
+  echo "Moje oblíbená barva je: $jedna_barva <br>";
+}
+?> 
+\end{minted}
+
+\captionof{listing}{Break}
+\label{code:php_break}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{3.2cm}
+\item[ř. \ref{scl:php_break}:] Ve chvíli, kdy dorazí program na tento řádek (tedy musí být splěna podmínka v if), okamžitě se přeruší průběh foreach-cyklu a program pokračuje za jeho tělem (za zavírací složenou závorkou)
+\end{enumerate}
+\end{minipage}\\
+
+\subsubsection{Continue}
+Pomocí předchozího \uv{break} se ukončil celý průběh cyklu. Můžeme také ukončit průběh pouze jednoho \uv{kolečka} (aktuálního průchod). Cyklus pak bude pokračovat v dalším kolečku - od jeho prvního řádku.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+$barvy = array("red", "green", "blue", "yellow");
+
+foreach ($barvy as $jedna_barva) {
+  if($jedna_barva === "blue"){
+    continue;  !\label{scl:php_continue}!
+  }
+  echo "Moje oblíbená barva je: $jedna_barva <br>";
+}
+?> 
+\end{minted}
+
+\captionof{listing}{Continue}
+\label{code:php_continue}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{3.2cm}
+\item[ř. \ref{scl:php_break}:] Ve chvíli, kdy dorazí program na tento řádek (tedy musí být splěna podmínka v if), přeruší se průběh jednoho kolečka foreach-cyklu a program pokračuje dále ve foreach-cyklu, ale s další hodnotou v proměnné \uv{\$jedna\_barva} 
+\end{enumerate}
+\end{minipage}\\
+ 
+ 
+

@@ -1,0 +1,114 @@
+\section{Formulář}
+Pomocí PHP můžeme zpracovat data odeslaná přes formulář. Samotný formulář je vytvořený pomocí HTML.\\
+Pro nastavení souboru, který bude zpracovávat data po jejich odeslání, nastavíme u formuláře atribut \uv{action}. Soubor, jehož název zapíšeme do attributu \uv{action} se spustí po klikutí na tlačítko ve formuláři - a bude mít k dispozici data zadaná do formuláře.\\
+Můžeme spustit jakýkoliv soubor (uložený na serveru) - klidně znovu ten, ve kterém máme náš formulář. \\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html}
+<html>
+<body>
+
+<form action="soubor_pro_zpracovani.php" method="post"> !\label{scl:action}!
+Počet řádků: <input type="number" name="radky"><br>	!\label{scl:name_1}!
+Počet sloupců: <input type="number" name="sloupce"><br> !\label{scl:name_2}!
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Formulář v HTML}
+\label{code:php_form_html}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:action}:] Atribut \uv{action} určuje, který soubor se spustí po odeslání dat\\
+Atribut \uv{method} určuje, jakým způsobem se data odešlou
+\item[ř. \ref{scl:name_1},\ref{scl:name_2}] Atribut \uv{name} musíme vyplnit, abychom mohli získat data z tohoto konkrétního políčka - určeného právě jeho \uv{name}.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Metoda GET}
+Pokud pro odesílání dat zvolíme metodu \uv{GET}, budou přenášená data snadno čitelná pro kohokoliv. Jsou přenášena pomocí URL (můžete si například vyzkoušet vyhledat něco pomocí vašeho oblíbeného webového vyhledávače - po vyhledání se podívejte na adresní řádek vašeho prohlížeče.) Metoda \uv{GET} tedy není vhodná pro přenášení tajných informací, jako jsou hesla apd.\\
+Po odeslání dat pomocí metody \uv{GET} budou data uložena v asociativním poli \uv{\$\_GET}. Toto pole je globální proměnná a můžeme jej tedy používat kdekoliv v kódu.\\
+K informacím zadaným do formuláře se dostaneme pomocí  \uv{\$\_GET["nazev\_policka\_ve\_formulari"]}. \uv{nazev\_policka\_ve\_formulari} nastavíme políčku pomocí atributu \uv{name}.\\
+Použití této metody nastavíme v atributu formuláře \uv{method}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+
+<form action="soubor_pro_zpracovani.php" method="get"> !\label{scl:method_get}!
+Počet řádků: <input type="number" name="radky"><br>
+Počet sloupců: <input type="number" name="sloupce"><br>
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+<?php
+$zadane_radky = $_GET["radky"];	!\label{scl:method_get_r}!
+$zadane_sloupce = $_GET["sloupce"];	!\label{scl:method_get_s}!
+?>
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Metoda GET}
+\label{code:php_form_get}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:method_get}:] Atribut \uv{method} nastavený na "get" určuje použití metody \uv{GET}.
+\item[ř. \ref{scl:method_get_r}, \ref{scl:method_get_s}:] Po odeslání dat je můžeme použít pomocí \$\_GET[] a \uv{name} daného políčka.
+\end{enumerate}
+\end{minipage}
+
+
+\subsection{Metoda POST} 
+U metody \uv{POST} se data přenáší pomocí HTTP POST a nejsou tedy snadno čitelná pro kohokoliv. Navíc také můžeme poslat libovolný objem dat, což u metody \uv{GET} nelze (nicméně zde ve škole nás to příliš netrápí).\\
+Po odeslání dat pomocí metody \uv{POST} budou data uložena v asociativním poli \uv{\$\_POST}. Toto pole je globální proměnná a můžeme jej tedy používat kdekoliv v kódu.\\
+K informacím zadaným do formuláře se dostaneme pomocí  \uv{\$\_POST["nazev\_policka\_ve\_formulari"]}. \uv{nazev\_policka\_ve\_formulari} nastavíme políčku pomocí atributu \uv{name}. \\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+
+<form action="soubor_pro_zpracovani.php" method="post"> !\label{scl:method_post}!
+Počet řádků: <input type="number" name="radky"><br>
+Počet sloupců: <input type="number" name="sloupce"><br>
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+<?php
+$zadane_radky = $_POST["radky"];	!\label{scl:method_post_r}!
+$zadane_sloupce = $_POST["sloupce"];	!\label{scl:method_post_s}!
+?>
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Metoda POST}
+\label{code:php_form_post}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:method_post}:] Atribut \uv{method} nastavený na "post" určuje použití metody \uv{POST}.
+\item[ř. \ref{scl:method_post_r}, \ref{scl:method_post_s}:] Po odesání dat je můžeme použít pomocí \$\_POST[] a \uv{name} daného políčka.
+\end{enumerate}
+\end{minipage}
+
+
+

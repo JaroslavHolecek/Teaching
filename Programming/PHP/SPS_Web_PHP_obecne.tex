@@ -1,0 +1,63 @@
+\section{Obecné}
+\subsection{Kód, který píše kód}
+Kromě jiného budeme PHP využívat k tomu, abychom nemuseli ručně vypisovat dlouhý a opakující se HTML kód - třeba velkou tabulku.\\
+Napíšeme si proto PHP skript, který po spuštění napíše tento HTML kód \uv{za nás}. Obvykle budeme pomocí PHP vytvářet pouze část HTML kódu a část napíšeme ručně.
+
+\subsection{Jak to funguje}
+Při použití PHP nám do hry vstupuje další prvek - a tím je server, který spouští naše PHP skripty. Obyčejný prohlížeč neumí PHP zpracovat.\\
+Na této škole máme server Xeon na adrese xeon.spskladno.cz\\
+Xeon má přístup k Vaší složce \uv{public\_html} na disku H: a v prohlížeči si můžete přes Xeon tuto složku zobrazit na adrese: xeon.spskladno.cz/~vas\_login (musíte na složce nastavit příslušná přístupová práva)\\
+A jak to celé funguje?\\
+\begin{enumerate}
+\item PHP skript (soubor s naším php kódem) máme uložený na našem počítači (případně je uložený na serveru). 
+\item Tento skript předáme serveru a ten zpracuje veškeré PHP příkazy. Zbylý obsah souboru (mimo bloky <?php \dots ?>) pouze opíše.
+\item Z výsledků příkazů v php blocích a textu mimo tyto bloky vznikne na serveru nový soubor - tentokrát již obyčejný textový (obvykle html)
+\item Výsledný textový (html) soubor server odešle do našeho prohlížeče, který nám ho zobrazí.
+\end{enumerate}
+
+\subsection{Rozdělení kódu}
+PHP kód nemusíme mít v souboru pohromadě v jednom bloku \uv{<?php \dots ?>}. Takových bloků můžeme mít v souboru libovolné množství - a všechny \uv{se počítají} jako jeden kód.\\
+Můžeme tedy zapsat do PHP jen ty části, které chceme měnit a ty, které zůstávají stále stejné mohou být pevně napsané v html.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+
+<?php
+$default_value=15; !\label{scl:php_part1}!
+?>
+
+<form action="soubor_pro_zpracovani.php" method="post"> !\label{scl:request_method_post_set}!
+Počet řádků: <input type="number" name="radky" value=<?php echo $default_value; ?><br> !\label{scl:php_part2}!
+Počet sloupců: <input type="number" name="sloupce" value=<?php echo $default_value; ?>><br> !\label{scl:php_part3}!
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Rozdělení kódu}
+\label{code:php_divide_code}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{5cm}
+\begin{enumerate}
+\item[ř. \ref{scl:php_part1}, \ref{scl:php_part2}, \ref{scl:php_part3}:] Tři bloky php.\\Tyto bloky jsou součást jednoho kódu - tedy to, co uděláme v jednom bloku, můžeme využít v jiném (zde např. uložená proměnná)
+\end{enumerate}
+\end{minipage}
+
+\subsection{Využití dat po obnovení stránky}
+Pokud obnovím stránku (znovu načtu, refresh) ztratím veškeré proměnné (jejich hodnoty), které jsem doposud v kódu použil.\\
+Při každém načtení stránky - tedy i po obnovení - se vše provádí odznovu - od prvního řádku a nezústává nic zachováno (uloženo).\\
+Pokud potřebuji využít data, která jsem získal v předchozím zobrazení stránky, musím je z původní stránky odeslat na stránku, kterou zobrazuji nyní (i když je to stejná stránka - soubor). Také si mohu uložit data mimo stránku - do PC nebo na server\\
+Odeslat data mohu např. pomocí metody \uv{post} (využíváme ve formulářích). Uložit data mohu pomocí cookies, případně session.
+
+\subsection{Proměnné}
+Proměnné v kódu si můžeme představit jako pojmenované \uv{krabičky}, do kterých si můžeme v průběhu programu ukládat různé informace.\\
+Veškeré proměnné v PHP musí začínat \$ dolarem.\\
+PHP je \uv{loosely typed language}. Pro nás to znamená předevsím to, že nmusíme při vytváření proměnné zapisovat, jakého typu budou data, která do ni budeme ukládat. Dokonce se datový typ může v průběhu progrmau měnit - POZOR na to!

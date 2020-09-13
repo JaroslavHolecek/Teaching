@@ -1,0 +1,104 @@
+\section{Užitečné}
+
+
+\subsection{Proměnná \$\_SERVER}
+Proměnná \uv{\$\_SERVER} je globální proměnná (tedy k ní máme přístup kdekoliv v programu), ze které můžeme získat spoustu užitečných informací: \url{https://www.php.net/manual/en/reserved.variables.server.php}.
+
+\subsubsection{'REQUEST\_METHOD'}
+V \uv{\$\_SERVER['REQUEST\_METHOD']} lze zjistit, pomocí jaké metody jsme načetli stránku. Pro nás to bude obzlváště užitečné při zpracování dat z formuláře. Můžeme zjistit, zda jsme stránku zobrazili bez odeslání dat (a tedy nemáme co zpracovávat), nebo po odeslání dat přes formulář (a tedy můžeme tyto data používat). \\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+
+<form action="soubor_pro_zpracovani.php" method="post"> !\label{scl:request_method_post_set}!
+Počet řádků: <input type="number" name="radky"><br>
+Počet sloupců: <input type="number" name="sloupce"><br>
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST"){ !\label{scl:request_method_post_check}!
+	$zadane_radky = $_POST["radky"];	!\label{scl:request_method_post_check_ok_start}!
+	$zadane_sloupce = $_POST["sloupce"];	!\label{scl:request_method_post_check_ok_end}!
+}else{
+	echo "Zatím jsi nic neposlal.<br>"; !\label{scl:request_method_post_check_ko_start}!
+	echo "Zadej počet řádků a sloupců, klikni na tlačítko a uvidíš ty divy...";	!\label{scl:request_method_post_check_ko_end}!
+}
+
+?> 
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Metoda POST}
+\label{code:php_form_post}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{7cm}
+\begin{enumerate}
+\item[ř. \ref{scl:request_method_post_set}:] Nastavení metody \uv{POST}.
+\item[ř. \ref{scl:request_method_post_check}] Kontrola, zda na stránku přišly data pomocí metody \uv{POST}.  
+\item[ř. \ref{scl:request_method_post_check_ok_start}-\ref{scl:request_method_post_check_ok_end}:] Pokud byla použita metoda \uv{POST}, můžeme data zpracovat.
+\item[ř. \ref{scl:request_method_post_check_ko_start}-\ref{scl:request_method_post_check_ko_end}:] Pokud nebyla použita metoda \uv{POST}, uděláme něco jiného.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Funkce}
+\subsubsection{empty(), isset()}
+Funkce \uv{empty(\$promenna)} vrátí hodnotu \uv{True}, pokud je proměnná, kterou testujeme (vložíme do kulatých závorek), \uv{prázdná}. \uv{Prázdná} znamená, že neexistuje, nebo má hodnotu:\\ \textbf{0}; \textbf{0.0}; \textbf{"0"}; \textbf{""}; \textbf{NULL}; \textbf{FALSE}; \textbf{array()}\\
+Obdobným způsobem pracuje funkce \uv{isset(\$promenna)}. Ta naopak vrátí hodnotu \uv{True}, pokud proměnná \textbf{existuje} a je v ní uložena hodnota \textbf{ruzná od NULL}.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+
+<form action="soubor_pro_zpracovani.php" method="post"> !\label{scl:request_method_post_set}!
+Počet řádků: <input type="number" name="radky"><br>
+Počet sloupců: <input type="number" name="sloupce"><br>
+<input type="submit" value="Zobraz tabulku">
+</form>
+
+<?php
+if (empty($_POST["radky"])){ !\label{scl:empty_radky}!
+	echo "Nezadal jsi počet řádků!";	!\label{scl:empty_radky_ok}!
+}else{
+	$zadane_radky = $_POST["radky"]; !\label{scl:empty_radky_ko}!
+}
+
+if (isset($_POST["sloupce"])){ !\label{scl:isset_sloupce}!
+	$zadane_sloupce = $_POST["sloupce"]; !\label{scl:isset_sloupce_ok}!
+}else{
+	echo "Nezadal jsi počet sloupců!";	 !\label{scl:isset_sloupce_ko}!
+}
+?> 
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{empty()}
+\label{code:php_empty}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{9cm}
+\begin{enumerate}
+\item[ř. \ref{scl:empty_radky}:] Kontrola, zda byly zadány řádky
+\item[ř. \ref{scl:empty_radky_ok}:] Pokud nebyly zadány - proměnná je prázdná - vypíšeme hlášku.
+\item[ř. \ref{scl:empty_radky_ko}:] Pokud byly zadány - proměnná není prázdná - můžeme ji použít.
+\item[ř. \ref{scl:isset_sloupce}:] Kontrola, zda byly zadány sloupce
+\item[ř. \ref{scl:isset_sloupce_ok}:] Pokud byly zadány - proměnná je nastavena - můžeme ji použít.
+\item[ř. \ref{scl:isset_sloupce_ko}:] Pokud nebyly zadány - hodnota proměnné je NULL, nebo neexistuje - vypíšeme hlášku.
+\end{enumerate}
+\end{minipage}
+
+
+
+

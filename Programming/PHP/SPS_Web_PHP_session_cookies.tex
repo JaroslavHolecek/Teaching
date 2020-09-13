@@ -1,0 +1,96 @@
+\section{Session a cookies}
+Často si chceme na našich stránkách udržet libovolnou informaci i při přechodu na jinou stránku (v rámci naší webové prezentace). Například se chceme příhlásit pouze jednou a rádi bychom, aby toto přihlášení vydrželo celou dobu, co na stránkách pracujeme. Případně si nastavíme barvu pozadí a chceme mít stejné pozadí po celou dobu.\\
+Je zřejmé, že si takovou informaci musíme někam uložit. Musíme ji uložit na místo, kde zůstane uchována i při zavření stránky - a otevření jiné stránky, nebo i té samé.\\
+Možnosti kam uložit informace budeme využívat dvě:
+\begin{enumerate}
+\item[\textbf{Na server}] pomocí \textbf{session} 
+\item[\textbf{Do PC}] pomocí \textbf{cookies}
+\end{enumerate}
+
+\subsection{Session}
+Pomocí session si můžeme uložit informace na server, který spouští naše php skripty.\\
+Nejprve navážeme se serverem trvalé spojení (session) - toto spojení je platné (server pozná, že jsme novou stránku otevřeli opět my) do doby, dokud nezavřeme prohlížeč (velmi komplikovaným způsobem jde přerušit i pomocí php kódu). Při zavření pouze jedné karty, zůstane spojení navázané.\\
+\vspace{0.5cm}
+V průběhu spojení si informace ukládáme do asociativního pole \$\_SESSION .   
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<?php
+session_start() !\label{scl:session_start} !
+?>
+<html>
+<body>
+
+<?php
+$_SESSION["username"] = "MojeJmeno"; !\label{scl:session_save} !
+$_SESSION["font_size"] = 50;
+  
+echo '<p style="font-size: $_SESSION[\"font_size\"];">'; !\label{scl:session_use} !
+echo 'Přihlášen uživatel: $_SESSION["username"] </p>'; 
+
+unset($_SESSION['username']); !\label{scl:unset} !
+session_destroy(); !\label{scl:session_destroy} !
+?>
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Session}
+\label{code:session}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:session_start}:] Navázání spojení (session) se serverem.\\Musí být první příkaz na stránce.
+\item[ř. \ref{scl:session_save}:] Uložení informací.
+\item[ř. \ref{scl:session_use}:] Použití informací.
+\item[ř. \ref{scl:unset}:] Smazání jedné proměnné.
+\item[ř. \ref{scl:session_destroy}:] Smazání všech dat.
+\end{enumerate}
+\end{minipage}
+
+\subsection{Cookies}
+Cookies jsou informace, které si stránka ukládá do PC učivatele.\\
+Není zcela samozřejmé, že si stránka (která především slouží ke čtení) ukládá cokoliv na uživatelské zařízení - a zasahuje tak do něj (zabírá pamět). Proto s tímto zásahem do svého zařízení musí uživatel souhlasit - to je důvod, proč jste se již jistě setkali s tím, že jste na stránce museli odškrtnout souhlas s cookies.\\
+
+Informace \textbf{ukládáme a měníme} pomocí funkce \uv{\textbf{setcookie()}}.\\
+\textbf{Čteme} je z asociativního \textbf{pole \$\_COOKIE}.  
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<?php
+setcookie("username", "MojeJmeno"); !\label{scl:cookie_set1} !
+setcookie("font-size", 50); !\label{scl:cookie_set2} !
+
+/*Tento řádek zkuste zakomentovat*/
+setcookie("username", "", time() - 3600);  !\label{scl:cookie_delete} !
+?>
+<html>
+<body>
+
+<?php
+echo '<p style="font-size: $_COOKIE[\"font_size\"];">'; !\label{scl:cookie_use} !
+echo 'Přihlášen uživatel: $_COOKIE["username"] </p>'; 
+?>
+
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Cookie}
+\label{code:cookie}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{-1cm}
+\begin{enumerate}
+\item[ř. \ref{scl:cookie_set1}, \ref{scl:cookie_set2}:] Vytvoření (uložení) cookie. Funkce \uv{setcookie()} se musí objevit před <html> tagem
+\item[ř. \ref{scl:cookie_use}:] Použití informací.
+\item[ř. \ref{scl:cookie_delete}:] Smazání jednoho z cookie. Nastavíme mu dobu platnosti na čas (v sekundách) v minulosti.\\
+Zde jen ilustrativní přiklad - obvykle by tento řádek byl na jiné stránce.
+\end{enumerate}
+\end{minipage}
+

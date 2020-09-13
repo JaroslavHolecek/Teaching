@@ -1,0 +1,46 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{a4wide} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usepackage{xcolor}
+
+% tikz for bracket and expalanation of code
+
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Zdrojový kód}
+
+
+\author{Jaroslav Holeček\\ \href{mailto:holecek@spskladno.cz}{holecek@spskladno.cz}}
+\title{PHP pro SPŠ a VOŠ Kladno}
+\date{Poslední úprava: \today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\include{SPS_Web_PHP_obecne}
+\include{SPS_Web_PHP_Datove_typy}
+\include{SPS_Web_PHP_Ridici_struktury}
+\include{SPS_Web_PHP_formular}
+\include{SPS_Web_PHP_Funkce}
+\include{SPS_Web_PHP_session_cookies}
+\include{SPS_Web_PHP_databaze}
+\include{SPS_Web_PHP_uzitecne}
+
+
+
+
+
+
+
+
+\end{document}

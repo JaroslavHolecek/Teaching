@@ -1,0 +1,315 @@
+\section{Datové typy}
+V hardwaru počítače neexistují zvláštní místa pro ukládání čísel, nápisů, obrázků, písniček apd.. Vše je uloženo ve stejné mechanické součástce - paměti (operační, cash, pevný disk).\\
+Z pohledu programu a programátora si můžeme představit, že je vše uloženo ve formě 0 a 1 - např. v ASCII znamená 1000001: "A", 1110111: "w", 0111000: "8".\\
+Zda jsou v počítači uloženy znaky ("Aw8"), čísla (420), nebo třeba písnička či obrázek pozná program podle datového typu.\\
+\textbf{Datový typ} je tedy označení, \textbf{co znamenají} uložená data (\textbf{jedničky a nuly}) - zda je to číslo, znak, obrázek, \dots \\;
+
+\subsection{Odkazy}
+\url{https://www.w3schools.com/pHP/php_datatypes.asp}
+
+\subsection{Datové typy v PHP}
+V nemusíme zapisovat, jaký datový typ má být v proměnné uložený - dokonce se může v průběhu programu datový typ proměnné měnit.\\
+PHP přiřadí datový typ automaticky - podle toho, co uložíme do proměnné.\\
+Zjistit, jakého datového typu je nějaká proměnná můžeme pomocí funkce \uv{var\_dump()}.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+$x = 8; !\label{scl:php_type_8}!
+var_dump(x); !\label{scl:php_type_var8}!
+
+$x = "Ahoj"; !\label{scl:php_type_ahoj}!
+var_dump(x); !\label{scl:php_type_varAhoj}!
+?>
+\end{minted}
+
+\captionof{listing}{Type}
+\label{code:typy_type}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_type_8}:] Uloží do proměnné \$x hodnotu 8 a rovnou přiřadí datový typ integer
+\item[ř. \ref{scl:php_type_ahoj}:] Přepíše hodnoty proměnné \$x na \uv{Ahoj} a změní datový typ na string
+\item[ř. \ref{scl:php_type_var8}, \ref{scl:php_type_varAhoj}:] Jakého datového typu a jaká hotnota je uložena v proměnné nám vrátí funkce var\_dump()
+\end{enumerate}
+\end{minipage}\\ 
+
+\subsubsection{Integer - int}
+Integer označuje \textbf{celé číslo}.\\Jeho zkratka je \uv{int}.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php 
+$pocet_mesicu = 12; !\label{scl:php_int}!
+$bod_mrazu = 0;
+$teplota_venku = -30 ;
+?>
+\end{minted}
+
+\captionof{listing}{Integer}
+\label{code:typy_int}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_int}:] Integer může být kladné celé číslo, záporné celé číslo nebo nula.
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace s int}
+S celými čísly můžeme provádět:
+\begin{enumerate}
+\item[+] Sčítání
+\item[-] Odčítání
+\item[*] Násobení
+\item[/] Dělení - výsledek je \textbf{float - desetinné číslo}
+\item[//]Celočíselné dělení - výsledek je celé číslo - znáte ze 3. třídy ZŠ
+\item[\%]Zbytek po celočíselném dělení - znáte ze 3. třídy ZŠ
+\end{enumerate}
+
+\subsubsection{Float - float}
+Float označuje \textbf{desetinné číslo}, číslo s desetinnou čárkou (plovoucí desetinnou čárkou - odtud slovo \uv{float}).\\
+Takové číslo můžeme do proměnné uložit přímo (\uv{pozor - s desetinnou tečkou}). Také ho můžeme získat jako výsledek dělení.\\
+Jeho zkratka je \uv{float}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php 
+$pocet_odpracovanych_hodin = 14.5; !\label{scl:php_float_dot}!
+var_dump(pocet_odpracovanych_hodin);
+
+$pocet_mesicu = 12;
+$rocni_plat = 1200;
+$mesicni_plat = $rocni_plat / $pocet_mesicu; !\label{scl:php_float_result}!
+
+var_dump($pocet_mesicu);
+var_dump($rocni_plat);
+var_dump($mesicni_plat);
+?>
+\end{minted}
+
+\captionof{listing}{Float}
+\label{code:typy_float}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_float_dot}:] Desetinné číslo (Float) zapisujeme s \textbf{desetinnou tečkou}
+\item[ř. \ref{scl:php_float_result}:] Pokud vydělíme dvě celá čísla, získáme desetinné číslo - i když jdou vydělit beze zbytku.
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace s float}
+S desetinnými čísly můžeme provádět:
+\begin{enumerate}
+\item[+] Sčítání
+\item[-] Odčítání
+\item[*] Násobení
+\item[/] Dělení
+\end{enumerate}
+
+\subsubsection{Boolean - bool}
+Boolean označuje \textbf{logickou hodnotu - Pravda, Nepravda (true, false)}.\\
+V proměnné tohoto datového typu je tedy uloženo buď \uv{true} (Pravda, Platí), nebo \uv{false} (Nepravda, Neplatí).\\
+Výsledek s tímto datovým typem vrací např. operátory porovnání: <, >, =<, =>, ===, !== .\\
+Boolean se využije mimo jiné všude, kde se pracuje s podmínkami - if \ref{code:php_if}, while \ref{code:php_while}.\\
+Jeho zkratka je \uv{bool}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php 
+$mam_brigadu = true; !\label{scl:php_bool_save}!
+var_dump($mam_brigadu);
+
+$vysledek = 20 < 10;
+var_dump($vysledek); !\label{scl:php_bool_result}!
+?>
+\end{minted}
+
+\captionof{listing}{Boolean}
+\label{code:typy_bool}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_bool_save}:] Uložení boolean přímo.
+\item[ř. \ref{scl:php_bool_save}:] Boolean jako výsledek porovnání dvou čísel.
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace s bool}
+S boolean hodnotami můžeme provádět:
+\begin{enumerate}
+\item[or] Logické sčítání - aby byl výsledek true, stačí aby byla jedna z hodnot true
+\item[and] Logické násobení - aby byl výsledek true, všechny hodnoty musí být true
+\item[not] Logická inverze - převrací hodnotu
+\end{enumerate}
+
+\subsubsection{String - str}
+String označuje \textbf{Řetězec znaků - nápis}. Zapisujeme je do uvozovek - jednoduchých, nebo dvojitých - výběr mezi jednoduchými a dvojitými nám umožní zapsat uvozovku i jako součást řetězce.\\
+\textbf{Pozor} při práci s čísly - je rozdíl mezi 15 (číslo - int) a "15" (řetězec - str). Číslo označuje počet - dá se sčitat, dělit, násobit s ostatními čísly tak , jak jste zvyklí z normálního počítání. Oproti tomu Řetězec je \uv{obrázek} (jak vypadá písmenko, číslo atp.) a tedy operace, které znáte (+,*) nebudou dělat to, co znáte z počítání (co to znamená sečíst dva obrázky?). PHP umí automaticky převést string na číslo, pokud je třeba - ale nedá nám nijak vědět, že to dělá.\\
+PHP pracuje s datovými typy velmi volně je tedy třeba dát si pozor na to, co v kódu provádíme.\\
+Jeho zkratka je \uv{str}.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php 
+$jmeno = "František"; !\label{scl:php_str_save}!
+$prijmeni = 'Dobrota';
+var_dump($jmeno);
+
+$cele_jmeno = $jmeno . " " . $prijmeni !\label{scl:php_str_concat}!
+var_dump($cele_jmeno);
+?>
+\end{minted}
+
+\captionof{listing}{Float}
+\label{code:typy_float}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:php_str_save}:] Uložení string pomocí uvozovek.
+\item[ř. \ref{scl:php_str_concat}:] Spojení tří nápisů do jednoho.
+\end{enumerate}
+\end{minipage}\\ 
+
+\paragraph{Operace se str}
+S řetězcem lze provádět nepřeberné množství operací: \url{https://www.w3schools.com/pHP/php_ref_string.asp}\\
+Jistě musíte znát:
+\begin{enumerate}
+\item[] . \uv{tečka} Zřetězení - spojí dva nápisy za sebe.
+\item[] explode(odelovac, \$promenna) Rozdělení - roztrhá nápis na části v místech daných odelovac-em.
+\item[] implode(spojovac, \$promenna) Spojení - spojí všechny části v \$promenna ( všechny musí být string) do jednoho. Mezi každé dva spojí \uv{spojovac} - musí být string.
+\end{enumerate}
+Pokud budete chtít s řetězcem cokoliv udělat - vždy se nejprve podívejte, zda již taková funkce neexistuje - téměř jistě ano a vy si ušetříte spoustu práce.
+
+\subsection{Pole - Array}
+Obdobně jako v jiných jazycích, máme i v PHP pole. Pole slouží k uložení více hodnot pod jedním názvem (pod jednou proměnnou).\\
+Protože máme více hodnot pojmenované stejným názvem (proměnnou), pořtebujeme nějaký způsob, jak určit, kterou hodnotu z těchto mnoha uložených chceme používat.\\
+Jednotlivým uloženým hodnotám říkáme prvky pole.
+
+\subsubsection{Indexované pole}
+V tomto typu pole máme prvky seřazené za sebou a očíslované (indexované). K jednotlivým prvkům pak přistupujeme právě pomocí indexu.\\
+Očíslování (indexy) začínají od 0.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+<?php
+$kamaradi = array("Adam", "Bořek", "Cyril"); !\label{scl:pole_indexovane}!
+echo "Moji kamarádi jsou:<br>";
+echo $kamaradi[0] . ", " . $kamaradi[1] . " a " . $kamaradi[2] . "."; !\label{scl:pole_indexovane_pristup}!
+?> 
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Indexované pole}
+\label{code:php_pole_index}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.3cm}
+\begin{enumerate}
+\item[ř. \ref{scl:pole_indexovane}:] Vytvoření indexovaného pole
+\item[ř. \ref{scl:pole_indexovane_pristup}:] K jednotlivým prvků přistupujeme pomocí indexu v hranatých závorkách.
+\end{enumerate}
+\end{minipage} 
+
+Obvykle máme v poli uloženo mnoho prvků a předem neznáme jejich počet. Proto s polem praujeme pomocí for cyklu.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+<?php
+$kamaradi = array("Adam", "Bořek", "Cyril");
+echo "Moji kamarádi jsou:<br>";
+$pocet_kamaradu = count($kamaradi) !\label{scl:pole_indexovane_pocet}!
+for($i = 0; $i < $pocet_kamaradu; $i++ ){ !\label{scl:pole_indexovane_for}!
+	echo $kamaradi[$i] . " ";
+}
+?> 
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Indexované pole - for}
+\label{code:php_pole_index_for}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2cm}
+\begin{enumerate}
+\item[ř. \ref{scl:pole_indexovane_pocet}:] Uložíme si počet prvků v poli
+\vspace{0.4cm}
+\item[ř. \ref{scl:pole_indexovane_for}:] Pomocí for cyklu projdeme všechna čísla od 0 do posledního indexu a použijeme je pro přístup k prvkům pole.
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Asociativní pole}
+V tomto typu pole máme v prvku vždy dvě \uv{krabičky} - jedné říkáme key (klíč) a druhé value (hodnota). Uloženou hodnotu v tomto poli pak získáváme pomocí klíče.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+<?php
+$vek_kamaradi = array("Adam"=>16, "Bořek"=>18, "Cyril"=>17); !\label{scl:pole_asociativni}!
+echo "Moji kamarádi jsou staří:<br>";
+echo $vek_kamaradi["Adam"] . ", " . $vek_kamaradi["Bořek"] . " a " . $vek_kamaradi["Cyril"]; !\label{scl:pole_asociativni_pristup}!
+?> 
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Asociativní pole}
+\label{code:php_pole_asoc}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.5cm}
+\begin{enumerate}
+\item[ř. \ref{scl:pole_asociativni}:] Vytvoření asociativního pole - ke každému key (zde jména) přiřazujeme value (zde čísla).
+\item[ř. \ref{scl:pole_asociativni_pristup}:] K jednotlivým prvků přistupujeme pomocí klíče.
+\end{enumerate}
+\end{minipage} 
+
+I v asociativním poli je vhodné procházet prvky pomocí for cyklu. Ten ale vypadá trochu jinak a říkáme mu \uv{foreach}.\\ 
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<html>
+<body>
+<?php
+$vek_kamaradi = array("Adam"=>16, "Bořek"=>18, "Cyril"=>17);
+echo "Moji kamarádi jsou staří:<br>";
+foreach($vek_kamaradi as $jmeno => $vek){ !\label{scl:pole_asoc_for}!
+	echo $jmeno . ": " . $vek . "<br>"; 
+}
+?>
+</body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Asociatovní pole - foreach}
+\label{code:php_pole_asoc_foreach}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\vspace{2.8cm}
+\begin{enumerate}
+\item[ř. \ref{scl:pole_asoc_for}:] Při procházení všech prvků řekneme, které pole chceme procházet ( zde \$vek\_kamaradi) a uložíme si vždy key i value (zde do proměnných \$jmeno a \$vek)
+\end{enumerate}
+\end{minipage}
+
