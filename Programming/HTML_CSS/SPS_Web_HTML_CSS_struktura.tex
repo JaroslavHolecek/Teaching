@@ -1,0 +1,123 @@
+\section{Struktura souborů}
+\subsection{Tagy}
+\paragraph{HTML}
+soubory jsou textové soubory. Jednotlivé značky, kterými popisujeme obsah (které přidáváme k obsahu) našich stránek se nazávají \textbf{tagy}.\\
+Tyto tagy jsou až na několik málo výjimek párové - tedy vždy máme jeden otvírací tag a k němu jeden zavírací. Zavírací tag se liší pouze přidáním dopředného lomítka /.\\
+
+\vspace{1cm}
+Dvojici \textbf{otvírací-zavírací} tag si můžeme představit jako krabičku. Jednu krabičku můžeme mít uvnitř jiné krabičky, V krabičkce může být i mnoho různých krabiček, které uvnitř sebe opět mohou mít další krabičky.\\
+Jediné co není možné je, aby se tagy křížili - Pokud zapíšu dva otvírací tagy, musím nejprve uzavřit ten druhý a teprve poté první.\\
+Některé tagy umožňují vyplnit \textbf{doplňující informace} (např. velikost obrázku, adresa odkazu). Těmto \uv{informacím navíc} říkáme \textbf{atributy}.
+\paragraph{CSS}
+soubory jsou také textové soubory, ve kterých zapíšeme, jak se má daný tag zobrazovat. Zapíšeme to jednoduše tak, že napíšeme název tagu a za něj do složených závorek jednotlivé vlastnosti. Každá vlastnost končí středníkem.\\
+Pokud má hodnota jednotky (např. tloušťka ohraničení), píšeme je těsně k číselné hodnotě. U některých vlastností totiž můžeme nastavovat různé parametry (např. u ohraničení - tloušťka, barva, styl (plný, čárkovaný)) a tyto různé parametry jsou odděleny mezerou.
+\vspace{1cm}
+
+Grafické vlastnosti můžeme zapisovat také do vlastního html souboru pomocí tagu <style> v <head>, a dokonce i přímo pro každý konkrétní prvek na stránce, pomocí atribudu \uv{style}. Této možnosti není od věci někdy využít, ale budeme se snažit co nejvíce věcí zapsat do samostatného css souboru. Především je to přehlednější a dále nám to také umožní měnit grafické zobrazení změnou css souboru, bez zásahu do souboru s obsahem stránky. Pokud zapíšete atribut \uv{style} přímo ke konkrétnímu prvku nejde již tuto nastavenou vlastnost ničím změnit.
+
+\subsection{HTML soubor}
+HTML soubor musí mít určité náležitosti, aby prohlížeč věděl, jak ho má zobrazit.\\
+Na úvod zapíšeme , že se jedná o html dokument, následuje tag <html>, ve kterém bude vše ostatní.\\
+V tagu <html> jsou dva hlavní tagy <head> a <body>. Do <head> zapisujeme nastavení stránky (vybraný css soubor, nadpis v liště prohlížeče apd.). V <body> je samotný obsah naší stránky, který nám prohlížeč zobrazí.\\
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html> |\label{scl:html_doctype}|
+<html> |\label{scl:html_html_o}|
+ <head> |\label{scl:html_head_o}|
+  <link rel="stylesheet" type="text/css" href="graficky_soubor.css"> |\label{scl:html_ref_css}|
+ </head> |\label{scl:html_head_c}|
+ <body> |\label{scl:html_body_o}|
+  <!-- Pro přehlednost je dobré, odsazovat tagy, které jsou uvnitř jiných tagů -->
+  <h1>Toto je nadpis</h1> |\label{scl:html_h}|
+  <p>Toto je odstavec.</p> |\label{scl:html_p}|
+
+ </body> |\label{scl:html_body_c}|
+</html>  |\label{scl:html_html_c}|
+\end{minted}
+
+\captionof{listing}{HTML úvod}
+\label{code:html_uvod}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-0.4cm}
+\item[ř. \ref{scl:html_doctype}:] Na úvod souboru zapíšeme, že se jedná o html soubor.
+\item[ř. \ref{scl:html_html_o}-\ref{scl:html_html_c}:] Vše je uzavřeno do <html> tagu.
+\vspace{0.2cm}
+\item[ř. \ref{scl:html_head_o}-\ref{scl:html_head_c}:] Do tagu <head> zapisujeme především nastavení stránky.
+\item[ř. \ref{scl:html_ref_css}:] Označení souboru css, ze kterého chceme číst grafické nastavení.
+\item[ř. \ref{scl:html_body_o}-\ref{scl:html_body_c}:] Samotný obsah stránky zapíšeme do tagu <body>
+\item[ř. \ref{scl:html_h}:] Nadpis 
+\item[ř. \ref{scl:html_p}:] Odstavec
+\end{enumerate}
+\end{minipage}\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{css}
+/*Všechny vlastnosti jsou ukončené středníkem!*/
+body { |\label{scl:html_css_body}|
+  background-color: lightblue; |\label{scl:html_css_body_bg}|
+}
+
+h1 { |\label{scl:html_css_h1}|
+  color: navy; |\label{scl:html_css_h1_color}|
+  margin-left: 20px; |\label{scl:html_css_h1_margin}|
+}
+\end{minted}
+
+\captionof{listing}{CSS úvod}
+\label{code:css_uvod}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{0.4cm}
+\item[ř. \ref{scl:html_css_body}. \ref{scl:html_css_h1}:] Zapíšeme název tagu a do složených závorek všechny požadované vlastnosti.
+\item[ř. \ref{scl:html_css_body_bg}:] Nastavení barvy pozadí celé stránky.
+\item[ř. \ref{scl:html_css_h1_color}:] Nastavení barvy nadpisů typu h1.
+\item[ř. \ref{scl:html_css_h1_margin}:] Nastavení odsazení nadpisů h1.\\Jednotky píšeme těsně k hodnotám
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Metadata}
+Je vhodné do naší stránky zapsat, kdo je jejím autorem, kdy proběhla poslední aktualizace apd..\\
+To provedeme nejlépe pomocí tagu <meta>.\\
+Také pomocí <meta> můžeme (a měli bychom) nastavit, jak má prohlížeč zobrazit stránku (např. v jakém přiblížení).\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html> 
+<html> 
+ <head> 
+  <meta name="Autor" content="Nejlepší jméno"> |\label{scl:html_meta_autor}|
+  <meta name="Poslední úprava" content="teď"> |\label{scl:html_meta_uprava}|
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> |\label{scl:html_meta_viewport}|
+ </head>
+ <body>
+ </body> 
+</html>  
+\end{minted}
+
+\captionof{listing}{Metadata}
+\label{code:html_meta}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:html_meta_autor}, \ref{scl:html_meta_uprava}:] Nastavení metadat o stránce.
+\item[ř. \ref{scl:html_meta_viewport}:] Nastavení uvodního viewportu - jak se má stránka zobrazit
+
+\end{enumerate}
+\end{minipage}\\
+
+
+\subsubsection{Komentáře}
+Psát si ke kódu komentáře je velmi vhodné. Komentář je text, který se na výsledené podobě stránky nijak neprojeví a zapisujeme do něj vysvětlivky ke kódu.\\
+Třeba pro někoho, kdo náš kód bude spravovat, ale i sami prosebe, až se ke kódu vrátíme po měsíci a nebudeme si pamatovat, co jsme to tu vlastně psali). Můžeme také pomocí komentářú zřetelně oddělit některé části stránky (třeba tabulku, kterou často upravujeme) a zpříjemnit si tak orientaci v kódu.\\
+\paragraph{v HTML} souboru zapisujeme komentáře to tagu $ <!-- \dots --> $
+\paragraph{v CSS} souboru zapisujeme komentáře mezi $ /* \dots */ $
+ 

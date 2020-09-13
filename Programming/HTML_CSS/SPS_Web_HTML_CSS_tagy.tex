@@ -1,0 +1,209 @@
+\section{Základní přehled tagů}
+Tagů a jejich grafických úprav můžeme využít nepřeberné množství. Proto vždy, když budete chctít něco vytvořit, podívejte se do dokumentace a téměř jistě najdete jednoduchou možnost, jak to provést.\\
+Zde si ukážeme minimální souhrn tagů, které \uv{musíte} znát. Samozřejme i tyto tagy naleznete v dokumentaci, ale na druhou stranu hledat něco každých 5 minut značně zdržuje.\\
+\vspace{1cm}
+Vzhledem k tomu, že základní grafická úprava pomocí css je pro velkou část tagů stejná. Nebude zde vypsána u každého tagu, ale pouze u těch, kde se v něčem liší, je v něčem zajímavá.
+\subsection{css}
+V css nejčasteji využijeme úpravu:
+\begin{itemize}
+\item[barva textu - ] color: zapisujeme barvu slovy (anglicky), připadně číslem \url{https://www.w3schools.com/css/css_colors.asp}
+\item[font - ] font: nastavujeme velikost, styl, tloušťku, rodinu  - \url{https://www.w3schools.com/css/css_font.asp}
+\item[ohraničení - ] border: nastavujeme barvu, tloušťku, styl, zakulacení - \url{https://www.w3schools.com/css/css_border.asp}
+\item[odkazy - ] můžeme nastavit různý styl pro odkaz, který je aktivní (míří na něj myš), je již navštívený, právě jsme na něj klikli - \url{https://www.w3schools.com/css/css_link.asp} 
+\item[tabulky - ] ohromné množství možností - nastavujeme zvlášť vlastnosti celé tabulky, řádků a buněk - \url{https://www.w3schools.com/css/css_table.asp}
+\item[pozadí - ] můžeme nastavit, barvu, obrázek, každý prvek může mít své pozadí - \url{https://www.w3schools.com/css/css_background.asp}
+\item[zarovnání - ] align: zarovnání vlevo, vpravo, na střed, nahoru, dolů - \url{https://www.w3schools.com/css/css_align.asp}
+\item[odsazení - ] máme dva typy odsazení - margin a padding - jaký je mezi nimi rozdíl ukazuje obrázek zde - \url{https://www.w3schools.com/css/css_boxmodel.asp}
+\end{itemize}
+
+\subsubsection{Jednotky}
+Při zadávání rozměrů samozřejmě musíme zadat i jednotky.\\
+Jednotky existují \textbf{absolutní}, které udávají pevnou velikost - mm, cm, in, px (milimetry, centimetry, inche, pixely)\\
+a \textbf{relativní}, které udávají velikost prvku vzhledem k jinému prvku (třeba velikosti obrazovky) - em, vw, vh, \% (relativně k font-size, setině šířky obrazovky, setině výšky obrazovky, k nadřazenému prvku (tomu, ve kterém je tento prvek))\\
+\vspace{0.5cm}
+Vybrat správné jednotky je velmi důležité, jinak bude stránka na některých zařízení (velká obrazovka, malá obrazovka) nečitelná.
+
+\subsection{Nadpis - <h1>, <h2>, <h3>}
+Do tagů <h1>, <h2>, <h3> (headings) zapisujeme nadpisy. Tedy text, který prohlížeč zobrazuje oddělený od dalšího textu a graficky výraznější.\\
+Čísla za \uv{h} rozlišují úrovně nadpisů - <h1> je největší.
+
+\subsection{Odstavec - <p>}
+Do odstavce <p> (paragraph) píšeme prostý text.
+
+\subsection{Odkaz - <a>}
+Do tagu <a> vládáme prvek, který nás po kliknutí přesměruje na zadanou stránku (nebo její část). Jako odkaz můžeme použít v zásadě cokoliv - text, nadpis, obrázek, blok, \dots \\
+Aby prohlížeč věděl, kterou stránku má zobrazit po kliknutí na odkaz, musíme vyplnit atribut \uv{href}.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html> 
+<html> 
+ <head> 
+  <link rel="stylesheet" type="text/css" href="graficky_soubor.css"> 
+ </head> 
+ <body> 
+ 
+  <a href="www.wikipedia.cz">Odkaz na wiki.</a> |\label{scl:html_a_wiki}|
+  <a href="moje_druha_stranka.html">Odkaz na naši další stránku.</a> |\label{scl:html_a_druha}|
+
+ </body>
+</html> 
+\end{minted}
+
+\captionof{listing}{Odkaz}
+\label{code:html_odkaz}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-0.4cm}
+\item[ř. \ref{scl:html_a_wiki}:] Odkaz na internetovou stránku.
+\item[ř. \ref{scl:html_a_druha}:] Odkaz na náš jiný soubor.
+\end{enumerate}
+\end{minipage}\\
+
+\subsection{Obrázek - <img>}
+Obrázek můžeme ve stránce zobrazovat pomocí tagu <img> (image). Tento tag je pouze otevírací. Nutný atribut je \uv{src}, kterým určíme kde je obrázek uložen (může být uložen v počítači, nebo na internetové adrese). Vhodné atributy jsou také \uv{alt}, kterým nastavíme náhradní text (zobrazíse, pokud se nepodaří načíst obrázek) a nezapomenout nastavit výšku a šířku - pomocí atributu \uv{style} (což jsou css, jen vložené přímo k jednomu konkrétnímu prvku).
+
+\subsection{Seznam - <ol>, <ul>}
+Seznamů máme dva typy - Číslovaný <ol> (ordered list) a Nečíslovaný <ul> (unordered list).\\
+Číslovaný seznam může být číslovaný nejen čísly, ale i písmeny, řeckými číslicemi.\\
+Nečíslovaný seznam může mít různé typy odrážek - kruh, kružnice, \dots \\
+Celý seznam  píšeme mezi tagy <ol>, nebo <ul>. Jednotlivé \textbf{prvky seznamu} pak do tagů \textbf{<li>} (list item).\\
+Ukázky seznamu zde \url{https://www.w3schools.com/html/html_lists.asp}
+
+\subsection{Tabulka - <table>}
+Každá tabulka je vložena do tagu <table>.\\
+Dále musí prohlížeč vědět, co jsou jednotlivé řádky a buňky tabulky. Ty zapíšeme do tagů <tr> (table row) pro každý řádek. A do řádku zapíšeme tagy <td> (table data) pro každou buňku v řádku.\\
+Dále často chceme odlišit první řádek - hlavičku tabulky s nadpisem sloupců. To provedeme pomocí použití <th> (table head) tam, kde bychom jinak použili <td>.\\
+
+\vspace{0.5cm}
+Pro lepší možnosti grafického zobrazení tabulky je vhodné ji rozdělit na záhlaví - tělo - zápatí, pomocí <thead> - <tbody> - <tfoot>\\
+Také můžeme tabulce přidat nadpis pomocí <caption>\\
+
+\vspace{1cm}
+U tabulek - a především jejich grafického nastavení je nejlepší si rovnou prohlédnout výsledek a vybrat si, co se Vám do vašich stránek líbí:
+\begin{itemize}
+\item[html:] \url{https://www.w3schools.com/html/html_tables.asp} 
+\item[css:] \url{https://www.w3schools.com/css/css_table.asp}
+\end{itemize}
+
+
+\subsection{Blok - <div>}
+Blok <div> slouží k uzavření několika (nebo jen jednoho) prvků do jednoho bloku a jejich společné formátování. Lze tak například nastavit pozadí polovině stránky - polovinu obsahu uzavřeme do bloku a tomuto bloku nastavíme požadované pozadí.
+
+\subsection{Jednořádkový blok - <span>}
+Blok <span> používáme obdobně jako <div>. Zatímco <div> se ale vždy roztáhne co nevíce do šířky, blok <span> zůstane jen těsně okolo vnitřního prvku.
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html> 
+<html> 
+ <head> 
+  <link rel="stylesheet" type="text/css" href="graficky_soubor.css"> 
+ </head> 
+ <body> 
+  <!-- Zkuste v prohlížečí přiblížit a oddálit stránku -->
+  <span style="display: inline-block; border:solid green;"> |\label{scl:html_span}|
+    <img src="https://i.kym-cdn.com/entries/icons/original/000/000/063/Rage.jpg">
+  </span>
+  <br>
+  <div style="border:solid green;"> |\label{scl:html_div}|
+   <img src="https://i.kym-cdn.com/entries/icons/original/000/000/063/Rage.jpg">
+  </div>
+  <br>
+ </body>
+</html>
+\end{minted}
+
+\captionof{listing}{Odkaz}
+\label{code:html_odkaz}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-0.4cm}
+\item[ř. \ref{scl:html_span}:] Zobrazí ohraničení jen okolo obrázku
+\item[ř. \ref{scl:html_div}:] Zobrazí ohraničení až k okrajům stránky
+\end{enumerate}
+\end{minipage}\\
+
+\subsection{Identifikátor - id}
+Identifikátor - id je \textbf{atribut}. Tedy ho přiřazujeme nějakému prvku - tagu.\\
+Můžeme si takto označit konkrétní prvek a pak se na něj odkazovat. Jedno id může mít pouze jeden prvek na stránce. Tedy musí být unikátní.\\
+Můžeme vytvořit odkaz tak, že prohlížeč zobrazí tento prvek jako první na stránce.\\
+V CSS můžeme upravit vlastnosti pouze tohoto konrétního prvku
+
+\subsection{Třída - class}
+Třída - class je také \textbf{atribut} a tedy ji přiřazujeme nějakému tagu.\\
+Funguje v zásadě stejně jako id, jen s tím rozdílem, že v jedné třídě může být zařazeno více prvků.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html> 
+<html> 
+ <head> 
+  <link rel="stylesheet" type="text/css" href="graficky_soubor.css"> 
+ </head> 
+ <body> 
+  <p id="1" class="dulezite">Nápis ve třídě "dulezite" a s id "1"</p> |\label{scl:html_id_class}|
+  <p class="dulezite">Nápis ve třídě "dulezite"</p> |\label{scl:html_class}|
+  <p id="2">Nápis s id "2"</p> |\label{scl:html_id}|
+ </body>
+</html>
+\end{minted}
+
+\captionof{listing}{HTML - id, class}
+\label{code:html_id_class}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-0.4cm}
+\item[ř. \ref{scl:html_id_class}:] Prvek může být ve třídě (i v několika) a mít id
+\item[ř. \ref{scl:html_class}:] V jedné třídě může být více prvků
+\item[ř. \ref{scl:html_id}:] Další prvek musí mít jiné id - id se nemohou opakovat
+\end{enumerate}
+\end{minipage}\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+ #1 { |\label{scl:css_id_1}|
+	font-size: 10px; 
+ }
+ 
+ #2 { |\label{scl:css_id_2}|
+	font-size: 20px;
+ }
+ 
+ .dulezite { |\label{scl:css_class}|
+	color: red; 
+ }
+\end{minted}
+
+\captionof{listing}{CSS - id, class}
+\label{code:html_id_class}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{-0.4cm}
+\item[ř. \ref{scl:css_id_1}, \ref{scl:css_id_2}:] Na id odkazujeme pomocí \#
+\item[ř. \ref{scl:css_class}:] Na třídu odkazujeme pomocí . (tečky)
+\end{enumerate}
+\end{minipage}\\
+
+\subsection{Rozložení - layout}
+Jsou místa na stránce, která jsou tradičně využívána k zobrazení určitých informací.\\
+Pro využítí schopnosti prohlížečů tato místa zobrazit uživateli přehledně je vhodné využít připravené layout prvky.\\
+Nejlépe pochopíme o co jde pří dostatečně dlouhém dívání na obrázek (ne hned první ukázku, ale o trochu pod ní) na stránce \url{https://www.w3schools.com/html/html_layout.asp}
+
+
+
+
+
+

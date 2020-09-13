@@ -1,0 +1,104 @@
+\section{Formulář}
+Formulář je speciální prvek, který nám umožní vložit na stránku políčka, do kterých můžeme (jako uživatelé stránek) zapsat libovolné údaje (Jméno, věk, datum, zaškrtnout jednu z více možností, zaškrtnout několik z více možností apd.).\\
+
+\vspace{0.5cm}
+HTML ani CSS nám neumožní s těmito zadanými hodnotami něco udělat - uložit si je, něco spočítat, \dots K tumu budeme potřebovat PHP (připadně JavaScript). O PHP si budeme povídat později. O JavaScriptu, pokud to stihneme, ještě později.\\
+
+\subsection{Nastavení - <form>}
+Formulář zapisujeme do tagu <form>.\\
+V otevíracím tagu <form> nastavíme, co se má stát (na jakou stránku má přejít prohlížeč) po kliknutí na odesílací tlačítko - to nastavíme pomocí atributu \uv{action}\\
+Dále také nastavíme, jakou metodou se mají odeslat data mezi stránkami - to nastavíme pomocí atributu \uv{method}.\\
+Oba tyto atributy pro nás zatím nejsou důležité, neboť nemáme žádný skript (program), který by data zpracoval.
+
+\subsection{Vstupní políčka - <input> a další}
+Velké množství typů vstupních políček naleznete v dokumentaci, případně zde: \url{https://www.w3schools.com/html/html_form_input_types.asp	}
+Vstupní políčka jsou jednotlivé prvky formuláře. Těchto prvků je velké množství a zde si ukážeme jen některé základní.\\
+Růžné vstupní typy políček nastavíme nejčastěji pomocí atributu \uv{type}, ale několik málo jich má vlastní tag.\\
+Dále je vhodné (a později nutné) přiřadit každému políčku \uv{name}, pomocí kterého z něj později získáme data.\\
+A v neposlední řadě zde užijeme atribut \uv{id}. Pomocí něj můžeme ke vstupnímu políčku přiřadit nápis (label), který pak bude reagovat na naše kliknutí.
+
+\subsubsection{Tlačítko - <button>}
+Tlačítko, na které můžeme kliknout a pomocí atributu \uv{onclick} nastavit, co se poté stane.
+
+\subsubsection{Dlouhý text - <textarea>}
+Pole pro zapsání delšího textu. Pomocí atributů \uv{rows} a \uv{cols} nastavíme velikost pole.
+
+\subsubsection{Rozbalovací seznam - <select>}
+Rozbalovací seznam, ze kterého můžeme vybrat jednu, nebo více možností (podle atributu \uv{multiple}).\\
+Jednotlivé možnosti píšeme do tagů <option>.
+
+\subsubsection{Tlačítko - submit}
+Tlačítko, po jehož zmáčknutí se odešlou data formuláře na určenou stránku.
+\subsubsection{Text - text}
+Textové pole vhodné např. pro jméno.
+\subsubsection{Heslo - password}
+Pole, ve kterém není viditelný obsah, který do něj zapíšeme (místo všech znaků jsou např. černé tečky)
+\subsubsection{Email - email}
+Pole, ve kterém prohlížeč pohlída, zda je zadaná emailová adresa.
+\subsubsection{Zaškrtávací políčka - checkbox}
+Umožňuje zaškrtnout (a odškrtnout) několik nabízených možností
+\subsubsection{Číslo - number}
+Prohlížeč pohlídá, zda je zadáno číslo
+\subsubsection{Soubor - file}
+Otevře se okno pro výběr souboru z počítače
+\subsubsection{Spoustu a spoustu dalších...}
+Barva, datum, telefoní číslo, \dots 
+
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=||]{html}
+<!DOCTYPE html>
+<html>
+ <body>
+  
+  <form action="zpracovani_dat.php" method="post"> |\label{scl:html_form_start}|
+   <input type="radio" id="muz" name="gender" value="muz"> |\label{scl:html_form_muz}|
+   <label for="muz">Muž</label> |\label{scl:html_form_label_muz}|
+   <br>   
+   <input type="radio" id="zena" name="gender" value="zena"> |\label{scl:html_form_zena}|
+   <label for="zena">Žena</label> |\label{scl:html_form_label_zena}|
+   <br>
+   <input type="radio" id="jiny" name="gender" value="jiny"> |\label{scl:html_form_x}|
+   <label for="jiny">Jiný</label> |\label{scl:html_form_label_x}|
+   <br>
+   <br>
+   <textarea name="message" rows="10" cols="30"> |\label{scl:html_form_textarea}|
+     Napiš něco o sobě...
+   </textarea> 
+   <br>
+   <br>
+   <label for="em">Zadej email:</label>
+   <input type="email" id="em" name="adresa"> |\label{scl:html_form_email}|
+   <br>
+   <input type="submit" value="Odeslat">
+  </form> 
+
+ </body>
+</html>
+\end{minted}
+
+\captionof{listing}{Odkaz}
+\label{code:html_odkaz}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\vspace{9cm}
+\item[ř. \ref{scl:html_form_start}:] V otevíracím tagu formuláře nastavíme další vlastnosti. 
+\item[ř. \ref{scl:html_form_muz}, \ref{scl:html_form_zena}, \ref{scl:html_form_x}:] Vstupní políčka typu \uv{radio}.\\Všechny mají stejnou hodnotu atributu \uv{name} - tak prohlížeč pozná, že patří k sobě\\
+Každý má své id - pomocí id k němu připojíme label.\\
+Všechny mají \uv{value} - protože zde nic nevyplňujeme, je to hodnota, která se odešle ke zpracování.
+\item[ř. \ref{scl:html_form_label_muz}, \ref{scl:html_form_label_zena}, \ref{scl:html_form_label_x}:] Popisky jednotlivých tlačítek\\
+Pomocí atributu \uv{for} je můžeme projit s daným vstupním políčkem.
+\item[ř. \ref{scl:html_form_textarea}:] Některé prvky mají samostatný tag.
+\item[ř. \ref{scl:html_form_email}:] Některé prvky upravíme pomocí změny atributu \uv{type}.
+\end{enumerate}
+\end{minipage}\\
+
+
+
+
+
+
+
