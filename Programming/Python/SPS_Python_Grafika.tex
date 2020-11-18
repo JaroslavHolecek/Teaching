@@ -158,13 +158,13 @@ CarPos = [50, 100] !\label{scl:car_pos}!
 CarRadius = 10 !\label{scl:car_radius}!
 
 hodiny = pygame.time.Clock() !\label{scl:hodiny}!
-cekej_ms = 60
+fps = 20
 
 def draw_car(S, r): !\label{scl:car_draw}!
     pygame.draw.circle(screen, black, S, r , 0)
     pygame.draw.line(screen, white, S, (S[0], S[1]+r), 3 )
 
-pygame.key.set_repeat(int(round(cekej_ms/2))) !\label{scl:key_repeat}!
+pygame.key.set_repeat(int(round(fps/2))) !\label{scl:key_repeat}!
 running = True
 while running: !\label{scl:hlavni_smycka}!
     for event in pygame.event.get(): !\label{scl:smycka_udalosti}!
@@ -180,7 +180,7 @@ while running: !\label{scl:hlavni_smycka}!
     screen.fill(white) !\label{scl:fill_white}!
     draw_car(CarPos, CarRadius) !\label{scl:use_car_draw}!
      
-    hodiny.tick(cekej_ms) !\label{scl:use_hodiny_tick}!
+    hodiny.tick(fps) !\label{scl:use_hodiny_tick}!
     pygame.display.update() !\label{scl:update}!
 
 pygame.quit() !\label{scl:quit}!
@@ -207,7 +207,7 @@ pygame.quit() !\label{scl:quit}!
 \item[ř. \ref{scl:udalost_key_a}, \ref{scl:udalost_key_d}:] Zjšitění, která klávesa je zmáčknutá.
 \item[ř. \ref{scl:fill_white}:] Vybarvení celého plátna bílou barvou (tedy smažeme vše, co je na plátně nakreslené)
 \item[ř. \ref{scl:use_car_draw}:] Zakreslíme \uv{auto} na aktuální pozici.
-\item[ř. \ref{scl:use_hodiny_tick}:] Každý krok hry bude trvat stanovený čas - zde 60ms (včetně zpracování všech předchozích příkazů)
+\item[ř. \ref{scl:use_hodiny_tick}:] Hra bude mít stanovéné fps (frame per second - počet zobrazených snímků za sekundu) - zde 20fps
 \item[ř. \ref{scl:update}:] Všechny provedené změny zobrazíme na monitor.
 \end{enumerate}
 \end{minipage}
@@ -261,7 +261,7 @@ CarRadius = 10
 CarColor = black
 
 hodiny = pygame.time.Clock()
-cekej_ms = 60
+fps = 20
 
 def draw_car(S, r):
     changed_rect = pygame.draw.circle(screen, CarColor, S, r, 0) !\label{scl:blit_car_rect}!
@@ -278,7 +278,7 @@ screen.blit(pozadi, dest=pozadi_rect, area=pozadi_rect) !\label{scl:blit_pozadi_
 
 car_rect = draw_car(CarPos, CarRadius) !\label{scl:blit_draw_car_first}!
 
-pygame.key.set_repeat(int(round(cekej_ms / 2)))
+pygame.key.set_repeat(int(round(fps / 2)))
 running = True
 while running:
     for event in pygame.event.get(): 
@@ -296,7 +296,7 @@ while running:
  
     pygame.display.flip() !\label{scl:blit_flip}!
     
-    hodiny.tick(cekej_ms)
+    hodiny.tick(fps)
 
 pygame.quit()
 \end{minted}
