@@ -1,0 +1,1 @@
+Basics for library PyGame
