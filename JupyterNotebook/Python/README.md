@@ -10,7 +10,7 @@ Recommended order is:
   6) String_zadani.ipynb TBD
   7) For_zadani.ipynb TBD
   8) While_zadani.ipynb
-  9) Breake_continue_zadani.ipynb TBD
+  9) Break_Continue_zadani.ipynb
   10) Funkce_zadani.ipynb TBD
   11) Vyjimky_zadani.ipynb TBD
   12) OOP_trida_objekt_atribut_metoda_zadani.ipynb TBD
