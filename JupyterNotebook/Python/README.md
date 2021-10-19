@@ -13,6 +13,7 @@ Recommended order is:
   9) Break_Continue_zadani.ipynb
   10) Funkce_zadani.ipynb
   11) Vyjimky_zadani.ipynb TBD
-  12) OOP_trida_objekt_atribut_metoda_zadani.ipynb TBD
-  13) OOP_zapouzdreni_zadni.ipynb TBD
-  14) OOP_Dedicnost_zadani.ipynb TBD
+  12) Soubory_zadani.ipynb TBD
+  13) OOP_trida_objekt_atribut_metoda_zadani.ipynb TBD
+  14) OOP_zapouzdreni_zadni.ipynb TBD
+  15) OOP_Dedicnost_zadani.ipynb TBD
