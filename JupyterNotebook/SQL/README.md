@@ -2,7 +2,7 @@ Notebooks for learning (My)SQL from very beginning.
 Using Python mysql-connector for connection to database.
 
 Recommended order:
-  1. Princip_relacni_databaze_a_pripojeni.ipynb TBD
+  1. Princip_relacni_databaze_a_pripojeni_zadani.ipynb
   2. Create_alter_delete_zadani.ipynb
   3. Vlastnosti_atributu_zadani.ipynb
   4. Insert_select_agregacniFunkce_zadani.ipynb TBD
