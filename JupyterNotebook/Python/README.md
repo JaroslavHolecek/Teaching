@@ -15,5 +15,5 @@ Recommended order is:
   11) Vyjimky_zadani.ipynb TBD
   12) Soubory_zadani.ipynb TBD
   13) OOP_trida_objekt_atribut_metoda_zadani.ipynb
-  14) OOP_zapouzdreni_zadani.ipynb TBD
+  14) OOP_zapouzdreni_zadani.ipynb
   15) OOP_Dedicnost_zadani.ipynb TBD
