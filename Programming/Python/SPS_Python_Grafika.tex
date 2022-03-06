@@ -1,0 +1,509 @@
+\section{Grafika}
+\uv{Nakreslit} obrázek na monitor počítače není tak jednoduchý úkol, jak se na první pohled může zdát. Proto již spoustu hodných programátorů vytvořilo knihovny (soubory, ve kterých jsou předpřipravené funkce), které můžeme jednoduše používat a které udělají spoustu těžké práce za nás.\\
+I tak, ale musíme těmto připraveným funkcím říct, co od nich vlastně chceme.\\
+Grafických knihoven je poměrně velké množství - někeré se specializují na 2D, některé na 3D, na grafy, \dots \\
+Ve škole budeme používat knihovny PyQt, PyGame a PyQtGraph.\\
+
+\vspace{.5cm}
+\textbf{V testech se nebude očekávat, že znáte konkrétní funkce - jejich názvy a použití}\\
+Jsou ale \textbf{obecné principy}, které se pro zobrazování grafiky používají - a to je to, co \textbf{máte za úkol se naučit}. V níže uvedených příkladech se proto zaměřte na to, \textbf{jak to funguje} a ne na to, co přesně je na kterém řádku napsané.\\
+\subsection{PyQt}
+Pomocí knihovny PyQt můžeme vytvářet grafické (klikací) aplikace. Vytvářet budeme především, okna, tlačítka, nápisy a vstupní políčka.
+\subsubsection{Odkazy}
+Ukázky jsou převzaty především z \url{https://naucse.python.cz/lessons/intro/pyqt/}.
+
+\subsubsection{Aplikace}
+Před vytvořením hlavního okna musíme nejprve \uv{vytvořit} samotnou aplikaci - bude to objekt, který si pamatuje sposutu informací (s jakými argumenty byla aplikace spuštěna, s jakým nastavením, které okno je zrovna aktivní, \dots). Provedem to pomocí \uv{QtWidgets.QApplication([])}.\\
+Celá aplikace se spustí, po zavolání funkce \uv{exec()}. Do té doby budou všechny úpravy, které provedeme skryty.
+\subsubsection{Hlavní okno}
+Dále si vytvoříme samotné hlavní okno, do kterého budeme vkládat další grafické prvky (tlačítka, nápisy, \dots). To uděláme pomocí \uv{QtWidgets.QWidget()}.\\
+Toto hlavní okno (stejně jako jakýkoliv jiný prvek do kterého chceme něco vložit) musí vědět, jakým způsobem do něj chceme další prvky vkládat (vertikálně (svisle), horizontálně (vodorovně), do mřížky, \dots).\\
+Způsob vkládání nastavíme pomocí tak zvaného \uv{Layout managera} - např. \uv{QtWidgets.QHBoxLayout()} pro horizontální uspořádání.\\
+Toto okno (a všechny jeho potomci - prvky, které jsme do něj vložili) se zobrazí až ve chvíli, kdy na něj zavoláme funkci \uv{show()}
+\subsubsection{Typy prvků}
+Prvků, které můžeme vládat je velké množství a v případně, že máte představu, co byste chtěli, podívejte se do dokumentace.\\
+Zde si ukážeme některé z nich:
+\begin{enumerate}
+\item[] \textbf{QtWidgets.QLabel(}'Napis'\textbf{)} je pole, do kterého můžeme zapisovat nápisy. Tyto nápisy nemůže uživatel přímo měnit.
+\item[] \textbf{QtWidgets.QPushButton(}'Klik'\textbf{)} je tlačítko, na které může uživatel kliknout (např. myší).
+\item[] \textbf{QtWidgets.QHBoxLayout()} je prvek (přesněji zvláštní typ prvku - layout), který umožňuje uspořádat ostatní prvky - tento konkrétní Horizontálně (proto má v názvu Q\textbf{H}BoxLayout).
+\item[] \textbf{QtWidgets.QLineEdit()} je pole, do kterého může uživatel cokoliv zapsat. To, co je momentálně zapsané v tomto poli přečteme pomocí \textbf{vstupni\_text = nazev\_vstupniho\_pole.text()}
+\end{enumerate}
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+from PyQt5 import QtWidgets !\label{scl:pyqt_import}!
+
+app = QtWidgets.QApplication([]) !\label{scl:pyqt_app}!
+
+hlavni_okno = QtWidgets.QWidget() !\label{scl:pyqt_main_win}!
+hlavni_okno.setWindowTitle('Můj supr program') !\label{scl:pyqt_main_win_title}!
+
+usporadani = QtWidgets.QHBoxLayout() !\label{scl:pyqt_hlayout}!
+hlavni_okno.setLayout(usporadani) !\label{scl:pyqt_set_layout}!
+
+napis = QtWidgets.QLabel('Tlačítko nic nedělá...') !\label{scl:pyqt_label}!
+usporadani.addWidget(napis) !\label{scl:pyqt_add_label}!
+
+tlacitko = QtWidgets.QPushButton('Klikni na mě') !\label{scl:pyqt_button}!
+usporadani.addWidget(tlacitko) !\label{scl:pyqt_add_button}!
+
+hlavni_okno.show() !\label{scl:pyqt_show}!
+app.exec() !\label{scl:pyqt_exec}!
+\end{minted}
+
+\captionof{listing}{PyQt - první okno}
+\label{code:grafika_pyqt_prvni_okno}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:pyqt_import}:] Importujeme používané knihovny
+\item[ř. \ref{scl:pyqt_app}:] Vytvoříme hlavní objekt naší aplikace
+\item[ř. \ref{scl:pyqt_main_win}:] Vytvoříme první Widget - hlavní okno.
+\vspace{0.5cm}
+\item[ř. \ref{scl:pyqt_main_win_title}:] Pomocí funkcí můžeme měnit jednotlivé vlastnosti prvků (Widetů)
+\vspace{0.6cm}
+\item[ř. \ref{scl:pyqt_hlayout}:] Vytvoříme prvek pro uspořádání ostatních prvků
+\vspace{0.5cm}
+\item[ř. \ref{scl:pyqt_set_layout}:] Nastavíme, které uspořádání chceme použít (každé okno může mít jiné uspořádání)
+\item[ř. \ref{scl:pyqt_label}:] Vytvoříme prvek - nápis
+\item[ř. \ref{scl:pyqt_button}:] Vytvoříme prvek - tlačítko
+\item[ř. \ref{scl:pyqt_add_label}, \ref{scl:pyqt_add_button}:] Vložíme prvky do připraveného prvku pro uspořádání (aplikace by jinak nevěděla, v jakém okně, v jaké části) chceme prvky mít
+\item[ř. \ref{scl:pyqt_show}:] Zobrazíme hlavní okno - a s ním všechny jeho potomky (prvky, které jsou v něm)
+\item[ř. \ref{scl:pyqt_exec}:] Spustíme aplikaci 
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Funcionalita}
+Samořejmě chceme, aby se po kliknutí na tlačítko (nebo jiné akci) provedla nějaká operace a její výsledek se zobrazil uživateli.\\
+Abychom toho docílili, vytvoříme funkci, do které zapíšeme požadovanou operaci a tuto funkci napojíme na tlačítko - konkrétně na zmáčknutí tlačítka.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+from PyQt5 import QtWidgets 
+
+app = QtWidgets.QApplication([]) 
+
+hlavni_okno = QtWidgets.QWidget() 
+hlavni_okno.setWindowTitle('Můj supr program') 
+
+usporadani = QtWidgets.QHBoxLayout() 
+hlavni_okno.setLayout(usporadani) 
+
+napis = QtWidgets.QLabel('Teď už tlačítko funguje...') 
+usporadani.addWidget(napis) 
+
+tlacitko = QtWidgets.QPushButton('Klikni na mě')
+usporadani.addWidget(tlacitko) 
+
+vstup = QtWidgets.QLineEdit()
+usporadani.addWidget(vstup) 
+
+def zmen_napis():  !\label{scl:pyqt_fce}!
+	vstupni_text = vstup.text()
+	napis.setText( "Toto jsi napal: " + vstupni_text )
+	
+tlacitko.clicked.connect(zmen_napis) !\label{scl:pyqt_fce_connect}!
+
+hlavni_okno.show() 
+app.exec() 
+\end{minted}
+
+\captionof{listing}{PyQt - Zkopíruj nápis}
+\label{code:grafika_pyqt_funkcionalita}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:pyqt_fce}:] Připravíme si funkci, která se má spustit po kliknutí na tlačítko
+\item[ř. \ref{scl:pyqt_fce_connect}:] Připravenou funkci (pozor! bez kulatých závorek) připojíme na naše tlačítko při kliknutí.
+\end{enumerate}
+\end{minipage}
+
+ 
+
+
+
+
+
+\subsection{PyGame}
+\subsubsection{Havní smyčka}
+Jednou z nejpodstatnějších částí grafické aplikace je takzvaná hlavní smyčka. Celý běh aplikace je zpracováván ve smyčce ( while cyklu ) ve které se stále dokola provádí ty stejné operace - po provedení všech operací (jednoho kroku) se vše opakuje znovu.\\
+Tyto operace můžeme rozdělit na 3 hlavní oblasti.
+\begin{enumerate}
+\item [\textbf{Zpracování vstupu}] bez kterého by se program nedal ovládat. Chceme měnit různé parametry (pozici hráče, spuštění výstřelu a pod.) na základě vstupu (nejčastěji) z klávesnice, myši, případně gamepadu
+\item [\textbf{Výpočty}] kterými spočítáme nový stav hry. Nové pozice hráčů, nepřátel, objektů. Nové skóre, životy a pod.. Některé výpočty mohou být závislé na vstupu od uživatele, jiné nemusí - mohou běžet zcela nezávisle na uživatelsých akcích.
+\item [\textbf{Vykreslení}] aktuálního stavu hry.\\V jednoduchém přístupu (který z počátku budeme požívat my) se vše kreslí každý snímek znovu. Trochu lepší přístup je překreslovat pouze ty části obrazovky/hry, které se změnily - k tomu je však potřeba si pamatovat, kde se obraz změnil a to situaci mírně komplikuje.
+\end{enumerate}
+
+\subsubsection{Zpracování vstupu}
+Při zpracování vstupu máme dva možné způsoby - každý se hodí pro jinou situaci.
+\begin{enumerate}
+\item[\textbf{Události}] jsou téměř vše, co vás napadne - stisk klávesy, klik myši, pohyb myši, můžeme ve hře vytvořit i naše vlastní libovolné události.\\Tyto události se ukládají do takzvané \uv{\textbf{fronty událostí}} v průběhu celého framu. Je tedy jedno kdy přesně k události dojde (zda na začátku hlavní smyčky, uprostřed nebo na konci).\\Kdykoliv v průběhu smyčky (obvykle tak činíme na začátku) se můžeme zeptat, které všechny události jsou \uv{nastřádané} ve frontě událostí a na každou z nich zareagovat tak, jak chceme.
+\item[\textbf{Aktuální stav}] kláves na klávesnici čí tlačítek myši.\\V každém framu se (na jednom řádku) ptáme, zda je klávesa ve stavu stisknuto/nestisknuto a podle tohoto stavu provedeme požadovanou akci.\\Pokud bychom do klávesy pouze \uv{ťukli} (klávesu bychom stiskli pouze na chvíli), může se stát, že program zrovna nebude procházet řádek, na kterém se na stav klávesy ptáme a tak toto stisknutí zůstane nepovšimnuto (na rozdíl od zaznamenání ve frontě událostí). 
+\end{enumerate}
+Promyslete ve kterých situacích budeme používat události a ve kterých se budeme ptát na aktuální stav kláves.
+
+\subsubsection{Výpočty}
+Po zpracování vstupu obvykle přepočítáme navý stav hry. Některé akce na vstupu mohou záležet (např. pohyb hráčem, výstřel). Některé nemusí (např. NPC, které se pohybuje samo).\\
+Do výpočtů také jistě patří detekce kolizí (zda hráč narazil do překážky, zasáhl ho projektil, sebral žeton a pod.) a reakce na ně (zastavení pohybu, snížení životů a smazání projektilu, zvýšení bodů a smazání žetonu a pod.)
+
+\subsubsection{Vykreslení}
+Při zobrazování na monitor se může zobrazit vždy jen jeden konkrétní (pevný) obrázek. Jak tedy zajistit, aby to vypadalo, že se naše autíčko pohybuje?\\
+V každém kroku smyčky smažeme předchozí obrázek auta a nakreslíme ho znovu o malou vzdálenost vedle.\\
+Vzdálenost, o kterou obrázek posouváme, nastavíme dostečně malou a rychlost, jakou obrázek překreslujeme nastavíme dostatečně vysokou. Tím vytvoříme \uv{optický klam} plynulého pohybu.\\Výpočetně výhodné je překreslovat pouze ty části obrazovky, kde došlo ke změně, ze začátku si však vystačíme s programátorsky jednodušším přístupem - v každém snímku nakreslíme vše (včetně pozadí - čímž smažeme předchozí obrázek) znovu. 
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import pygame !\label{scl:import_pygame}!
+from pygame.locals import * !\label{scl:import_pygame_locals}!
+
+display_width = 800 !\label{scl:screen_size_w}!
+display_height = 600 !\label{scl:screen_size_h}!
+
+screen = pygame.display.set_mode((display_width, display_height)) !\label{scl:screen}!
+pygame.display.set_caption('Super hra')
+
+black = (0, 0, 0) !\label{scl:color_black}!
+white = (255, 255, 255) !\label{scl:color_white}!
+
+CarPos = [50, 100] !\label{scl:car_pos}!
+CarRadius = 10 !\label{scl:car_radius}!
+
+hodiny = pygame.time.Clock() !\label{scl:hodiny}!
+fps = 20
+
+def draw_car(S, r): !\label{scl:car_draw}!
+    pygame.draw.circle(screen, black, S, r , 0)
+    pygame.draw.line(screen, white, S, (S[0], S[1]+r), 3 )
+
+running = True
+while running: !\label{scl:hlavni_smycka}!
+	# Zpracování vstupu
+	# 	Události
+    for event in pygame.event.get(): !\label{scl:smycka_udalosti}!
+        if event.type == pygame.QUIT: !\label{scl:udalost_quit}!
+		    running = False
+            
+        if event.type == KEYDOWN: !\label{scl:udalost_keydown}!
+            if event.key == K_a: !\label{scl:udalost_key_a}!
+                CarPos[0] = CarPos[0] - 5
+    #	Aktuální stav kláves
+    klavesy = pygame.key.get_pressed() !\label{scl:stav_klaves}!  
+    if klavesy[K_d]: !\label{scl:stav_key_d}!
+    	CarPos[0] = CarPos[0] + 5
+    # Vykrelsní    
+    screen.fill(white) !\label{scl:fill_white}!
+    draw_car(CarPos, CarRadius) !\label{scl:use_car_draw}!
+     
+    hodiny.tick(fps) !\label{scl:use_hodiny_tick}!
+    pygame.display.update() !\label{scl:update}!
+
+pygame.quit() !\label{scl:quit}!
+\end{minted}
+
+\captionof{listing}{První ukázka \uv{hýbací} grafiky}
+\label{code:grafika_prvni_hybaci}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:import_pygame}, \ref{scl:import_pygame_locals}:] Importujeme knihovny, které chceme používat.
+\item[ř. \ref{scl:screen_size_w}, \ref{scl:screen_size_h}:] Uložíme si, jak velké chceme okno naší aplikace.
+\vspace{1.5cm}
+\item[ř. \ref{scl:screen}:] Vytvoříme hlavní okno (\uv{plátno}) naší aplikace. Vše, co nakreslíme na toto \uv{plátno} se zobrazí na monitoru.
+\item[ř. \ref{scl:color_black}, \ref{scl:color_white}, \ref{scl:car_pos}, \ref{scl:car_radius}:] Uložíme si informace, které budeme používat - bílou a černou barvu, pozici a velikost kolečka (v této ukázce je kolečko naše auto.)
+\item[ř. \ref{scl:hodiny}:] V naší hře budeme také chtít měřit čas - proto si vytvoříme hodiny.
+\vspace{1.8cm}
+\item[ř. \ref{scl:car_draw}:] Funkce, která nám na zadaném místě (S) nakreslí kolečko o zadaném poloměru (r)
+\vspace{1.5cm}
+\item[ř. \ref{scl:hlavni_smycka}:] Hlavní smyčka hry.
+\item[ř. \ref{scl:smycka_udalosti}:] Smyčka, ve které se zpracují všechny události v předchozím framu - např. kliknutí na zavírací křížek ř: \ref{scl:udalost_quit}, nebo zmáčknutí klávesy ř: \ref{scl:udalost_keydown}.
+\item[ř. \ref{scl:udalost_key_a}:] Zjištění, která klávesa byla stisknuta.
+\item[ř. \ref{scl:stav_klaves}:] Zjištění, aktuálního stavu všech kláves na tomto konkrétním řádku.
+\item[ř. \ref{scl:stav_key_d}:] Dotaz na stav klávesy D.
+\item[ř. \ref{scl:fill_white}:] Vybarvení celého plátna bílou barvou (tedy smažeme vše, co je na plátně nakreslené)
+\item[ř. \ref{scl:use_car_draw}:] Zakreslíme \uv{auto} na aktuální pozici.
+\item[ř. \ref{scl:use_hodiny_tick}:] Hra bude mít stanovéné fps (frame per second - počet zobrazených snímků za sekundu) - zde 20fps
+\item[ř. \ref{scl:update}:] Všechny provedené změny zobrazíme na monitor.
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Blit - chytřejší vykreslování}
+Zobrazení nějaké změny na monitor (například změna barvy pozadí, smazání a zobrazení kolečka apd.) je jedna z \uv{nejdražších} operací v grafickém programu. Její provedení trvá velmi dlouho - je do ní totiž zapojeno mnoho součástek počítače a i samotný výpočet, kde se má co zobrazit je poměrně náročný. Při takovéto \uv{drahé} operaci se \uv{každý pixel počítá}. Chceme zkrátka kreslit na obrazovku co nejméně.\\
+Při pohledu na řádek ř. \ref{scl:fill_white} v kódu \ref{code:grafika_prvni_hybaci} si jistě domyslíme, že \textbf{celou plochu} přebarvíme na bílo. Měníme tedy \textbf{všechny pixely} naší hry (program nezajímá, co za barvu bylo na nějakém pixelu doposud - provede příkaz, který jsme zadali a to je \uv{nakresli sem bílou}). To je extrémně neefektivní, protože drtivá většina pixelů bude mít stejnou barvu jako předtím.\\
+\vspace{.5cm}
+K výrazně efektivnějsímu kódu slouží v knihovně PyGame funkce \uv{blit()}\\
+Funkci \textbf{blit()} si můžeme představit jako Ctrl+C a Ctrl+V. Abychom ji ale mohli používat, musíme nejprve mít odkud a kam kopírovat. K tomu nám poslouží Surface.
+
+\paragraph{Surface - plátno}
+V podstatě vše grafické v PyGame je plátno - Surface. Surface je načtený obrázek, surface může být libovolný geometrický tvar a těchto \textbf{pláten můžeme mít} v našem programu \textbf{kolik chceme}. Jedno surface je \textbf{speciální} - to, co na něj nakreslíme \textbf{se zobrazí na monitoru} - toto plátno, vytvoříme pomocí příkazu:\\
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+screen = pygame.display.set_mode((display_width, display_height))
+\end{minted}
+\end{code}
+Všechna ostatní sice máme v programu a můžeme s nimi libovolně pracovat, ale to, co s nimi provedeme se na monitoru neukáže.\\
+
+Důležité na surface je, že každé má svůj \textbf{obdélník (rectangle)}, který ho \textbf{ohraničuje}. Tento obdélník není nijak pootočený - jinými slovy je to obdélník od bodu nejvíce vlevo k bodu nejvíce vpravo a od bodu nejvíce nahoře k bodu nejvíce dole. Tento obdélník je v PyGame uložený jako \textbf{pozice x-y levého horního rohu, šířky a výšky} obdélníku.
+
+\paragraph{blit()}
+Blit si můžeme přestavit jako Ctrl+C a Ctrl+V. Z jednoho plátna (surface) zkopírujeme pixely ze zadaného místa (zadaného pozicí levého horního rohu, šířkou a výškou - tedy obdélníkem) \uv{area} a vložíme je na zadané místo (zadaného pozicí levého horního rohu) do druhého plátna \uv{dest}.\\
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+platno_kam.blit(plano_odkud, dest=pozice_kam, area=pozice_a_velikost_odkud)
+\end{minted}
+\end{code}
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import pygame
+from pygame.locals import *
+
+pygame.init()
+display_width = 800
+display_height = 600
+
+screen = pygame.display.set_mode((display_width,display_height)) !\label{scl:blit_screen}!
+
+pygame.display.set_caption('Super hra')
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+
+CarPos = [50, 100]
+CarRadius = 10
+CarColor = black
+
+hodiny = pygame.time.Clock()
+fps = 20
+
+def draw_car(S, r):
+    changed_rect = pygame.draw.circle(screen, CarColor, S, r, 0) !\label{scl:blit_car_rect}!
+    pygame.draw.line(screen, red, S, (S[0], S[1] + r - 1), 3)
+    
+    return changed_rect !\label{scl:blit_car_rect_return}!
+
+
+pozadi = pygame.Surface((display_width, display_height)) !\label{scl:blit_pozadi}!
+pozadi.fill(white) !\label{scl:blit_pozadi_fill}!
+pozadi_rect = pozadi.get_rect() !\label{scl:blit_pozadi_rect}!
+pygame.display.update()
+
+screen.blit(pozadi, dest=pozadi_rect, area=pozadi_rect) !\label{scl:blit_pozadi_screen}!
+
+car_rect = draw_car(CarPos, CarRadius) !\label{scl:blit_draw_car_first}!
+
+running = True
+while running:
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            running = False
+
+        if event.type == KEYDOWN:
+            if event.key == K_a:
+                CarPos[0] = CarPos[0] - 5
+                
+    klavesy = pygame.key.get_pressed() 
+    if klavesy[K_d]:
+    	CarPos[0] = CarPos[0] + 5
+
+    pozadi_rect = screen.blit(pozadi, dest=car_rect, area=car_rect) !\label{scl:blit_pozadi_screen_redraw}!
+    car_rect = draw_car(CarPos, CarRadius) !\label{scl:blit_draw_car}!
+ 
+    pygame.display.update([pozadi_rect, car_rect]) !\label{scl:blit_update}!
+    
+    hodiny.tick(fps)
+
+pygame.quit()
+\end{minted}
+
+\captionof{listing}{Grafika s blit()}
+\label{code:grafika_blit}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:blit_screen}, \ref{scl:blit_pozadi}:] Vytvoříme dvě plátna. Jedno hlavní, jedno s pozadím.
+\item[ř. \ref{scl:blit_car_rect}, \ref{scl:blit_car_rect_return}:] Při kreslení auta si uložíme kam (do jakého obdélníku) jsme ho nakreslili. Tento obdélník nám bude kreslící funkce vracet.
+\vspace{2cm}
+\item[ř. \ref{scl:blit_pozadi_fill}, \ref{scl:blit_pozadi_rect}:] Pozadí vybarvíme na bílo. A uložíme si jeho obdélník.
+\item[ř. \ref{scl:blit_pozadi_screen}:] Pozadí zkopírujeme na hlavní plátno.
+\item[ř. \ref{scl:blit_draw_car_first}:] Nakreslíme auto - a uložíme si obdélník, kam jsme ho nakreslili.
+\item[ř. \ref{scl:blit_pozadi_screen_redraw}:] Překreslíme na hlavní plátno tu část pozadí, která odpovídá nakreslenému autu. Tedy v podstatě smažeme auto.
+\vspace{7cm}
+\item[ř. \ref{scl:blit_draw_car}:] Nakreslíme auto na aktuální pozici - a uložíme si jeho obdélník.
+\item[ř. \ref{scl:blit_update}:] Zobrazíme (pouze) změny, které jsme provedli v tomto kroku.
+\end{enumerate}
+\end{minipage}
+
+\subsubsection{Sprite, Group}
+V každé hře se nám obvykle objevuje více objektů stejného typu (více hráčů, kteří mohou provádět stejné akce; více žetonů, které můžeme sebrat a zísak za ně body; více stejných nepřátel a pod.).\\
+Navíc od téměř každého objektu ve hře požadujeme stejné základní možnosti:
+\begin{enumerate}
+\item [\textbf{Obrázek}], kterým se zobrazuje v okně - může to být základní tvar (obdélník, elipsa, \dots) nebo obrázek načtený ze souboru
+\item [\textbf{Pozici}] na které se má obrázek objektu zobrazit v okně
+\item [\textbf{Změna stavu}] může být např. animace obrázku, změna polohy (ať už nezávislá na akci uživatele, nebo závislá na stisku kláves), a další akce - některé objekty svůj stav měnit nemusí (například různé překážky/zdi)
+\item [\textbf{Kolize}] s jinými předměty je v jednoduché 2D hře v zásadě jediná interakce mezi objekty, která nás zajímá - narazil jsem do zdi (a nemohu dál)?; narazil do mě nepřítel (a ubere mi životy)?; narazil jsem do žetonku (a přičtou se mi body)?
+\end{enumerate}
+Protože se v zásadě žádná hra neskláda z ničeho jiného, připravili tvůrci PyGame možnost, jak se s těmito typickými situacemi vypořádat elegantně.
+
+\paragraph{Sprite}
+Náš objekt ve hře necháme oddědit od třídy Sprite.\\Objektu vyplníme atribut \textbf{image} a \textbf{rect} čímž určíme jak a kde se bude náš objekt vykreslovat.\\Dále můžeme vyplnit funkci \textbf{update()} , která může přijímat libovolné argumenty a bude určovat změnu stavu objektu.
+
+\paragraph{Group}
+Sprite objekty můžeme ukládat do skupin ( pygame.sprite.Group() ). Jeden objekt může být ve více skupinách a každá skupina (jak název napovídá) může obsahovat více objektů.\\Ohromná výhoda skupin je, že můžeme jednoduše provádět operace s celou skupinou / každým objektem ve skupině (vykreslit každý objekt ze skupiny; dotázat se, zda jsme narazili do nějakého objektu ze skupiny; zda některé objekty mezi dvěma skupinami do sebe navzájem narazili a pod.)
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{python}
+import pygame
+from pygame.sprite import Sprite
+from pygame.locals import *
+
+pygame.init()
+
+display_width = 800
+display_height = 600
+screen = pygame.display.set_mode((display_width, display_height))
+pygame.display.set_caption('Super hra')
+
+comic_sans_font = pygame.font.SysFont('Comic Sans MS', 25) !\label{scl:sprite_font}!
+default_font = pygame.font.Font(pygame.font.get_default_font(), 25)
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+
+class Car(Sprite):
+    def __init__(self):
+        Sprite.__init__(self) !\label{scl:sprite_init}!
+        
+        self.image = pygame.Surface((50, 50)) !\label{scl:sprite_surface}!
+        self.image.fill(black)
+        # self.image = pygame.image.load("obrazek.png") !\label{scl:sprite_loadimage}!
+        
+        self.rect = self.image.get_rect() !\label{scl:sprite_getrect}!
+        self.rect.x = 0 !\label{scl:sprite_rectpos}!
+        self.rect.y = 0
+        
+        self.body = 0 !\label{scl:sprite_body}!
+    
+    def update(self, stav_klaves): !\label{scl:sprite_update}!
+        if stav_klaves[K_d]:
+            self.rect.x += 5
+        if stav_klaves[K_a]:
+            self.rect.x -= 5
+        if stav_klaves[K_s]:
+            self.rect.y += 5
+        if stav_klaves[K_w]:
+            self.rect.y -= 5
+
+class Zeton(Sprite):
+    def __init__(self, x, y): !\label{scl:sprite_initargs}!
+        Sprite.__init__(self)
+        
+        self.image = pygame.Surface((30, 30))
+        self.image.fill(white)
+        pygame.draw.circle(self.image, red, (15, 15), 15, 0)
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
+\end{minted}
+
+\captionof{listing}{Použití Sprite/Group 1/2}
+\label{code:grafika_Sprite1}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:sprite_font}:] Načteme font, kterým budeme vypisovat nápis.\\Můžeme využít i defaultní font
+\item[ř. \ref{scl:sprite_init}:] Při vytváření našeho objektu vytvoříme nejprve objekt Sprite
+\item[ř. \ref{scl:sprite_surface}:] Vytvoříme jeho plátno a např. ho vyplníme jednou barvou
+\vspace{2cm}
+\item[ř. \ref{scl:sprite_loadimage}:] Nebo rovnou (místo předchozích dvou řádků) načteme obrázek ze souboru.
+\item[ř. \ref{scl:sprite_getrect}, \ref{scl:sprite_rectpos}:] Načteme obdélník obrázku a upravíme jeho pozici v okně
+\item[ř. \ref{scl:sprite_body}:] Objektu můžeme přidat libovolné další atributy
+\vspace{3cm}
+\item[ř. \ref{scl:sprite_update}:] Vyplníme funkci pro změnu stavu - funkce může příjmat libovolný počet argumentů - zde stav kláves na klávesnici
+\item[ř. \ref{scl:sprite_initargs}:] Argumenty může příjmat i konstruktor našeho objektu - zde pozice Zetony
+
+\end{enumerate}
+\end{minipage}
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!, firstnumber=last]{python}
+        
+hodiny = pygame.time.Clock()
+fps = 20
+
+vsichni_hraci = pygame.sprite.Group() !\label{scl:sprite_group}!
+hrac = Car()
+vsichni_hraci.add(hrac)
+
+vsechny_zetony = pygame.sprite.Group()
+for i in range(10): !\label{scl:sprite_groupfor}!
+    vsechny_zetony.add(Zeton(50 * i, 300))
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    
+    klavesy = pygame.key.get_pressed() 
+    vsichni_hraci.update(klavesy) !\label{scl:sprite_callupdate}!
+    
+    sebrany_zeton = pygame.sprite.spritecollideany(hrac, vsechny_zetony) !\label{scl:sprite_colideany}!
+    if sebrany_zeton is not None:
+        sebrany_zeton.kill() !\label{scl:sprite_kill}!
+        hrac.body += 1
+    
+    screen.fill(white)
+    vsichni_hraci.draw(screen) !\label{scl:sprite_drawgroup}!
+    vsechny_zetony.draw(screen)
+    
+    obrazek_textu = comic_sans_font.render(f"Body: {hrac.body}", False, black) !\label{scl:sprite_text}!
+    screen.blit(obrazek_textu, dest=(50, 500)) !\label{scl:sprite_textblit}!
+    
+    pygame.display.update()
+    hodiny.tick(fps)
+
+pygame.quit()
+\end{minted}
+
+\captionof{listing}{Použití Sprite/Group 2/2}
+\label{code:grafika_Sprite2}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:sprite_group}:] Skupina objektů - zde hráčů, pokud bychom jich chtěli více
+\item[ř. \ref{scl:sprite_groupfor}:] Do skupiny můžeme snadno přidat mnoho objektů
+\item[ř. \ref{scl:sprite_callupdate}:] Zavoláním update() na skupinu se tato fce zavolá na každý objekt ve skupině.\\Samozřejmě musíme předat požadované argumenty \ref{scl:sprite_update}
+\vspace{0.5cm}
+\item[ř. \ref{scl:sprite_colideany}:] PyGame nabízí užitečné funkce pro práci s objekty Sprite a Group - hledejte v dokumentaci.
+\item[ř. \ref{scl:sprite_kill}:] Smaže objekt ze všech skupin, ve kterých je (tedy typicky z celého programu)
+
+\item[ř. \ref{scl:sprite_drawgroup}:] Celou skupinu (každý objekt) nakreslíme jedním příkazem
+\vspace{0.5cm}
+\item[ř. \ref{scl:sprite_text}:] Vyrendrujeme obrázek textu v požadovaném fontu
+\item[ř. \ref{scl:sprite_textblit}:] Obrázek nápisu vložíme na obrazovku
+
+
+\end{enumerate}
+\end{minipage}
+
+
+
+
+
