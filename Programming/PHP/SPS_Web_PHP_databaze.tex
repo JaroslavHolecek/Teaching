@@ -1,0 +1,195 @@
+\section{Databáze}
+Zdrojové kódy převzaty z \url{https://www.w3schools.com/php/php_mysql_intro.asp}, kde najdete i další ukázky.\\
+Pokud chceme, aby naše webové stránky zpracovávaly větší množství informací (např. více uživatelů, různé zboží v e-shopu) je vhodné tyto informace uložit v databázi.\\
+Zde ve škole můžeme využít školní databázi na serveru \url{dbs.spskladno.cz} (MySQL)- pro přístup přes prohlížeč použijte \url{http://dbs.spskladno.cz/myadmin/} . Přístupové údaje získáte od svých vyučujících.\\
+Možností jak pracovat s databází pomocí php je více a mimo jiné záleží na typu databáze. Zde si ukážeme jednu z možností.\\
+
+\subsection{Přístupové údaje}
+Pro připojení k databázi (přesněji k databázovému serveru) je potřeba zadat údaje:
+\begin{enumerate}
+\item[\textbf{adresa serveru}] ip, nebo url adresa - dbs.spskladno.cz
+\item[\textbf{jméno}] získáte od vyučujících
+\item[\textbf{heslo}] získáte od vyučujících
+\end{enumerate}
+pro připojení ke konkrétní databázi navíc zadáme název databáze:
+\begin{enumerate} \setcounter{enumi}{4}
+\item[\textbf{název databáze}] zde na školním databázovém serveru závisí na účtu, pod kterým se k serveru přihlásíme
+\end{enumerate}
+
+Pomocí výše uvedených údajů vytvoříme spojení našeho php skriptu s databází. Přes toto spojení můžeme zasílat do databáze požadavky pomocí jazyku SQL.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<?php
+$servername = "dbs.spskladno.cz"; !\label{scl:dbs_pristupove_udaje}!
+$username = "dotaz_na_vyucujiciho";
+$password = "dotaz_na_vyucujiciho";
+$dbname = "vyuka__";
+
+$conn = new mysqli($servername, $username, $password, $dbname); !\label{scl:dbs_spojeni_start}!
+
+
+if ($conn->connect_error) { !\label{scl:dbs_spojeni_kontorola}!
+    exit("Spojení se nezdařilo. Chyba: " . $conn->connect_error);
+}
+$mysqli->set_charset("utf8mb4"); !\label{scl:dbs_charset}!
+
+$conn->close(); !\label{scl:dbs_spojeni_konec}!
+?> 
+\end{minted}
+
+\captionof{listing}{Připojení k databázi}
+\label{code:php_dbs_spojeni}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:dbs_pristupove_udaje}:] Uložení přístupových údajů.
+\item[ř. \ref{scl:dbs_spojeni_start}:] Vytvoření spojení 
+\item[ř. \ref{scl:dbs_spojeni_kontorola}:] Kontrola, zda se spojení podařilo.\\
+Pokud ne, ukončí se skript a vypíše se chybová hláška.
+\vspace{2cm}
+\item[ř. \ref{scl:dbs_charset}:] Nastavení kódování - abychom mohli psát háčky a čárky
+\item[ř. \ref{scl:dbs_spojeni_konec}:] Ukončení spojení 
+\end{enumerate}
+\end{minipage} 
+
+\subsection{Dotazy bez výsledku}
+U některých dotazů do databáze nezískáváme žádný výsledek (např. vytvoření tabulky, vložení dat do tabulky). U takových dotazů můžeme zjistit, zda dotaz proběhl v pořádku, případně se něco pokazilo (např. nemáme přístup, špatně zapsaný dotaz) a můžeme vypsat chybovou hlášku, kterou nám zaslal zpět databázový server.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{html+php}
+<?php
+$servername = "dbs.spskladno.cz"; 
+$username = "dotaz_na_vyucujiciho";
+$password = "dotaz_na_vyucujiciho";
+$dbname = "vyuka__";
+
+$conn = new mysqli($servername, $username, $password, $dbname); 
+
+if ($conn->connect_error) { 
+    exit("Spojení se nezdařilo. Chyba: " . $conn->connect_error);
+}
+$mysqli->set_charset("utf8mb4");
+
+$sql_create = "CREATE TABLE Uzivatel ( 
+id INT PRIMARY KEY,
+jmeno TEXT NOT NULL,
+heslo TEXT NOT NULL
+)"; !\label{scl:dbs_dotaz_create}!
+
+$sql_insert = "INSERT INTO Uzivatel (jmeno, heslo) VALUES ('jarda', '123'), ('adam', '456')"; !\label{scl:dbs_dotaz_insert}!
+
+$result = $conn->query($sql_create); !\label{scl:dbs_dotaz_create_zaslani}!
+if ($result === TRUE) {	!\label{scl:dbs_dotaz_create_vysledek}!
+    echo "Tabulka vytvořena.";
+} else {
+    echo "Tabulku se nepodařilo vytvořit. Chyba: " . $conn->error;
+}
+
+$result = $conn->query($sql_insert); !\label{scl:dbs_dotaz_insert_zaslani}!
+if ($result === TRUE) {	!\label{scl:dbs_dotaz_insert_vysledek}!
+    echo "Data vložena.";
+} else {
+    echo "Data se nepodařilo vložit. Chyba: " . $conn->error;
+}
+
+$conn->close();
+?> 
+\end{minted}
+
+\captionof{listing}{Tvorba tabulky a vložení dat}
+\label{code:php_dbs_create_insert}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:dbs_dotaz_create}, \ref{scl:dbs_dotaz_insert}:] Příprava dotazů pro vytvoření tabulky a vložení dvou uživatelů.\\
+\textcolor{red}{Ve skutečné databázi se hesla nikdy neukládají v této \uv{otevřené} formě.}
+\item[ř. \ref{scl:dbs_dotaz_create_zaslani}, \ref{scl:dbs_dotaz_insert_zaslani}:] Zaslání dotazu do databáze.
+\vspace{3.5cm}
+\item[ř. \ref{scl:dbs_dotaz_create_vysledek}, \ref{scl:dbs_dotaz_insert_vysledek}:] Kontrola, zda dotazy proběhly v pořádku.\\
+Pokud ne, ukončí se skript a vypíše se chybová hláška.
+\end{enumerate}
+\end{minipage}
+
+
+\subsection{Dotazy s výsledkem}
+U některých dotazů získáváme z databáze informaci (proto databázi máme \dots).\\
+Výsledkem dotazu může být velmi mnoho řádků (např. e-shop má v nabídce mnoho triček) a bylo by značně náročné, přenášet celý výsledek najednou.\\
+V následující ukázce si můžeme představit, že po odeslání dotazu se v databázi \textbf{dočasně vytvoří} náš \textbf{výsledek} a do našeho php skriptu \textbf{se přenese ukazatel} na tyto data (nepřenáší se tedy data samotná, ale pouze informace, kde v databázi jsou). \textbf{Část dat} (typicky jeden řádek) \textbf{se přenese} až \textbf{po zavolání funkce} \uv{fetch\_assoc()}. Díky tomu můžeme z databáze stahovat jen tolik dat, kolik potřebujeme.\\
+\textbf{Data} jsou po přenesení \textbf{uložena v asociativním poli}, kde \textbf{název} jednotlivých \textbf{položek} (klíč) je \textbf{název sloupečku} v databázi.\\
+
+\begin{minipage}[t]{.45\textwidth}
+\begin{code}
+\begin{minted}[linenos, escapeinside=!!]{php}
+<?php
+$servername = "dbs.spskladno.cz"; 
+$username = "dotaz_na_vyucujiciho";
+$password = "dotaz_na_vyucujiciho";
+$dbname = "vyuka__";
+
+$conn = new mysqli($servername, $username, $password, $dbname); 
+
+if ($conn->connect_error) { 
+    exit("Spojení se nezdařilo. Chyba: " . $conn->connect_error);
+}
+$mysqli->set_charset("utf8mb4");
+
+$sql_create = "CREATE TABLE Uzivatel ( 
+id INT PRIMARY KEY,
+jmeno TEXT NOT NULL,
+heslo TEXT NOT NULL
+)";
+
+$sql_insert = "INSERT INTO Uzivatel (jmeno, heslo) VALUES ('jarda', '123'), ('adam', '456')"; 
+
+$result = $conn->query($sql_create);
+if ($result === TRUE) {
+    echo "Tabulka vytvořena.";
+} else {
+    echo "Tabulku se nepodařilo vytvořit. Chyba: " . $conn->error;
+}
+
+$result = $conn->query($sql_insert); 
+if ($result === TRUE) {	
+    echo "Data vložena.";
+} else {
+    echo "Data se nepodařilo vložit. Chyba: " . $conn->error;
+}
+
+$sql_select = "SELECT id, jmeno, heslo FROM Uzivatel"; !\label{scl:dbs_dotaz_select}!
+$result = $conn->query($sql_select);
+
+if ($result->num_rows > 0) { !\label{scl:dbs_dotaz_select_pocet_r}!
+
+  while($row = $result->fetch_assoc()) { !\label{scl:dbs_dotaz_select_fetch}!
+    echo "id: ". $row["id"]. " - Jméno: ". $row["jmeno"]. " - Heslo: ". $row["heslo"]. "<br>"; !\label{scl:dbs_dotaz_select_read}!
+    }
+    
+} else {
+    echo "Ve výsledku nejsou žádné řádky.";
+}
+
+$conn->close();
+?> 
+\end{minted}
+
+\captionof{listing}{Select - dotaz s výsledkem}
+\label{code:php_dbs_select}
+\end{code}
+\end{minipage}
+\begin{minipage}[t]{.45\textwidth}
+\begin{enumerate}
+\item[ř. \ref{scl:dbs_dotaz_select}:] Příprava dotazu pro získání dat.
+\item[ř. \ref{scl:dbs_dotaz_select_pocet_r}:] Zjištění počtu řádků ve výsledku.
+\vspace{3cm}
+\item[ř. \ref{scl:dbs_dotaz_select_fetch}:] Stažení jednoho řádku z výsledku a kontrola, zda jsou v něm data (po stažení všech řádků již budou stažená data prázdná)\\
+Toto se opakuje, dokud není stažený řádek prázdný (již ve výsledku žádný není).
+\vspace{1.2cm}
+\item[ř. \ref{scl:dbs_dotaz_select_read}:] Ze staženého řádku čteme data jako z asociativního pole. 
+\end{enumerate}
+\end{minipage}
+
