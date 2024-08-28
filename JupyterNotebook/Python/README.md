@@ -12,7 +12,7 @@ Recommended order is:
   8) While_zadani.ipynb
   9) Break_Continue_zadani.ipynb
   10) Funkce_zadani.ipynb
-  11) Vyjimky_zadani.ipynb TBD
+  11) Vyjimky_zadani.ipynb
   12) Soubory_zadani.ipynb TBD
   13) OOP_trida_objekt_atribut_metoda_zadani.ipynb
   14) OOP_zapouzdreni_zadani.ipynb
