@@ -6,9 +6,9 @@ Recommended order is:
   2) Datove_typy_Zakladni_operatory_zadani.ipynb
   3) Vetveni_zadani.ipynb
   4) Logicke_funkce_zadani.ipynb
-  5) Vyctove_datove_typy_zadani.ipynb
+  5) For_zadani.ipynb
   6) String_zadani.ipynb
-  7) For_zadani.ipynb
+  7) Vyctove_datove_typy_zadani.ipynb
   8) While_zadani.ipynb
   9) Break_Continue_zadani.ipynb
   10) Funkce_zadani.ipynb
